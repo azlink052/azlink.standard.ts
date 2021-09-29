@@ -1,0 +1,10 @@
+@charset "utf-8";
+@mixin baseTransition($property: all, $duration: .2s, $function: ease-in, $delay: 0s) {
+  transition: $property $duration $function $delay;
+}
+@mixin opacityFade() {
+  @include baseTransition(opacity);
+  &:hover {
+    opacity: 0.7;
+  }
+}

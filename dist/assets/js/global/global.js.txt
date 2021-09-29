@@ -1,0 +1,14 @@
+../lib/jquery-3.6.0.min
+../lib/jquery.cookie 1.4.1
+../lib/jquery.easing.1.3
+../lib/jquery.adjustSize
+../lib/jquery.flowVox
+../lib/jquery.popupAdjust
+../lib/jquery.replaceImageSP
+../lib/velocity.min 1.5.2
+../lib/flow.min
+main
+
+npx terser -c -m -o ../lib/libraries.min.js -- ../lib/libraries.js
+npx terser -c -m -o global.min.js -- ../lib/libraries.min.js main.js
+npx terser -c -m -o global.dev.min.js -- ../lib/velocity.min.js ../lib/flow.min.js main.class2.js 

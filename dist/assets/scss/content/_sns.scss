@@ -1,0 +1,60 @@
+@charset "utf-8";
+/*
+ * =====================================================
+ *
+ * [sns]
+ *
+ * =====================================================
+ */
+body.sns {
+  .sectionVox {}
+  #instaFeed {
+    display: flex;
+    flex-wrap: wrap;
+    .instaItem {
+      width: 25%;
+      padding: 5px;
+      a {
+        display: block;
+        position: relative;
+        height: 0;
+        padding-top: 100%;
+        img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+/**
+ ****************************************************
+ *
+ * screens larger than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (min-width: $bp) {
+}	/*  @media END */
+/**
+ ****************************************************
+ *
+ * screens smaller than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: $bp - 1) {
+  #instaFeed {
+    .item {
+      width: 50%;
+    }
+  }
+
+}	/*  @media END */
+@media screen and (max-width: $bp - 1) and (orientation:landscape) {
+
+}

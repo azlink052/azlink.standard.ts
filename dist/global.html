@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" media="all" href="./assets/css/global/import.min.css">
+  <script src="./azlib_light.bundle.js"></script>
+  <script>
+    const Util = new azlib.Utilities({
+      spBreakPoint: 960,
+      isDebug: true
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      Util.init();
+      const ADJUST_SIZE = [];
+      document.querySelectorAll('.vox01, .vox02').forEach((v, i) => {
+        ADJUST_SIZE[i] = new azlib.AdjustSize(v.querySelectorAll('p'));
+      });
+      // azlib.adjustSize('.vox01, .vox02');
+      const popup = new azlib.PopupAdjust('.popupBtItem', {
+        onComplete: () => {
+          console.log('loaded')
+        }
+      });
+      document.querySelectorAll('.popupBtItem.movie').forEach((v, i) => {
+        v.addEventListener('click', () => {
+          const movie = v.getAttribute('data-movie');
+          const src = '<iframe src="https://www.youtube.com/embed/' + movie + '?autoplay=1&rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+          document.querySelector('#popupWrapperMovie .content').insertAdjacentHTML('beforeend', src);
+        });
+      });
+      const rplSPImg1 = new azlib.ReplaceImageSP();
+      // setTimeout(() => {
+      //   rplSPImg1.destroy();
+      // }, 5000);
+      const flowVox1 = new azlib.FlowVox('.flowVox', {
+        isRepeat: true
+      });
+      const flowVox2 = new azlib.FlowVox('.flowVox2', {
+        isRepeat: true
+      });
+      const flowVox3 = new azlib.FlowVox('.flowVox3', {
+        isRepeat: true
+      });
+      const flowVox4 = new azlib.FlowVox('.flowVox4', {
+        isRepeat: true,
+        per: .3
+      });
+      document.querySelectorAll('.slider').forEach((value, index) => {
+        value.children.forEach((v, i) => {
+          const src = v.querySelector('img').src;
+          // console.log(src)
+          if (src) {
+            v.style.backgroundImage = 'url(' + src + ')';
+            v.querySelector('img').remove();
+          }
+        });
+      });
+      const slider01 = new azlib.FadeSlider('#slider01', {
+        ctrl: true,
+        pager: true,
+        speed: 1000,
+        pause: 1500,
+      });
+      const slider02 = new azlib.FadeSlider('#slider02', {
+        ctrl: true,
+        pager: true,
+        speed: 500,
+        pause: 3000,
+      });
+    });
+    // feedサンプル
+    const FEED01 = new azlib.RSSFeed({
+      feed_url: 'https://azlink.jp/content/feed?post_type=web_works',
+      callback: 'result01',
+      count: 10,
+      onComplete: response => {
+        if (response.length > 0) {
+          const UL = document.createElement('ul');
+          document.getElementById('feedVox').appendChild(UL);
+        }
+        for (const item of response) {
+          console.log(item)
+        }
+      }
+    });
+    // instafeed
+    const INSTAFEED01 = new azlib.InstaFeed({
+      igID: '17841404596521497',
+      count: 10,
+      version: '10.0',
+      token: 'EAAEVi72IIG0BAPdbryeLHMIAbZBiIW1Y8Y4kr8rFwm85HByZAbGZArctOk1pWoZA63VuENudBd9UbgtZBI7nyxuupuBZBcYUFOOPDSkUoM42TlAIlDM2ZCBWJJ1sH5dYcPLIu9z3ZB2dspAJACv9gAheqdZAZCSICnuwuU8rZCRYZBA5JgZDZD',
+      elem: '#instaVox',
+      onComplete: response => {
+        console.log(response)
+      }
+    });
+  </script>
+  <style>
+    #wrapper {
+      opacity: 1;
+    }
+    #popupWrapperMovie {
+      height: 50vh;
+    }
+    .slider {
+      width: 100%;
+      padding: 0;
+      padding-top: 33.333%;
+      list-style-type: none;
+    }
+    .slider li {
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+    }
+    #instaVox {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 25fr 25fr 25fr 25fr;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <div class="spTel" data-tel="0522630185">0522630185</div>
+    <div>
+      <p>
+        <a href="javascript:void(0)" class="popupBtItem" data-popup="popupWrapper01">popup</a>
+      </p>
+    </div>
+    <div>
+      <a href="javascript:void(0)"><img src="assets/images/content/works/cms.png" alt="" class="roImg"></a>
+      <a href="javascript:void(0)"><img src="assets/images/content/works/copy.png" alt="" class="roImg"></a>
+    </div>
+    <div>
+      <a href="javascript:void(0)"><img src="assets/images/content/works/cms.png" alt="" class="jqHover"></a>
+    </div>
+    <div class="rplSPImgVox">
+      <figure>
+        <img src="assets/images/content/service/PC_Koala.jpg" alt="" width="300" class="rplSPImg">
+      </figure>
+    </div>
+    <div id="feedVox"></div>
+    <div id="instaVox"></div>
+    <div class="vox01">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not defined
+      </p>
+    </div>
+    <div class="vox01">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        <img src="assets/images/content/service/Koala.jpg" alt="" width="300"><br>
+        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+      <p>
+        <a href="javascript:void(0)" class="popupBtItem" data-popup="popupWrapper02">popup</a>
+      </p>
+      <p>
+        <a href="javascript:void(0)" class="popupBtItem movie" data-popup="popupWrapperMovie" data-movie="30O9JgRXil4">popup</a>
+      </p>
+    </div>
+    <div class="flowVox">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+      </p>
+    </div>
+    <div class="vox02">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+    </div>
+    <div class="adjList">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+    </div>
+    <div class="vox02">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+      </p>
+    </div>
+    <div class="flowVox" style="display: flex;margin-top: 50vh;">
+      <div>
+        <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+      </p>
+      </div>
+      <div>
+        <p>
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300"><br>
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+        </p>
+      </div>
+    </div>
+    <div class="flowVox2" style="display: flex;margin-top: 50vh;" data-flow="zoom">
+      <div>
+        <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+      </p>
+      </div>
+      <div>
+        <p>
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300"><br>
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+        </p>
+      </div>
+    </div>
+    <div class="flowVox3" style="display: flex;margin-top: 50vh;" data-flow="mark">
+      <div>
+        <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+      </p>
+      </div>
+      <div>
+        <p>
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300"><br>
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+        </p>
+      </div>
+    </div>
+    <div class="sliderWrapper">
+      <ul class="slider" id="slider01">
+        <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>
+      </ul>
+    </div>
+    <div class="sliderWrapper">
+      <ul class="slider" id="slider02">
+        <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>
+      </ul>
+    </div>
+    <footer id="siteFooter">
+      <div id="pageTopVox">
+        <a href="#wrapper" class="scroll">PAGE TOP</a>
+      </div>
+    </footer>
+  </div>
+  <div id="popupContents">
+    <div class="content">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError
+      </p>
+    </div>
+    <div class="content">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError<br>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError<br>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError<br>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError
+      </p>
+    </div>
+    <div class="content" data-group="movie"></div>
+  </div>
+</body>
+</html>
