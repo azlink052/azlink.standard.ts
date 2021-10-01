@@ -5,8 +5,8 @@ module.exports = {
   target: ['web', 'es5'],
   entry: {
     dev: './src/index.ts',
-    // azlib: './src/azlib.js',
-    // azlib_light: './src/azlib.light.js',
+    azlib: './src/azlib.ts',
+    azlib_light: './src/azlib.light.ts',
   },
   // plugins: [
   //   new HtmlWebpackPlugin({
@@ -17,7 +17,7 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     // clean: true,
-    // library: 'azlib',
+    library: 'azlib',
     // libraryExport: '',
     // libraryTarget: 'umd',
     // globalObject: 'this',

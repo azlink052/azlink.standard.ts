@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" type="text/css" media="all" href="./assets/css/global/import.min.css">
-  <script src="./azlib_light.bundle.js"></script>
+  <script src="./azlib.bundle.js"></script>
   <script>
     const Util = new azlib.Utilities({
       spBreakPoint: 960,
@@ -15,10 +15,12 @@
     document.addEventListener('DOMContentLoaded', () => {
       Util.init();
       const ADJUST_SIZE = [];
-      document.querySelectorAll('.vox01, .vox02').forEach((v, i) => {
-        ADJUST_SIZE[i] = new azlib.AdjustSize(v.querySelectorAll('p'));
-      });
+      // document.querySelectorAll('.vox01, .vox02').forEach((v, i) => {
+      //   ADJUST_SIZE[i] = new azlib.AdjustSize(v.querySelectorAll('p'));
+      // });
       // azlib.adjustSize('.vox01, .vox02');
+      const ADJUST_SIZE1 = new azlib.AdjustSize('.vox01 p');
+      const ADJUST_SIZE2 = new azlib.AdjustSize('.vox02 p');
       const popup = new azlib.PopupAdjust('.popupBtItem', {
         onComplete: () => {
           console.log('loaded')
