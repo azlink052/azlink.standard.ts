@@ -103,95 +103,181 @@ export class FlowVox {
       this.resetStyle(this.flowAnime[i]);
       this.currentIndex = i;
     });
-    console.log(this.flowAnime);
+    // console.log(this.flowAnime);
   }
-  run(ITEM: Params, isVisible: boolean) {}
+  run(ITEM: Params, isVisible: boolean) {
+    // console.log(ITEM)
+    if (ITEM.isDone) return;
+
+    switch (ITEM.mode) {
+      case 'zoom':
+        if (isVisible) {
+          Array.from(ITEM.target, (value: HTMLElement, i) => {
+            anime({
+              targets: value,
+              scale: 1.0,
+              // duration: this.options.zoomInDuration,
+              delay: i * this.options.delay,
+              easing: this.options.easing,
+              endDelay: 1000,
+              direction: 'alternate',
+            });
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          this.resetStyle(ITEM);
+        }
+        break;
+      case 'away':
+        if (isVisible) {
+          Array.from(ITEM.target, (value: HTMLElement, i) => {
+            anime({
+              targets: value,
+              opacity: 1,
+              duration: this.options.duration,
+              delay: i * this.options.delay,
+              easing: this.options.easing,
+            });
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          this.resetStyle(ITEM);
+        }
+        break;
+      case 'mark':
+        if (isVisible) {
+          Array.from(ITEM.target, (value: HTMLElement, i) => {
+            setTimeout(() => {
+              value.classList.add('flowActive');
+            }, i * this.options.delay);
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          this.resetStyle(ITEM);
+        }
+        break;
+      default:
+        console.log(isVisible);
+        if (isVisible) {
+          ITEM.target.forEach((v, i) => {
+            console.log(
+              this.options.duration,
+              i * this.options.delay,
+              this.options.easing
+            );
+            anime({
+              targets: v,
+              translateX: 0,
+              translateY: 0,
+              opacity: [0, 1],
+              duration: this.options.duration,
+              delay: i * this.options.delay,
+              easing: this.options.easing,
+            });
+          });
+          // Array.from(ITEM.target, (value: HTMLElement, i) => {
+          //   anime({
+          //     targets: value,
+          //     translateX: 0,
+          //     translateY: 0,
+          //     opacity: 1,
+          //     duration: this.options.duration,
+          //     delay: i * this.options.delay,
+          //     easing: this.options.easing,
+          //   });
+          // });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          this.resetStyle(ITEM);
+        }
+    }
+  }
   resetStyle(ITEM: Params) {
     // console.log(ITEM);
     switch (ITEM.mode) {
       case 'down':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
+            targets: value,
             translateY: -this.options.translate,
-            opacity: [1, 0],
+            opacity: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'left':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
+            targets: value,
             translateX: this.options.translate,
-            opacity: [1, 0],
+            opacity: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'right':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
+            targets: value,
             translateX: -this.options.translate,
-            opacity: [1, 0],
+            opacity: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'leftdown':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
+            targets: value,
             translateX: this.options.translate,
             translateY: -this.options.translate,
-            opacity: [1, 0],
+            opacity: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'rightdown':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
+            targets: value,
             translateX: -this.options.translate,
             translateY: -this.options.translate,
-            opacity: [1, 0],
+            opacity: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'leftup':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
+            targets: value,
             translateX: this.options.translate,
             translateY: this.options.translate,
-            opacity: [1, 0],
+            opacity: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'rightup':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
+            targets: value,
             translateX: -this.options.translate,
             translateY: this.options.translate,
-            opacity: [1, 0],
+            opacity: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'zoom':
-        // Array.from(ITEM.target, (v: HTMLElement, i) => {
+        // Array.from(ITEM.target, (value: HTMLElement, index) => {
         //   value.style.visibility = 'visible';
         //   value.style.transformOrigin = 'center';
         //   anime({
@@ -205,33 +291,35 @@ export class FlowVox {
           (<HTMLElement>v).style.transformOrigin = 'center';
           anime({
             targets: v,
-            scale: [1, 0],
+            scale: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'away':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
-            opacity: [1, 0],
+            targets: value,
+            opacity: 0,
             duration: this.options.duration,
           });
         });
         break;
       case 'mark':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.classList.remove('flowActive');
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          value.classList.remove('flowActive');
         });
         break;
       default:
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
+        Array.from(ITEM.target, (value: HTMLElement, index) => {
+          // console.log(value)
+          // console.log(typeof value)
+          value.style.visibility = 'visible';
           anime({
-            targets: v,
+            targets: value,
             translateY: this.options.translate,
-            opacity: [1, 0],
+            opacity: 0,
             duration: this.options.duration,
           });
         });
