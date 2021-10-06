@@ -104,6 +104,7 @@ export class FlowVox {
       this.currentIndex = i;
     });
     console.log(this.flowAnime);
+    console.log(this.currentIndex);
   }
   run(ITEM: Params, isVisible: boolean) {}
   resetStyle(ITEM: Params) {

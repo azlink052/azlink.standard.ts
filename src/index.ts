@@ -66,48 +66,56 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-  const slider01 = new FadeSlider('#slider01', {
-    ctrl: true,
-    pager: true,
-    speed: 1500,
-    pause: 3000,
-    // easing: 'easeOutCubic',
-    onSliderLoad: () => {
-      console.log('slider loaded.');
+  if (document.getElementById('slider01')) {
+    const slider01 = new FadeSlider('#slider01', {
+      ctrl: true,
+      pager: true,
+      speed: 1500,
+      pause: 3000,
+      // easing: 'easeOutCubic',
+      onSliderLoad: () => {
+        console.log('slider loaded.');
+      },
+    });
+  }
+  if (document.getElementById('slider02')) {
+    const slider02 = new FadeSlider('#slider02', {
+      ctrl: true,
+      pager: true,
+      speed: 500,
+      pause: 3000,
+    });
+  }
+});
+if (document.getElementById('feedVox')) {
+  // feedサンプル
+  const FEED01 = new RSSFeed({
+    feed_url: 'https://azlink.jp/content/feed?post_type=web_works',
+    callback: 'result01',
+    count: 10,
+    onComplete: (response) => {
+      // console.log(response);
+      if (response.length > 0) {
+        const UL = document.createElement('ul');
+        document.getElementById('feedVox').appendChild(UL);
+      }
+      for (const item of response) {
+        console.log(item);
+      }
     },
   });
-  const slider02 = new FadeSlider('#slider02', {
-    ctrl: true,
-    pager: true,
-    speed: 500,
-    pause: 3000,
+}
+if (document.getElementById('instaVox')) {
+  // instafeed
+  const INSTAFEED01 = new InstaFeed({
+    igID: '17841412223846154',
+    count: 10,
+    version: '10.0',
+    token:
+      'EAAHZBBdclfd0BALKdxmUsOqd1B7APEMwOBwTozZBtmIX7txrtYvhdlo4gx2m81ZBRQBkwd9mhrHZBNZAezPVXKYgpHQAPe5InhORTWSOit8y1r1gMsoJVQIDLhUZAkqPGE7jlCQ3BxuZBN8WIIIu5yMAeP9hrxbKer8rnmdYdHa98hrI1tKqC2G',
+    elem: '#instaVox',
+    onComplete: (response) => {
+      console.log(response);
+    },
   });
-});
-// feedサンプル
-const FEED01 = new RSSFeed({
-  feed_url: 'https://azlink.jp/content/feed?post_type=web_works',
-  callback: 'result01',
-  count: 10,
-  onComplete: (response) => {
-    // console.log(response);
-    if (response.length > 0) {
-      const UL = document.createElement('ul');
-      document.getElementById('feedVox').appendChild(UL);
-    }
-    for (const item of response) {
-      console.log(item);
-    }
-  },
-});
-// instafeed
-const INSTAFEED01 = new InstaFeed({
-  igID: '17841412223846154',
-  count: 10,
-  version: '10.0',
-  token:
-    'EAAHZBBdclfd0BALKdxmUsOqd1B7APEMwOBwTozZBtmIX7txrtYvhdlo4gx2m81ZBRQBkwd9mhrHZBNZAezPVXKYgpHQAPe5InhORTWSOit8y1r1gMsoJVQIDLhUZAkqPGE7jlCQ3BxuZBN8WIIIu5yMAeP9hrxbKer8rnmdYdHa98hrI1tKqC2G',
-  elem: '#instaVox',
-  onComplete: (response) => {
-    console.log(response);
-  },
-});
+}
