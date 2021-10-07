@@ -570,4 +570,7 @@ export class Utilities {
       });
     }
   }
+  static printType(x: any) {
+    console.log(`${typeof x} ${Object.prototype.toString.call(x)}`);
+  }
 }

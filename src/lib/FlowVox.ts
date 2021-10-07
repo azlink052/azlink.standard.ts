@@ -1,4 +1,5 @@
 import anime from 'animejs/lib/anime.es.js';
+import { Utilities } from './Utilities';
 /**
  * 画面内に表示されることでアニメーションを実行
  * data-flow="mark" とすることでクラス付与のみとなる
@@ -25,7 +26,7 @@ interface Options {
 interface Params {
   elem: HTMLElement;
   mode: string;
-  target: Element[];
+  target: HTMLElement | HTMLCollection;
   isDone: boolean;
 }
 export class FlowVox {
@@ -94,150 +95,110 @@ export class FlowVox {
       const ITEM = {
         elem: v,
         mode: v.getAttribute('data-flow') || 'up',
-        target: v.children.length > 1 ? Array.from(v.children) : [v],
+        target: v.children.length > 1 ? v.children : v,
         isDone: false,
       };
+      // console.log(
+      //   `${typeof ITEM.target} ${Object.prototype.toString.call(ITEM.target)}`
+      // );
+      Utilities.printType(ITEM.target);
       v.setAttribute('data-flow-item', `${this.time}_${i}`);
-      this.flowAnime[i] = ITEM;
+      // this.flowAnime[i] = ITEM;
+      switch (ITEM.mode) {
+        case 'down':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            translateY: -this.options.translate,
+            opacity: 0,
+            duration: 10,
+          });
+          break;
+        case 'left':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            translateX: this.options.translate,
+            opacity: 0,
+            duration: 10,
+          });
+          break;
+        case 'right':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            translateX: -this.options.translate,
+            opacity: 0,
+            duration: this.options.duration,
+          });
+          break;
+        case 'leftdown':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            translateX: this.options.translate,
+            translateY: -this.options.translate,
+            opacity: 0,
+            duration: 10,
+          });
+          break;
+        case 'rightdown':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            translateX: -this.options.translate,
+            translateY: -this.options.translate,
+            opacity: 0,
+            duration: 10,
+          });
+          break;
+        case 'leftup':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            translateX: this.options.translate,
+            translateY: this.options.translate,
+            opacity: 0,
+            duration: 10,
+          });
+          break;
+        case 'rightup':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            translateX: -this.options.translate,
+            translateY: this.options.translate,
+            opacity: 0,
+            duration: 10,
+          });
+          break;
+        case 'zoom':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            scale: 0,
+            duration: this.options.duration,
+          });
+          break;
+        case 'away':
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            opacity: 0,
+            duration: this.options.duration,
+          });
+          break;
+        case 'mark':
+          const TARGET_ARRAY = v.children.length > 1 ? v.children : [v];
+          Array.from(TARGET_ARRAY).forEach((v: HTMLElement, i) => {
+            v.classList.remove('flowActive');
+          });
+          break;
+        default:
+          this.flowAnime[i] = anime({
+            targets: ITEM.target,
+            translateY: this.options.translate,
+            opacity: 0,
+            duration: this.options.duration,
+          });
+      }
       this.observer.observe(ITEM.elem);
-      this.resetStyle(this.flowAnime[i]);
+      // this.resetStyle(ITEM);
       this.currentIndex = i;
     });
-    console.log(this.flowAnime);
-    console.log(this.currentIndex);
   }
   run(ITEM: Params, isVisible: boolean) {}
-  resetStyle(ITEM: Params) {
-    // console.log(ITEM);
-    switch (ITEM.mode) {
-      case 'down':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            translateY: -this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'left':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            translateX: this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'right':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            translateX: -this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'leftdown':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            translateX: this.options.translate,
-            translateY: -this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'rightdown':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            translateX: -this.options.translate,
-            translateY: -this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'leftup':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            translateX: this.options.translate,
-            translateY: this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'rightup':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            translateX: -this.options.translate,
-            translateY: this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'zoom':
-        // Array.from(ITEM.target, (v: HTMLElement, i) => {
-        //   value.style.visibility = 'visible';
-        //   value.style.transformOrigin = 'center';
-        //   anime({
-        //     targets: value,
-        //     scale: 0,
-        //     duration: this.options.duration,
-        //   });
-        // });
-        ITEM.target.forEach((v, i) => {
-          (<HTMLElement>v).style.visibility = 'visible';
-          (<HTMLElement>v).style.transformOrigin = 'center';
-          anime({
-            targets: v,
-            scale: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'away':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-        break;
-      case 'mark':
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.classList.remove('flowActive');
-        });
-        break;
-      default:
-        ITEM.target.forEach((v: HTMLElement, i) => {
-          v.style.visibility = 'visible';
-          anime({
-            targets: v,
-            translateY: this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-          });
-        });
-    }
-  }
   destroy() {
     // TODO 未実装
   }
