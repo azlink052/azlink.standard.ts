@@ -24,10 +24,11 @@ interface Options {
   isRepeat: boolean;
 }
 interface Params {
-  elem: HTMLElement;
+  elem: HTMLElement | HTMLCollection | Element;
   mode: string;
   target: HTMLElement | HTMLCollection;
   isDone: boolean;
+  anime: any;
 }
 export class FlowVox {
   private time: number;
@@ -35,7 +36,6 @@ export class FlowVox {
   private flowAnime: Params[];
   private isFlowDefault: boolean;
   private observer: IntersectionObserver;
-  private currentIndex: number;
 
   constructor(
     $selector: string,
@@ -75,10 +75,13 @@ export class FlowVox {
     this.observer = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach((entry) => {
-          // console.log(entry);
+          // console.log(entry.target.getAttribute('data-flow-item'));
           const IS_VISIBLE = entry.isIntersecting ? true : false;
-          console.log(IS_VISIBLE);
-          this.run(this.flowAnime[this.currentIndex], IS_VISIBLE);
+          // console.log(IS_VISIBLE);
+          this.run(
+            this.flowAnime[entry.target.getAttribute('data-flow-item')],
+            IS_VISIBLE
+          );
         });
       },
       {
@@ -97,16 +100,18 @@ export class FlowVox {
         mode: v.getAttribute('data-flow') || 'up',
         target: v.children.length > 1 ? v.children : v,
         isDone: false,
+        anime: null,
       };
       // console.log(
       //   `${typeof ITEM.target} ${Object.prototype.toString.call(ITEM.target)}`
       // );
-      Utilities.printType(ITEM.target);
-      v.setAttribute('data-flow-item', `${this.time}_${i}`);
-      // this.flowAnime[i] = ITEM;
+      // Utilities.printType(ITEM.target);
+      const KEY = `${this.time}_${i}`;
+      v.setAttribute('data-flow-item', KEY);
+      // ITEM.anime = ITEM;
       switch (ITEM.mode) {
         case 'down':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             translateY: -this.options.translate,
             opacity: 0,
@@ -114,7 +119,7 @@ export class FlowVox {
           });
           break;
         case 'left':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             translateX: this.options.translate,
             opacity: 0,
@@ -122,7 +127,7 @@ export class FlowVox {
           });
           break;
         case 'right':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             translateX: -this.options.translate,
             opacity: 0,
@@ -130,7 +135,7 @@ export class FlowVox {
           });
           break;
         case 'leftdown':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             translateX: this.options.translate,
             translateY: -this.options.translate,
@@ -139,7 +144,7 @@ export class FlowVox {
           });
           break;
         case 'rightdown':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             translateX: -this.options.translate,
             translateY: -this.options.translate,
@@ -148,7 +153,7 @@ export class FlowVox {
           });
           break;
         case 'leftup':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             translateX: this.options.translate,
             translateY: this.options.translate,
@@ -157,7 +162,7 @@ export class FlowVox {
           });
           break;
         case 'rightup':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             translateX: -this.options.translate,
             translateY: this.options.translate,
@@ -166,27 +171,31 @@ export class FlowVox {
           });
           break;
         case 'zoom':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             scale: 0,
+            opacity: 0,
             duration: this.options.duration,
           });
           break;
         case 'away':
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             opacity: 0,
             duration: this.options.duration,
           });
           break;
         case 'mark':
-          const TARGET_ARRAY = v.children.length > 1 ? v.children : [v];
+          // Utilities.printType(v);
+          // console.log(v.children.length);
+          const TARGET_ARRAY =
+            (<Element>v).childElementCount > 1 ? v.children : [v];
           Array.from(TARGET_ARRAY).forEach((v: HTMLElement, i) => {
             v.classList.remove('flowActive');
           });
           break;
         default:
-          this.flowAnime[i] = anime({
+          ITEM.anime = anime({
             targets: ITEM.target,
             translateY: this.options.translate,
             opacity: 0,
@@ -195,10 +204,73 @@ export class FlowVox {
       }
       this.observer.observe(ITEM.elem);
       // this.resetStyle(ITEM);
-      this.currentIndex = i;
+      this.flowAnime[KEY] = ITEM;
     });
   }
-  run(ITEM: Params, isVisible: boolean) {}
+  run(ITEM: Params, isVisible: boolean) {
+    // console.log(ITEM)
+    if (ITEM.isDone) return;
+
+    switch (ITEM.mode) {
+      case 'zoom':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            scale: [0, 1],
+            opacity: [0, 1],
+            duration: this.options.duration,
+            easing: 'spring',
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            scale: [1, 0],
+            opacity: [1, 0],
+            duration: this.options.duration,
+            easing: 'spring',
+            delay: anime.stagger(this.options.delay),
+          });
+        }
+        break;
+      case 'away':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
+          });
+        }
+        break;
+      case 'mark':
+        Utilities.printType(ITEM.elem);
+        console.log((<Element>ITEM.elem).childElementCount);
+        // Utilities.printType(ITEM.elem);
+        // if (isVisible) {
+        //   const TARGET_ARRAY =
+        //     ITEM.elem.children.length > 1 ? ITEM.elem.children : [ITEM.elem];
+        //   Array.from(ITEM.elem).forEach((v: HTMLElement, i) => {
+        //     v.classList.remove('flowActive');
+        //   });
+        //   if (!this.options.isRepeat) ITEM.isDone = true;
+        // } else {
+        //   this.resetStyle(ITEM);
+        // }
+        break;
+    }
+  }
   destroy() {
     // TODO 未実装
   }
