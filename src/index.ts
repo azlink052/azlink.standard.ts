@@ -43,11 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
   //   rplSPImg1.destroy();
   // }, 5000);
   const flowVox1 = new FlowVox('.flowVox', {
-    // isRepeat: true
+    isRepeat: true,
     per: 0.3,
+    duration: 5000,
   });
   const flowVox2 = new FlowVox('.flowVox2', {
     isRepeat: true,
+    delay: 2000,
   });
   const flowVox3 = new FlowVox('.flowVox3', {
     isRepeat: true,

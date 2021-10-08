@@ -6,7 +6,7 @@ import { Utilities } from './Utilities';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2021.10.03
+ * @final 		2021.10.09
  *
  * @param {*} $selector
  * @param {*} $options
@@ -24,7 +24,7 @@ interface Options {
   isRepeat: boolean;
 }
 interface Params {
-  elem: HTMLElement | HTMLCollection | Element;
+  elem: Element;
   mode: string;
   target: HTMLElement | HTMLCollection;
   isDone: boolean;
@@ -212,6 +212,154 @@ export class FlowVox {
     if (ITEM.isDone) return;
 
     switch (ITEM.mode) {
+      case 'down':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateY: 0,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateY: -this.options.translate,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+        }
+        break;
+      case 'left':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: 0,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: this.options.translate,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+        }
+        break;
+      case 'right':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: 0,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: -this.options.translate,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+        }
+        break;
+      case 'leftdown':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: 0,
+            translateY: 0,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: this.options.translate,
+            translateY: -this.options.translate,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+        }
+        break;
+      case 'rightdown':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: 0,
+            translateY: 0,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: -this.options.translate,
+            translateY: -this.options.translate,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+        }
+        break;
+      case 'leftup':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: 0,
+            translateY: 0,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: this.options.translate,
+            translateY: this.options.translate,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+        }
+        break;
+      case 'rightup':
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: 0,
+            translateY: 0,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateX: -this.options.translate,
+            translateY: this.options.translate,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+        }
+        break;
       case 'zoom':
         if (isVisible) {
           ITEM.anime = anime({
@@ -255,20 +403,42 @@ export class FlowVox {
         }
         break;
       case 'mark':
-        Utilities.printType(ITEM.elem);
-        console.log((<Element>ITEM.elem).childElementCount);
-        // Utilities.printType(ITEM.elem);
-        // if (isVisible) {
-        //   const TARGET_ARRAY =
-        //     ITEM.elem.children.length > 1 ? ITEM.elem.children : [ITEM.elem];
-        //   Array.from(ITEM.elem).forEach((v: HTMLElement, i) => {
-        //     v.classList.remove('flowActive');
-        //   });
-        //   if (!this.options.isRepeat) ITEM.isDone = true;
-        // } else {
-        //   this.resetStyle(ITEM);
-        // }
+        const TARGET_ARRAY =
+          (<Element>ITEM.elem).childElementCount > 1
+            ? (<Element>ITEM.elem).children
+            : [ITEM.elem];
+        if (isVisible) {
+          Array.from(TARGET_ARRAY).forEach((v: HTMLElement, i) => {
+            setTimeout(() => {
+              v.classList.add('flowActive');
+            }, i * this.options.delay);
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          Array.from(TARGET_ARRAY).forEach((v: HTMLElement, i) => {
+            v.classList.remove('flowActive');
+          });
+        }
         break;
+      default:
+        if (isVisible) {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateY: 0,
+            opacity: [0, 1],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+          if (!this.options.isRepeat) ITEM.isDone = true;
+        } else {
+          ITEM.anime = anime({
+            targets: ITEM.target,
+            translateY: this.options.translate,
+            opacity: [1, 0],
+            duration: this.options.duration,
+            delay: anime.stagger(this.options.delay),
+          });
+        }
     }
   }
   destroy() {
