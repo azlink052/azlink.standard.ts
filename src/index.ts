@@ -9,11 +9,14 @@ import { RSSFeed } from './lib/RSSFeed';
 import { InstaFeed } from './lib/InstaFeed';
 // import * as azlib from './azlib';
 
+const util = new Utilities({
+  spBreakPoint: 960,
+  isDebug: true,
+});
+
 document.addEventListener('DOMContentLoaded', () => {
-  const util = new Utilities({
-    spBreakPoint: 960,
-    isDebug: true,
-  }).init();
+  util.init();
+  console.log(util.qsParm)
   // const ADJUST_SIZE = [];
   // document.querySelectorAll('.vox01, .vox02').forEach((v, i) => {
   //   ADJUST_SIZE[i] = new AdjustSize(v.querySelectorAll('p'));
