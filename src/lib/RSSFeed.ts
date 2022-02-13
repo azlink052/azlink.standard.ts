@@ -21,7 +21,7 @@ export class RSSFeed {
   private options: Options;
 
   constructor({
-    app_url = 'https://azlink052.sakura.ne.jp/common/apps/getFeedJson.dev.php',
+    app_url = 'https://azlink052.sakura.ne.jp/common/apps/getFeedJson.fix.20220214.php',
     feed_url = '',
     count = 5,
     callback = 'result',

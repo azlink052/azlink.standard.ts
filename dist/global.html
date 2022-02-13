@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,12 +9,12 @@
   <link rel="stylesheet" type="text/css" media="all" href="./assets/css/global/import.min.css">
   <script src="./azlib.bundle.js"></script>
   <script>
-    const Util = new azlib.Utilities({
+    const UTIL = new azlib.Utilities({
       spBreakPoint: 960,
       isDebug: true
     });
     document.addEventListener('DOMContentLoaded', () => {
-      Util.init();
+      UTIL.init();
       const ADJUST_SIZE = [];
       // document.querySelectorAll('.vox01, .vox02').forEach((v, i) => {
       //   ADJUST_SIZE[i] = new azlib.AdjustSize(v.querySelectorAll('p'));
@@ -21,52 +22,53 @@
       // azlib.adjustSize('.vox01, .vox02');
       const ADJUST_SIZE1 = new azlib.AdjustSize('.vox01 p');
       const ADJUST_SIZE2 = new azlib.AdjustSize('.vox02 p');
-      const popup = new azlib.PopupAdjust('.popupBtItem', {
+      const POPUP = new azlib.PopupAdjust('.popupBtItem', {
         onComplete: () => {
           console.log('loaded')
         }
       });
       document.querySelectorAll('.popupBtItem.movie').forEach((v, i) => {
-        v.addEventListener('click', () => {
-          const movie = v.getAttribute('data-movie');
-          const src = '<iframe src="https://www.youtube.com/embed/' + movie + '?autoplay=1&rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-          document.querySelector('#popupWrapperMovie .content').insertAdjacentHTML('beforeend', src);
+        v.addEventListener('click', e => {
+          const MOVIE = v.getAttribute('data-movie');
+          const SRC = `<iframe src="https://www.youtube.com/embed/${MOVIE}?autoplay=1&rel=0" frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+          document.querySelector('#popupWrapperMovie .content').insertAdjacentHTML('beforeend', SRC);
         });
       });
-      const rplSPImg1 = new azlib.ReplaceImageSP();
+      const RPL_SP_IMG01 = new azlib.ReplaceImageSP();
       // setTimeout(() => {
       //   rplSPImg1.destroy();
       // }, 5000);
-      const flowVox1 = new azlib.FlowVox('.flowVox', {
+      const FLOW_VOX1 = new azlib.FlowVox('.flowVox', {
         isRepeat: true
       });
-      const flowVox2 = new azlib.FlowVox('.flowVox2', {
+      const FLOW_VOX2 = new azlib.FlowVox('.flowVox2', {
         isRepeat: true
       });
-      const flowVox3 = new azlib.FlowVox('.flowVox3', {
+      const FLOW_VOX3 = new azlib.FlowVox('.flowVox3', {
         isRepeat: true
       });
-      const flowVox4 = new azlib.FlowVox('.flowVox4', {
+      const FLOW_VOX4 = new azlib.FlowVox('.flowVox4', {
         isRepeat: true,
         per: .3
       });
       document.querySelectorAll('.slider').forEach((value, index) => {
         value.children.forEach((v, i) => {
-          const src = v.querySelector('img').src;
+          const SRC = v.querySelector('img').src;
           // console.log(src)
-          if (src) {
-            v.style.backgroundImage = 'url(' + src + ')';
+          if (SRC) {
+            v.style.backgroundImage = `url(${SRC})`;
             v.querySelector('img').remove();
           }
         });
       });
-      const slider01 = new azlib.FadeSlider('#slider01', {
+      const SLIDER01 = new azlib.FadeSlider('#slider01', {
         ctrl: true,
         pager: true,
         speed: 1000,
         pause: 1500,
       });
-      const slider02 = new azlib.FadeSlider('#slider02', {
+      const SLIDER02 = new azlib.FadeSlider('#slider02', {
         ctrl: true,
         pager: true,
         speed: 500,
@@ -93,7 +95,7 @@
       igID: '17841404596521497',
       count: 10,
       version: '10.0',
-      token: 'EAAEVi72IIG0BAPdbryeLHMIAbZBiIW1Y8Y4kr8rFwm85HByZAbGZArctOk1pWoZA63VuENudBd9UbgtZBI7nyxuupuBZBcYUFOOPDSkUoM42TlAIlDM2ZCBWJJ1sH5dYcPLIu9z3ZB2dspAJACv9gAheqdZAZCSICnuwuU8rZCRYZBA5JgZDZD',
+      token: 'EAAEVi72IIG0BAGO6lXcIdeEziy1qEDxpXu8ECYDzZC9ldlIOmDsdV9Roia3VZBB4DNlT1LnQqYc8ki4AegcM9DUkU8DGVfPQkl9xMUD5i8YQetWc88WmJHolAZA5G5oqNDSuvdpJao9zGoeCkTJCZAdE6SaMSTi6QwPCcwGlm6X9lt2IsXZBg',
       elem: '#instaVox',
       onComplete: response => {
         console.log(response)
@@ -104,15 +106,18 @@
     #wrapper {
       opacity: 1;
     }
+
     #popupWrapperMovie {
       height: 50vh;
     }
+
     .slider {
       width: 100%;
       padding: 0;
       padding-top: 33.333%;
       list-style-type: none;
     }
+
     .slider li {
       width: 100%;
       height: 100%;
@@ -120,6 +125,7 @@
       background-position: center center;
       background-size: cover;
     }
+
     #instaVox {
       display: grid;
       gap: 10px;
@@ -127,6 +133,7 @@
     }
   </style>
 </head>
+
 <body>
   <div id="wrapper">
     <div class="spTel" data-tel="0522630185">0522630185</div>
@@ -151,7 +158,9 @@
     <div id="instaVox"></div>
     <div class="vox01">
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
+        Velocity is not defined
         <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
       </p>
       <p>
@@ -160,81 +169,115 @@
     </div>
     <div class="vox01">
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
+        Velocity is not defined
         <img src="assets/images/content/service/Koala.jpg" alt="" width="300"><br>
         <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
       </p>
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
       </p>
       <p>
         <a href="javascript:void(0)" class="popupBtItem" data-popup="popupWrapper02">popup</a>
       </p>
       <p>
-        <a href="javascript:void(0)" class="popupBtItem movie" data-popup="popupWrapperMovie" data-movie="30O9JgRXil4">popup</a>
+        <a href="javascript:void(0)" class="popupBtItem movie" data-popup="popupWrapperMovie"
+          data-movie="30O9JgRXil4">popup</a>
       </p>
     </div>
     <div class="flowVox">
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
+        Velocity is not defined
         <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
       </p>
     </div>
     <div class="vox02">
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
+        Velocity is not defined
       </p>
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
       </p>
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
       </p>
     </div>
     <div class="adjList">
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
+        Velocity is not defined
       </p>
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
       </p>
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
       </p>
     </div>
     <div class="vox02">
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
+        Velocity is not defined
       </p>
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
       </p>
       <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
       </p>
     </div>
     <div class="flowVox" style="display: flex;margin-top: 50vh;">
       <div>
         <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
-      </p>
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not defined
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+        </p>
       </div>
       <div>
         <p>
-          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not defined
           <img src="assets/images/content/service/Koala.jpg" alt="" width="300"><br>
           <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
         </p>
@@ -243,13 +286,17 @@
     <div class="flowVox2" style="display: flex;margin-top: 50vh;" data-flow="zoom">
       <div>
         <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
-      </p>
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not defined
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+        </p>
       </div>
       <div>
         <p>
-          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not defined
           <img src="assets/images/content/service/Koala.jpg" alt="" width="300"><br>
           <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
         </p>
@@ -258,13 +305,17 @@
     <div class="flowVox3" style="display: flex;margin-top: 50vh;" data-flow="mark">
       <div>
         <p>
-        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
-        <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
-      </p>
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not defined
+          <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
+        </p>
       </div>
       <div>
         <p>
-          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not defined
+          Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+          ReferenceError: Velocity is not defined
           <img src="assets/images/content/service/Koala.jpg" alt="" width="300"><br>
           <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
         </p>
@@ -307,4 +358,5 @@
     <div class="content" data-group="movie"></div>
   </div>
 </body>
+
 </html>
