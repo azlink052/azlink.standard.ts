@@ -23,52 +23,55 @@ interface Timers {
   debug: number | Boolean;
 }
 export class Utilities {
-  private qsParm: string[];
-  private userAgent: string;
-  private browserIE: number;
-  private browser_v: number;
-  private browser_n: string;
-  private ua: string;
-  private isIE: boolean;
-  private isIE6: boolean;
-  private isIE7: boolean;
-  private isIE8: boolean;
-  private isIE9: boolean;
-  private isIE10: boolean;
-  private isIE11: boolean;
-  private isEdge: boolean;
-  private isiPhone: boolean;
-  private isiPad: boolean;
-  private isiPod: boolean;
-  private isAndroid: boolean;
-  private isMac: boolean;
-  private isWinPhone: boolean;
-  private isMobile: boolean;
-  private isNavOpen: boolean;
+  public qsParm: {};
+  public userAgent: string;
+  public browserIE: number;
+  public browser_v: number;
+  public browser_n: string;
+  public ua: string;
+  public isIE: boolean;
+  public isIE6: boolean;
+  public isIE7: boolean;
+  public isIE8: boolean;
+  public isIE9: boolean;
+  public isIE10: boolean;
+  public isIE11: boolean;
+  public isEdge: boolean;
+  public isiPhone: boolean;
+  public isiPad: boolean;
+  public isiPod: boolean;
+  public isAndroid: boolean;
+  public isMac: boolean;
+  public isWinPhone: boolean;
+  public isMobile: boolean;
+  public isNavOpen: boolean;
   public spBreakPoint: number;
-  private wWidth: number;
-  private wHeight: number;
-  private wIWidth: number;
-  private wIHeight: number;
-  private wIWidthCache: number;
-  private wIHeightCache: number;
-  private dspWidth: number;
-  private dspHeight: number;
-  private isRespMode: boolean;
-  private isChangeWIWidth: boolean;
-  private isChangeWIHeight: boolean;
+  public wWidth: number;
+  public wHeight: number;
+  public wIWidth: number;
+  public wIHeight: number;
+  public wIWidthCache: number;
+  public wIHeightCache: number;
+  public dspWidth: number;
+  public dspHeight: number;
+  public isRespMode: boolean;
+  public isChangeWIWidth: boolean;
+  public isChangeWIHeight: boolean;
   public isPageTopShow: boolean;
   public pageTopPoint: number;
-  private scrMode: string;
-  private scrTop: number;
-  private scrLeft: number;
-  private orgMode: number;
-  private currentMode: number;
-  private isChangeMode: boolean;
-  private viewOriMode: string;
+  public scrMode: string;
+  public scrTop: number;
+  public scrLeft: number;
+  public orgMode: number;
+  public currentMode: number;
+  public isChangeMode: boolean;
+  public viewOriMode: string;
   public isDebug: boolean;
   private rTimer: Timers;
-  private tmp: {};
+  private tmp: {
+    query: string,
+    parms: string[]
+  };
   public isRunInit: boolean;
   // 初期値として$optionsで渡せるもの
   // spBreakPoint: ブレークポイント値 Integer
@@ -126,7 +129,10 @@ export class Utilities {
     this.viewOriMode = 'landscape'; // 画面モード landscape / portrait
     this.isDebug = isDebug; // デバッグモード判定
     this.rTimer = { setRespMode: 0, toggleSPTel: 0, debug: 0 }; // イベント制御用タイマー
-    this.tmp = {}; // 作業用
+    this.tmp = {
+      query: '',
+      parms: []
+    }; // 作業用
     this.isRunInit = isRunInit; // init 実行しないか
   }
   init(): void {
@@ -263,10 +269,32 @@ export class Utilities {
   }
   /**
    * GET値の取得
-   * @return GET値をセットしたグローバル変数qsParm
+   * @return GET値をセットしたオブジェクト
    */
-  setGETqs(): string[] {
-    return this.qsParm;
+  getGETqs() {
+    this.tmp.query = window.location.search.substring(1);
+    this.tmp.parms = this.tmp.query.split('&');
+    // console.log(this.tmp)
+
+    const OBJ = {};
+
+    for (const PARM of this.tmp.parms) {
+      const POS = PARM.indexOf('=');
+      if (POS > 0) {
+        const KEY = PARM.substring(0, POS);
+        const VAL = PARM.substring(POS + 1);
+
+        OBJ[ KEY ] = VAL;
+      }
+    }
+
+    return OBJ;
+  }
+  /**
+   * GET値の設定
+   */
+  setGETqs() {
+    this.qsParm = this.getGETqs();
   }
   /**
    * ブラウザ判定
