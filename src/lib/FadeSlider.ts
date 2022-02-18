@@ -128,13 +128,13 @@ export class FadeSlider {
         );
       this.pagerEvent['prev'] = this.options.wrapper
         .querySelector('.fs-prev')
-        .addEventListener('click', () => {
+        .addEventListener('click', (e) => {
           if (!this.isAllowSlide) return;
           this.change(this.getPrevSlide());
         });
       this.pagerEvent['next'] = this.options.wrapper
         .querySelector('.fs-next')
-        .addEventListener('click', () => {
+        .addEventListener('click', (e) => {
           if (!this.isAllowSlide) return;
           this.change(this.getNextSlide());
         });
@@ -158,7 +158,7 @@ export class FadeSlider {
       this.options.wrapper
         .querySelectorAll('.fs-pager-item')
         [this.current]?.querySelector('a')
-        .classList.add('active');
+        .classList.add('is-active');
       this.pagerEvent['pager'] = this.options.wrapper
         .querySelectorAll('.fs-pager-item a')
         .forEach((v, i) => {
@@ -243,12 +243,12 @@ export class FadeSlider {
     this.options.wrapper
       .querySelectorAll('.fs-pager-item a')
       .forEach((value) => {
-        value.classList.remove('active');
+        value.classList.remove('is-active');
       });
     this.options.wrapper
       .querySelectorAll('.fs-pager-item')
       [this.current]?.querySelector('a')
-      .classList.add('active');
+      .classList.add('is-active');
   }
   slideAuto() {
     if (!this.isAllowSlide || !this.options.isAuto) return;
