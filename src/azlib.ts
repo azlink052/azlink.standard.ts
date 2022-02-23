@@ -1,4 +1,5 @@
 import 'core-js/stable';
+import anime from 'animejs/lib/anime.es.js';
 import { Utilities } from './lib/Utilities';
 import { AdjustSize } from './lib/AdjustSize';
 import { PopupAdjust } from './lib/PopupAdjust';
@@ -8,6 +9,7 @@ import { ReplaceImageSP } from './lib/ReplaceImageSP';
 import { RSSFeed } from './lib/RSSFeed';
 import { InstaFeed } from './lib/InstaFeed';
 export {
+  anime,
   Utilities,
   AdjustSize,
   PopupAdjust,

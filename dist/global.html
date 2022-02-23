@@ -15,7 +15,7 @@
     });
     document.addEventListener('DOMContentLoaded', () => {
       UTIL.init();
-      const ADJUST_SIZE = [];
+      // const ADJUST_SIZE = [];
       // document.querySelectorAll('.vox01, .vox02').forEach((v, i) => {
       //   ADJUST_SIZE[i] = new azlib.AdjustSize(v.querySelectorAll('p'));
       // });
@@ -74,6 +74,13 @@
         speed: 500,
         pause: 3000,
       });
+      new azlib.anime({
+        targets: '.animeObj01',
+        translateX: 250,
+        direction: 'alternate',
+        loop: true,
+        easing: 'spring(1, 80, 10, 0)'
+      });
     });
     // feedサンプル
     const FEED01 = new azlib.RSSFeed({
@@ -95,8 +102,7 @@
       igID: '17841404230048587',
       count: 10,
       version: '13.0',
-      token:
-      'EAAGuztk6UZA8BAFxhGSP5wjxatyLNAlfuJfRujXWIdTpXLWMZArxZBxOoYrkbwldYJZC5KC8BMwbjiL4ZC9P8vYZBZAUaY3irwZBfsBF9AHwup6xx6RBqcxfgIVTTp0lfMISIzdtzhfzxsoINW7McYZBDl54q7QCeKacqJwUeEslc2636VvjwESwj',
+      token: 'EAAGuztk6UZA8BAFxhGSP5wjxatyLNAlfuJfRujXWIdTpXLWMZArxZBxOoYrkbwldYJZC5KC8BMwbjiL4ZC9P8vYZBZAUaY3irwZBfsBF9AHwup6xx6RBqcxfgIVTTp0lfMISIzdtzhfzxsoINW7McYZBDl54q7QCeKacqJwUeEslc2636VvjwESwj',
       elem: '#instaVox',
       onComplete: response => {
         console.log(response)
@@ -141,6 +147,20 @@
     <div>
       <p>
         <a href="javascript:void(0)" class="popupBtItem" data-popup="popupWrapper01">popup</a>
+      </p>
+    </div>
+    <div class="animeObj01">
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
+      </p>
+      <p>
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught ReferenceError:
       </p>
     </div>
     <div>

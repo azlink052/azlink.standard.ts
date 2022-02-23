@@ -13,13 +13,13 @@ import { ReplaceImageSP } from './lib/ReplaceImageSP';
 //   InstaFeed
 // } from './lib/InstaFeed';
 export {
+  anime,
   Utilities,
   AdjustSize,
   PopupAdjust,
   FlowVox,
   FadeSlider,
   ReplaceImageSP,
-  anime
   // RSSFeed,
   // InstaFeed
 };
