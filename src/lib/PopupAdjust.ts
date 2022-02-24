@@ -22,7 +22,7 @@ interface Options {
   onOpen: any;
   onClose: any;
 }
-export class PopupAdjust {
+export default class PopupAdjust {
   private scrTopTemp: number;
   private isOpen: boolean;
   private isAllowClose: boolean;

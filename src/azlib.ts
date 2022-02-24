@@ -1,13 +1,13 @@
 import 'core-js/stable';
 import anime from 'animejs/lib/anime.es.js';
-import { Utilities } from './lib/Utilities';
-import { AdjustSize } from './lib/AdjustSize';
-import { PopupAdjust } from './lib/PopupAdjust';
-import { FlowVox } from './lib/FlowVox';
-import { FadeSlider } from './lib/FadeSlider';
-import { ReplaceImageSP } from './lib/ReplaceImageSP';
-import { RSSFeed } from './lib/RSSFeed';
-import { InstaFeed } from './lib/InstaFeed';
+import Utilities from './lib/Utilities';
+import AdjustSize from './lib/AdjustSize';
+import PopupAdjust from './lib/PopupAdjust';
+import FlowVox from './lib/FlowVox';
+import FadeSlider from './lib/FadeSlider';
+import ReplaceImageSP from './lib/ReplaceImageSP';
+import RSSFeed from './lib/RSSFeed';
+import InstaFeed from './lib/InstaFeed';
 export {
   anime,
   Utilities,
@@ -17,5 +17,5 @@ export {
   FadeSlider,
   ReplaceImageSP,
   RSSFeed,
-  InstaFeed,
+  InstaFeed, 
 };

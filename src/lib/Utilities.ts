@@ -21,8 +21,9 @@ interface Timers {
   setRespMode: number | Boolean;
   toggleSPTel: number | Boolean;
   debug: number | Boolean;
+  pagetop: number | Boolean;
 }
-export class Utilities {
+export default class Utilities {
   public qsParm: {};
   public userAgent: string;
   public browserIE: number;
@@ -128,7 +129,7 @@ export class Utilities {
     this.isChangeMode = false; // レスポンシブ状態が変更になったらtrue
     this.viewOriMode = 'landscape'; // 画面モード landscape / portrait
     this.isDebug = isDebug; // デバッグモード判定
-    this.rTimer = { setRespMode: 0, toggleSPTel: 0, debug: 0 }; // イベント制御用タイマー
+    this.rTimer = { setRespMode: 0, toggleSPTel: 0, debug: 0, pagetop: 0 }; // イベント制御用タイマー
     this.tmp = {
       query: '',
       parms: []
@@ -514,7 +515,12 @@ export class Utilities {
     const PAGE_TOP_VOX = document.getElementById('pageTopVox');
     if (!PAGE_TOP_VOX) return;
 
-    if (this.scrTop > this.pageTopPoint) {
+    if (this.rTimer.pagetop !== false) {
+      clearTimeout(Number(this.rTimer.pagetop));
+    }
+
+    this.rTimer.pagetop = window.setTimeout(() => {
+      if (this.scrTop > this.pageTopPoint) {
       if (!this.isPageTopShow) {
         this.isPageTopShow = true;
         PAGE_TOP_VOX.style.display = 'block';
@@ -529,7 +535,7 @@ export class Utilities {
         this.isPageTopShow = false;
         anime({
           targets: PAGE_TOP_VOX,
-          opacity: 1,
+          opacity: 0,
           duration: 200,
           complete: () => {
             PAGE_TOP_VOX.style.display = 'none';
@@ -537,6 +543,7 @@ export class Utilities {
         });
       }
     }
+    }, 100);
   }
   /**
    * iPhone / iPad / iPod / Android / winPhone 判定

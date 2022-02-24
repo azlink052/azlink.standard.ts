@@ -19,8 +19,8 @@ module.exports = {
     // clean: true,
     library: 'azlib',
     // libraryExport: '',
-    // libraryTarget: 'umd',
-    // globalObject: 'this',
+    libraryTarget: 'umd',
+    globalObject: 'this',
   },
   module: {
     rules: [{

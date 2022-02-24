@@ -15,7 +15,7 @@ interface Options {
   isResizeAuto: boolean;
 }
 type AdjustType = 'inner' | 'outer';
-export class AdjustSize {
+export default class AdjustSize {
   private collection: NodeListOf<HTMLElement>;
   private rTimer: number | Boolean;
   private setHeight: number;
