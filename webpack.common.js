@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  target: ['web', 'es5'],
+  target: ['web', 'es6'],
   entry: {
     dev: './src/index.ts',
     azlib: './src/azlib.ts',
