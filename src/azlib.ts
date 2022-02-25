@@ -18,14 +18,3 @@ export { default as InstaFeed } from './lib/InstaFeed';
 // import ReplaceImageSP from './lib/ReplaceImageSP';
 // import RSSFeed from './lib/RSSFeed';
 // import InstaFeed from './lib/InstaFeed';
-// export {
-//   anime,
-//   Utilities,
-//   AdjustSize,
-//   PopupAdjust,
-//   FlowVox,
-//   FadeSlider,
-//   ReplaceImageSP,
-//   RSSFeed,
-//   InstaFeed,
-// };
