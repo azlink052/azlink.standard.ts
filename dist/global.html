@@ -53,7 +53,7 @@
         per: .3
       });
       document.querySelectorAll('.slider').forEach((value, index) => {
-        value.children.forEach((v, i) => {
+        Array.from(value.children).forEach((v, i) => {
           const SRC = v.querySelector('img').src;
           // console.log(src)
           if (SRC) {

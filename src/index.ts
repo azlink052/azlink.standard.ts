@@ -1,4 +1,4 @@
-import 'core-js/stable';
+// import 'core-js/stable';
 // import Utilities from './lib/Utilities';
 // import AdjustSize from './lib/AdjustSize';
 // import PopupAdjust from './lib/PopupAdjust';
