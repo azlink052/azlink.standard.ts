@@ -23,6 +23,7 @@
       const ADJUST_SIZE1 = new azlib.AdjustSize('.vox01 p');
       const ADJUST_SIZE2 = new azlib.AdjustSize('.vox02 p');
       const POPUP = new azlib.PopupAdjust('.popupBtItem', {
+        isAdjust: false,
         onComplete: () => {
           console.log('loaded')
         }
@@ -369,7 +370,7 @@
       </p>
     </div>
     <div class="content">
-      <p>
+      <p style="min-height: 50vh;color: #fff">
         Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError<br>
         Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError<br>
         Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError<br>

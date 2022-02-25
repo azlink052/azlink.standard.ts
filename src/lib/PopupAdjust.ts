@@ -15,6 +15,7 @@ interface Options {
   bg: string;
   isUnlock: boolean;
   isSpFixed: boolean;
+  isAdjust: boolean;
   bgOpacity: number;
   durationChange: number;
   durationClose: number;
@@ -43,8 +44,9 @@ export default class PopupAdjust {
     {
       wrapper = '#wrapper', // ドキュメントのラッパ要素の指定(レイヤ差し込み用)
       bg = '#alphaBg', // レイヤ
-      isUnlock = true, // bodyのスクロール禁止をしない
+      isUnlock = true, // bodyのスクロール禁止を「しない」
       isSpFixed = true, // SP時はbodyのスクロールを禁止する
+      isAdjust = true, // popupの位置調整を行う
       bgOpacity = 0.8, // レイヤの透明度
       durationChange = 200, // ポップアップが開く際のの表示速度
       durationClose = 150, // ポップアップが閉じる際の表示速度
@@ -72,6 +74,7 @@ export default class PopupAdjust {
       bg: bg,
       isUnlock: isUnlock,
       isSpFixed: isSpFixed,
+      isAdjust: isAdjust,
       bgOpacity: bgOpacity,
       durationChange: durationChange,
       durationClose: durationClose,
@@ -83,12 +86,12 @@ export default class PopupAdjust {
     const CSS = document.createElement('style');
     document.head.appendChild(CSS);
     CSS.sheet.insertRule(
-      'body.pOpenUnlock { overflow: visible; }',
+      'body.is-pOpenUnlock { overflow: visible; }',
       // @ts-ignore CSS.sheet の型が不明
       CSS.sheet.length
     );
     CSS.sheet.insertRule(
-      'body.pOpenFixed { position: fixed; }',
+      'body.is-pOpenFixed { position: fixed; }',
       // @ts-ignore CSS.sheet の型が不明
       CSS.sheet.length
     );
@@ -200,7 +203,7 @@ export default class PopupAdjust {
         document.querySelector<HTMLElement>(this.popupTarget).style.opacity =
           '1';
 
-        document.body.classList.add('pOpen');
+        document.body.classList.add('is-pOpen');
       });
     });
 
@@ -253,9 +256,9 @@ export default class PopupAdjust {
   }
   close() {
     document.querySelectorAll('.popupWrapper').forEach((v, i) => {
-      document.body.classList.remove('pOpen', 'pOpenUnlock');
+      document.body.classList.remove('is-pOpen', 'is-pOpenUnlock');
       if (this.isRespMode && this.options.isSpFixed) {
-        document.body.classList.remove('pOpenFixed');
+        document.body.classList.remove('is-pOpenFixed');
         document.body.style.removeProperty('top');
         window.scrollTo(0, this.scrTopTemp);
       }
@@ -318,6 +321,7 @@ export default class PopupAdjust {
     });
   }
   adjust(target: string) {
+    if (!this.options.isAdjust) return;
     if (!target) target = this.popupTarget;
     this.setRespMode();
     this.setScrPos();
@@ -334,14 +338,14 @@ export default class PopupAdjust {
     // console.log(POPUP_HEIGHT, POPUP_WIDTH, TOP_POS, LEFT_POS, this.scrTopTemp)
     if (!this.options.isUnlock) {
       if (POPUP_HEIGHT >= this.wHeight) {
-        document.body.classList.add('pOpenUnlock');
+        document.body.classList.add('is-pOpenUnlock');
       }
     }
     document.querySelector<HTMLElement>(target).style.top = `${
       TOP_POS + this.scrTop
     }px`;
     if (this.isRespMode && this.options.isSpFixed) {
-      document.body.classList.add('pOpenFixed');
+      document.body.classList.add('is-pOpenFixed');
       document.body.style.top = `-${this.scrTopTemp}px`;
     }
   }
