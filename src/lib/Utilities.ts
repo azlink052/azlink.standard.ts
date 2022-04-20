@@ -7,7 +7,7 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 	2010- AZLINK. <https://azlink.jp>
- * @final 		2021.09.03
+ * @final 		2022.04.20
  *
  * ================================================
  */
@@ -70,8 +70,8 @@ export default class Utilities {
   public isDebug: boolean;
   private rTimer: Timers;
   private tmp: {
-    query: string,
-    parms: string[]
+    query: string;
+    parms: string[];
   };
   public isRunInit: boolean;
   // 初期値として$optionsで渡せるもの
@@ -79,12 +79,7 @@ export default class Utilities {
   // pageTopPoint: pagetop表示地点 Integer
   // isDebug: デバッグ実行フラグ Boolean
   // isRunInit: Initの実行フラグ Boolean
-  constructor({
-    spBreakPoint = 768,
-    pageTopPoint = 100,
-    isDebug = false,
-    isRunInit = true,
-  }: Partial<Options> = {}) {
+  constructor({ spBreakPoint = 768, pageTopPoint = 100, isDebug = false, isRunInit = true }: Partial<Options> = {}) {
     this.qsParm = []; // GETパラメータ
     this.userAgent = '';
     this.browserIE = 0; // IE判定
@@ -132,7 +127,7 @@ export default class Utilities {
     this.rTimer = { setRespMode: 0, toggleSPTel: 0, debug: 0, pagetop: 0 }; // イベント制御用タイマー
     this.tmp = {
       query: '',
-      parms: []
+      parms: [],
     }; // 作業用
     this.isRunInit = isRunInit; // init 実行しないか
   }
@@ -144,7 +139,7 @@ export default class Utilities {
     this.setRespMode();
     this.setScrPos();
 
-    this.sScroll();
+    // this.sScroll();
     this.roImg();
     this.roOpa();
     this.pageTop();
@@ -194,8 +189,7 @@ export default class Utilities {
     });
 
     document.body.appendChild(P_DEBUG);
-    P_DEBUG.innerHTML =
-      '<div><a href="javascript:void(0)" class="toggle" style="color: #FFFFFF;">HIDE</a></div><div class="inner" />';
+    P_DEBUG.innerHTML = '<div><a href="javascript:void(0)" class="toggle" style="color: #FFFFFF;">HIDE</a></div><div class="inner" />';
 
     const ELEM = {
       toggle: P_DEBUG.querySelector<HTMLElement>('.toggle'),
@@ -285,7 +279,7 @@ export default class Utilities {
         const KEY = PARM.substring(0, POS);
         const VAL = PARM.substring(POS + 1);
 
-        OBJ[ KEY ] = VAL;
+        OBJ[KEY] = VAL;
       }
     }
 
@@ -350,36 +344,31 @@ export default class Utilities {
   roImg(): void {
     const IMG_CACHE = [];
 
-    document
-      .querySelectorAll<HTMLImageElement>('a > .roImg')
-      .forEach((v, i) => {
-        const TIME = Date.now();
-        v.addEventListener('mouseenter', () => {
-          if (this.isRespMode) return;
+    document.querySelectorAll<HTMLImageElement>('a > .roImg').forEach((v, i) => {
+      const TIME = Date.now();
+      v.addEventListener('mouseenter', () => {
+        if (this.isRespMode) return;
 
-          const PARAMS = {
-            src: '',
-            srcDot: 0,
-            srcOver: '',
-          };
-          PARAMS.src = v.src;
-          PARAMS.srcDot = PARAMS.src.lastIndexOf('.');
-          PARAMS.srcOver = `${PARAMS.src.substr(
-            0,
-            PARAMS.srcDot
-          )}_on${PARAMS.src.substr(PARAMS.srcDot, 4)}`;
+        const PARAMS = {
+          src: '',
+          srcDot: 0,
+          srcOver: '',
+        };
+        PARAMS.src = v.src;
+        PARAMS.srcDot = PARAMS.src.lastIndexOf('.');
+        PARAMS.srcOver = `${PARAMS.src.substr(0, PARAMS.srcDot)}_on${PARAMS.src.substr(PARAMS.srcDot, 4)}`;
 
-          IMG_CACHE[TIME] = PARAMS.src;
+        IMG_CACHE[TIME] = PARAMS.src;
 
-          v.src = PARAMS.srcOver;
-        });
+        v.src = PARAMS.srcOver;
+      });
 
-        v.addEventListener('mouseleave', (e) => {
-          if (this.isRespMode) return;
+      v.addEventListener('mouseleave', (e) => {
+        if (this.isRespMode) return;
 
-          v.src = IMG_CACHE[TIME];
-        });
-      }, this);
+        v.src = IMG_CACHE[TIME];
+      });
+    }, this);
   }
   /**
    * 画像透明度ロールオーバー
@@ -415,51 +404,41 @@ export default class Utilities {
    * @param イージング
    */
   sScroll($offset?: number, $duration?: number, $easing?: string): void {
-    document
-      .querySelectorAll<HTMLAnchorElement>(
-        'a[href*="#"].scroll, area[href*="#"].scroll'
-      )
-      .forEach((v, i) => {
-        v.addEventListener('click', (e) => {
-          const PARAMS = {
-            anchor: '',
-            anchorURL: '',
-            current: '',
-            currentURL: '',
-            targetArray: [],
-            target: '',
-          };
-          PARAMS.anchor = (<HTMLAnchorElement>e.target).href;
-          PARAMS.anchorURL = PARAMS.anchor.split('#')[0];
-          PARAMS.current = window.location.href;
-          PARAMS.currentURL = PARAMS.current.split('#')[0];
+    document.querySelectorAll<HTMLAnchorElement>('a[href*="#"].scroll, area[href*="#"].scroll').forEach((v, i) => {
+      v.addEventListener('click', (e) => {
+        const PARAMS = {
+          anchor: '',
+          anchorURL: '',
+          current: '',
+          currentURL: '',
+          targetArray: [],
+          target: '',
+        };
+        PARAMS.anchor = (<HTMLAnchorElement>e.target).href;
+        PARAMS.anchorURL = PARAMS.anchor.split('#')[0];
+        PARAMS.current = window.location.href;
+        PARAMS.currentURL = PARAMS.current.split('#')[0];
 
-          if (PARAMS.anchorURL === PARAMS.currentURL) {
-            PARAMS.targetArray = PARAMS.anchor.split('#');
-            PARAMS.target = PARAMS.targetArray.pop();
+        if (PARAMS.anchorURL === PARAMS.currentURL) {
+          PARAMS.targetArray = PARAMS.anchor.split('#');
+          PARAMS.target = PARAMS.targetArray.pop();
 
-            const OFFSET = $offset && Number.isInteger($offset) ? $offset : 0;
-            const DURATION =
-              $duration && $duration !== 500 && Number.isInteger($duration)
-                ? $duration
-                : 500;
-            const EASING =
-              $easing && $easing !== 'cubicBezier(0.11, 0, 0.5, 0)'
-                ? $easing
-                : 'cubicBezier(0.11, 0, 0.5, 0)';
-            const TARGET = document.getElementById(PARAMS.target);
-            anime.remove('html, body');
-            anime({
-              targets: 'html, body',
-              scrollTop: TARGET.offsetTop + OFFSET,
-              duration: DURATION,
-              easing: EASING,
-            });
+          const OFFSET = $offset && Number.isInteger($offset) ? $offset : 0;
+          const DURATION = $duration && $duration !== 500 && Number.isInteger($duration) ? $duration : 500;
+          const EASING = $easing && $easing !== 'cubicBezier(0.11, 0, 0.5, 0)' ? $easing : 'cubicBezier(0.11, 0, 0.5, 0)';
+          const TARGET = document.getElementById(PARAMS.target);
+          anime.remove('html, body');
+          anime({
+            targets: 'html, body',
+            scrollTop: TARGET.getBoundingClientRect().top + window.pageYOffset + OFFSET,
+            duration: DURATION,
+            easing: EASING,
+          });
 
-            return false;
-          }
-        });
+          return false;
+        }
       });
+    });
   }
   /**
    * レスポンシブ状態のチェック
@@ -521,28 +500,28 @@ export default class Utilities {
 
     this.rTimer.pagetop = window.setTimeout(() => {
       if (this.scrTop > this.pageTopPoint) {
-      if (!this.isPageTopShow) {
-        this.isPageTopShow = true;
-        PAGE_TOP_VOX.style.display = 'block';
-        anime({
-          targets: PAGE_TOP_VOX,
-          opacity: 1,
-          duration: 100,
-        });
+        if (!this.isPageTopShow) {
+          this.isPageTopShow = true;
+          PAGE_TOP_VOX.style.display = 'block';
+          anime({
+            targets: PAGE_TOP_VOX,
+            opacity: 1,
+            duration: 100,
+          });
+        }
+      } else {
+        if (this.isPageTopShow) {
+          this.isPageTopShow = false;
+          anime({
+            targets: PAGE_TOP_VOX,
+            opacity: 0,
+            duration: 200,
+            complete: () => {
+              PAGE_TOP_VOX.style.display = 'none';
+            },
+          });
+        }
       }
-    } else {
-      if (this.isPageTopShow) {
-        this.isPageTopShow = false;
-        anime({
-          targets: PAGE_TOP_VOX,
-          opacity: 0,
-          duration: 200,
-          complete: () => {
-            PAGE_TOP_VOX.style.display = 'none';
-          },
-        });
-      }
-    }
     }, 100);
   }
   /**
@@ -553,30 +532,13 @@ export default class Utilities {
     this.ua = window.navigator.userAgent.toLowerCase();
 
     this.isiPhone = this.ua.indexOf('iphone') != -1 ? true : false;
-    this.isiPad =
-      this.ua.indexOf('ipad') != -1 ||
-      (this.ua.indexOf('macintosh') != -1 && 'ontouchend' in document)
-        ? true
-        : false;
+    this.isiPad = this.ua.indexOf('ipad') != -1 || (this.ua.indexOf('macintosh') != -1 && 'ontouchend' in document) ? true : false;
     this.isiPod = this.ua.indexOf('ipod') != -1 ? true : false;
-    this.isAndroid =
-      this.ua.indexOf('android') != -1 || this.ua.indexOf('android') != -1
-        ? true
-        : false;
-    this.isMac =
-      this.ua.indexOf('macintosh') != -1 || this.ua.indexOf('macintosh') != -1
-        ? true
-        : false;
+    this.isAndroid = this.ua.indexOf('android') != -1 || this.ua.indexOf('android') != -1 ? true : false;
+    this.isMac = this.ua.indexOf('macintosh') != -1 || this.ua.indexOf('macintosh') != -1 ? true : false;
     this.isWinPhone = this.ua.indexOf('windows phone') != -1 ? true : false;
 
-    this.isMobile =
-      this.isiPhone ||
-      this.isiPad ||
-      this.isiPod ||
-      this.isAndroid ||
-      this.isWinPhone
-        ? true
-        : false;
+    this.isMobile = this.isiPhone || this.isiPad || this.isiPod || this.isAndroid || this.isWinPhone ? true : false;
   }
   /**
    * SP時電話番号自動リンク

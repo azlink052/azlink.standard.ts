@@ -82,6 +82,7 @@
         loop: true,
         easing: 'spring(1, 80, 10, 0)'
       });
+      UTIL.sScroll();
     });
     // feedサンプル
     const FEED01 = new azlib.RSSFeed({
@@ -103,7 +104,8 @@
       igID: '17841404230048587',
       count: 10,
       version: '13.0',
-      token: 'EAAGuztk6UZA8BAFxhGSP5wjxatyLNAlfuJfRujXWIdTpXLWMZArxZBxOoYrkbwldYJZC5KC8BMwbjiL4ZC9P8vYZBZAUaY3irwZBfsBF9AHwup6xx6RBqcxfgIVTTp0lfMISIzdtzhfzxsoINW7McYZBDl54q7QCeKacqJwUeEslc2636VvjwESwj',
+      token:
+      'EAAGuztk6UZA8BAHhJS54MUeoZCTF9UUVhCHY8yhGa5f0yn7pUC1ZA6LbrVrLpCK10gvhLEWM04yeJjUN41lzIPcNsLR52eAHzrSa0BGhqkdp3yLLZAzsFPQDxdELXuzxoUUAM22ScDnAoINyLjjZClPUECyvkSZAfKvoodXBD9tHkjsj2zRDsy',
       elem: '#instaVox',
       onComplete: response => {
         console.log(response)
@@ -150,6 +152,9 @@
         <a href="javascript:void(0)" class="popupBtItem" data-popup="popupWrapper01">popup</a>
       </p>
     </div>
+    <p>
+      <a href="#anchor01" class="scroll">アンカーテスト</a>
+    </p>
     <div class="animeObj01">
       <p>
         Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
@@ -259,6 +264,11 @@
         ReferenceError: Velocity is not defined
         Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
         ReferenceError: Velocity is not defined
+      </p>
+    </div>
+    <div id="anchor01">
+      <p>
+        アンカー先のテストです。
       </p>
     </div>
     <div class="vox02">
