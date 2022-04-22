@@ -84,6 +84,16 @@
       });
       UTIL.sScroll();
     });
+    let rTimer;
+    window.addEventListener('resize', () => {
+      if (rTimer !== false) {
+        clearTimeout(rTimer);
+      }
+
+      rTimer = setTimeout(() => {
+        console.log(UTIL.isChangeWIWidth)
+      }, 500);
+    });
     // feedサンプル
     const FEED01 = new azlib.RSSFeed({
       feed_url: 'https://azlink.jp/content/feed?post_type=web_works',
@@ -100,17 +110,17 @@
       }
     });
     // instafeed
-    const INSTAFEED01 = new azlib.InstaFeed({
-      igID: '17841404230048587',
-      count: 10,
-      version: '13.0',
-      token:
-      'EAAGuztk6UZA8BAHhJS54MUeoZCTF9UUVhCHY8yhGa5f0yn7pUC1ZA6LbrVrLpCK10gvhLEWM04yeJjUN41lzIPcNsLR52eAHzrSa0BGhqkdp3yLLZAzsFPQDxdELXuzxoUUAM22ScDnAoINyLjjZClPUECyvkSZAfKvoodXBD9tHkjsj2zRDsy',
-      elem: '#instaVox',
-      onComplete: response => {
-        console.log(response)
-      }
-    });
+    // const INSTAFEED01 = new azlib.InstaFeed({
+    //   igID: '17841404230048587',
+    //   count: 10,
+    //   version: '13.0',
+    //   token:
+    //   'EAAGuztk6UZA8BAHhJS54MUeoZCTF9UUVhCHY8yhGa5f0yn7pUC1ZA6LbrVrLpCK10gvhLEWM04yeJjUN41lzIPcNsLR52eAHzrSa0BGhqkdp3yLLZAzsFPQDxdELXuzxoUUAM22ScDnAoINyLjjZClPUECyvkSZAfKvoodXBD9tHkjsj2zRDsy',
+    //   elem: '#instaVox',
+    //   onComplete: response => {
+    //     console.log(response)
+    //   }
+    // });
   </script>
   <style>
     #wrapper {
