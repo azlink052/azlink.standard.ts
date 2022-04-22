@@ -15,7 +15,7 @@ interface Options {
 }
 export default class RatioAdjust {
   private collection: NodeListOf<HTMLElement>;
-  private rTimer: number | Boolean;
+  private rTimer: number | boolean;
   public options: Options;
   private ratio: number;
   private targetHeight: number | string[];

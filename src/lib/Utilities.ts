@@ -18,10 +18,10 @@ interface Options {
   isRunInit: boolean;
 }
 interface Timers {
-  setRespMode: number | Boolean;
-  toggleSPTel: number | Boolean;
-  debug: number | Boolean;
-  pagetop: number | Boolean;
+  setRespMode: number | boolean;
+  toggleSPTel: number | boolean;
+  debug: number | boolean;
+  pagetop: number | boolean;
 }
 export default class Utilities {
   public qsParm: {};
@@ -77,8 +77,8 @@ export default class Utilities {
   // 初期値として$optionsで渡せるもの
   // spBreakPoint: ブレークポイント値 Integer
   // pageTopPoint: pagetop表示地点 Integer
-  // isDebug: デバッグ実行フラグ Boolean
-  // isRunInit: Initの実行フラグ Boolean
+  // isDebug: デバッグ実行フラグ boolean
+  // isRunInit: Initの実行フラグ boolean
   constructor({ spBreakPoint = 768, pageTopPoint = 100, isDebug = false, isRunInit = true }: Partial<Options> = {}) {
     this.qsParm = []; // GETパラメータ
     this.userAgent = '';

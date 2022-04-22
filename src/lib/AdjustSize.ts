@@ -17,7 +17,7 @@ interface Options {
 type AdjustType = 'inner' | 'outer';
 export default class AdjustSize {
   private collection: NodeListOf<HTMLElement>;
-  private rTimer: number | Boolean;
+  private rTimer: number | boolean;
   private setHeight: number;
   private count: number;
   private length: number;
