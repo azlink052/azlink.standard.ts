@@ -6,7 +6,7 @@ import Utilities from './Utilities';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2021.10.09
+ * @final 		2022.04.28
  *
  * @param {*} $selector
  * @param {*} $options
@@ -427,6 +427,7 @@ export default class FlowVox {
             translateY: 0,
             opacity: [0, 1],
             duration: this.options.duration,
+            easing: this.options.easing,
             delay: anime.stagger(this.options.delay),
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -436,6 +437,7 @@ export default class FlowVox {
             translateY: this.options.translate,
             opacity: [1, 0],
             duration: this.options.duration,
+            easing: this.options.easing,
             delay: anime.stagger(this.options.delay),
           });
         }
