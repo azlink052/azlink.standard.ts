@@ -3,7 +3,7 @@
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2021.09.26
+ * @final 		2022.04.28
  *
  * @param {*} $selector
  * @param {*} $options
@@ -13,6 +13,8 @@ interface Options {
   type: AdjustType;
   plus: number;
   isResizeAuto: boolean;
+  tag: string;
+  onComplete: any;
 }
 type AdjustType = 'inner' | 'outer';
 export default class AdjustSize {
@@ -25,7 +27,13 @@ export default class AdjustSize {
 
   constructor(
     $selector: string,
-    { type = 'inner', plus = 0, isResizeAuto = true }: Partial<Options> = {}
+    {
+      type = 'inner', // 内寸合わせ or 外寸合わせ
+      plus = 0, // 高さに追加したいピクセル
+      isResizeAuto = true, // resizeイベント時の自動adjust
+      tag = 'is-completeAdjustSize', // complete時bodyに追加するクラス名
+      onComplete = false, // complete時に実行したい処理
+    }: Partial<Options> = {}
   ) {
     this.collection = document.querySelectorAll($selector);
     this.rTimer;
@@ -39,6 +47,8 @@ export default class AdjustSize {
       type: type,
       plus: plus,
       isResizeAuto: isResizeAuto,
+      tag: tag,
+      onComplete: onComplete,
     };
 
     this.init();
@@ -92,6 +102,11 @@ export default class AdjustSize {
             this.collection.forEach((v, i) => {
               v.style.height = this.setHeight + this.options.plus + 'px';
             });
+            document.body.classList.add(this.options.tag);
+
+            if (typeof this.options.onComplete === 'function') {
+              this.options.onComplete();
+            }
           }
         });
       };
@@ -105,6 +120,15 @@ export default class AdjustSize {
 
           const IMG_PRE_LOADER = new Image();
           IMG_PRE_LOADER.src = IMAGES[i];
+          IMG_PRE_LOADER.onerror = () => {
+            console.log('AdjustSize: error!File does not exist.');
+            inPromise = inPromise.then(() => {
+              loaded++;
+              if (loaded === IMAGES.length) {
+                CALLBACK();
+              }
+            });
+          };
           IMG_PRE_LOADER.onload = () => {
             inPromise = inPromise.then(() => {
               loaded++;
