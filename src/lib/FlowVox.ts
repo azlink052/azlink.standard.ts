@@ -47,8 +47,8 @@ export default class FlowVox {
       autorun = true,
       per = Number(document.documentElement.clientWidth) >
       Number(document.documentElement.clientHeight)
-        ? 0.6
-        : 0.95,
+        ? 0.3
+        : 0.2,
       // zoomIn = 1.2,
       // zoomInDuration = 350,
       // zoomOutDuration = 150,
