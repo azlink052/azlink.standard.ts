@@ -14,7 +14,7 @@ interface Options {
   spName: string;
   spBreakPoint: number;
 }
-export default class ReplaceImageSP {
+export class ReplaceImageSP {
   private collection: NodeListOf<HTMLElement>;
   public options: Options;
   private wHeight: number;

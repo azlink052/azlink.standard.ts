@@ -1,13 +1,13 @@
 // import 'core-js/stable';
 export { default as anime } from 'animejs/lib/anime.es.js';
-export { default as Utilities } from './lib/Utilities';
-export { default as AdjustSize } from './lib/AdjustSize';
-export { default as PopupAdjust } from './lib/PopupAdjust';
-export { default as FlowVox } from './lib/FlowVox';
-export { default as FadeSlider } from './lib/FadeSlider';
-export { default as ReplaceImageSP } from './lib/ReplaceImageSP';
-export { default as RSSFeed } from './lib/RSSFeed';
-export { default as InstaFeed } from './lib/InstaFeed';
+export { Utilities } from './lib/Utilities';
+export { AdjustSize } from './lib/AdjustSize';
+export { PopupAdjust } from './lib/PopupAdjust';
+export { FlowVox } from './lib/FlowVox';
+export { FadeSlider } from './lib/FadeSlider';
+export { ReplaceImageSP } from './lib/ReplaceImageSP';
+export { RSSFeed } from './lib/RSSFeed';
+export { InstaFeed } from './lib/InstaFeed';
 
 // import anime from 'animejs/lib/anime.es.js';
 // import Utilities from './lib/Utilities';

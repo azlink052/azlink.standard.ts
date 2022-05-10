@@ -1,5 +1,5 @@
 import anime from 'animejs/lib/anime.es.js';
-import Utilities from './Utilities';
+import { Utilities } from './Utilities';
 /**
  * 画面内に表示されることでアニメーションを実行
  * data-flow="mark" とすることでクラス付与のみとなる
@@ -30,7 +30,7 @@ interface Params {
   isDone: boolean;
   anime: any;
 }
-export default class FlowVox {
+export class FlowVox {
   private time: number;
   public options: Options;
   private flowAnime: Params[];

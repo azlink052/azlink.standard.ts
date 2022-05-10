@@ -13,7 +13,7 @@ interface Options {
   bp: number;
   to: 'left top';
 }
-export default class RatioAdjust {
+export class RatioAdjust {
   private collection: NodeListOf<HTMLElement>;
   private rTimer: number | boolean;
   public options: Options;

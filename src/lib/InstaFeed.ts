@@ -18,7 +18,7 @@ interface Options {
   elem: string;
   onComplete: any;
 }
-export default class InstaFeed {
+export class InstaFeed {
   private options: Options;
   private app_url: string;
 

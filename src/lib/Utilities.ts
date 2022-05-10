@@ -23,7 +23,7 @@ interface Timers {
   debug: number | boolean;
   pagetop: number | boolean;
 }
-export default class Utilities {
+export class Utilities {
   public qsParm: {};
   public userAgent: string;
   public browserIE: number;

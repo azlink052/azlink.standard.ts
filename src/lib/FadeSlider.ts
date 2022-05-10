@@ -26,7 +26,7 @@ interface Options {
   onSlideBefore: any;
   onSlideAfter: any;
 }
-export default class FadeSlider {
+export class FadeSlider {
   private time: number;
   public options: Options;
   private elem: HTMLElement;

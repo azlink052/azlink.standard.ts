@@ -17,7 +17,7 @@ interface Options {
   callback: string;
   onComplete: any;
 }
-export default class RSSFeed {
+export class RSSFeed {
   private options: Options;
 
   constructor({

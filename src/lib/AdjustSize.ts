@@ -17,7 +17,7 @@ interface Options {
   onComplete: any;
 }
 type AdjustType = 'inner' | 'outer';
-export default class AdjustSize {
+export class AdjustSize {
   private collection: NodeListOf<HTMLElement>;
   private rTimer: number | boolean;
   private setHeight: number;
