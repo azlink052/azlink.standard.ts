@@ -322,17 +322,7 @@ export class Utilities {
    * Webブラウザバージョンの取得
    */
   setWbVer(): void {
-    if (/*@cc_on!@*/ false) {
-      this.userAgent = window.navigator.userAgent;
-      this.ua = window.navigator.userAgent.toLowerCase();
-
-      this.browserIE = 1;
-      this.browser_n = 'IE';
-
-      if (this.userAgent.match(/MSIE (¥d¥.¥d+)/)) {
-        this.browser_v = parseFloat(RegExp.$1);
-      } //IE6.7.8.9
-    } else if (this.ua.indexOf('firefox') > -1) {
+    if (this.ua.indexOf('firefox') > -1) {
       this.browser_n = 'Firefox';
     } else if (this.ua.indexOf('opera') > -1) {
       this.browser_n = 'Opera';
