@@ -14,7 +14,7 @@ const util = new azlib.Utilities({
   isDebug: true,
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   util.init();
   console.log(util.qsParm);
   // const ADJUST_SIZE = [];

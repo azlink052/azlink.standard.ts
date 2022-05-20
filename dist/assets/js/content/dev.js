@@ -3,7 +3,7 @@ import {
   AzLib
 } from '../global/main.class.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   const azlib = new AzLib({
     spBreakPoint: 960,
     isDebug: true
