@@ -7,6 +7,7 @@ import { Utilities } from './Utilities';
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
  * @final 		2022.04.28
+ * 20220523 autorun 削除
  *
  * @param {*} $selector
  * @param {*} $options
@@ -16,7 +17,7 @@ interface Options {
   duration: number;
   delay: number;
   easing: string;
-  autorun: boolean;
+  // autorun: boolean;
   per: number;
   // zoomIn: number;
   // zoomInDuration: number;
@@ -44,7 +45,7 @@ export class FlowVox {
       duration = 600,
       delay = 300,
       easing = 'cubicBezier(0.33, 1, 0.68, 1)',
-      autorun = true,
+      // autorun = true,
       per = Number(document.documentElement.clientWidth) >
       Number(document.documentElement.clientHeight)
         ? 0.3
@@ -61,7 +62,7 @@ export class FlowVox {
       duration: duration,
       delay: delay,
       easing: easing,
-      autorun: autorun,
+      // autorun: autorun,
       per: per,
       // zoomIn: zoomIn,
       // zoomInDuration: zoomInDuration,
@@ -116,6 +117,9 @@ export class FlowVox {
             translateY: -this.options.translate,
             opacity: 0,
             duration: 10,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime')
+            }
           });
           break;
         case 'left':
@@ -124,6 +128,9 @@ export class FlowVox {
             translateX: this.options.translate,
             opacity: 0,
             duration: 10,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
           break;
         case 'right':
@@ -132,6 +139,9 @@ export class FlowVox {
             translateX: -this.options.translate,
             opacity: 0,
             duration: this.options.duration,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
           break;
         case 'leftdown':
@@ -141,6 +151,9 @@ export class FlowVox {
             translateY: -this.options.translate,
             opacity: 0,
             duration: 10,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
           break;
         case 'rightdown':
@@ -150,6 +163,9 @@ export class FlowVox {
             translateY: -this.options.translate,
             opacity: 0,
             duration: 10,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
           break;
         case 'leftup':
@@ -159,6 +175,9 @@ export class FlowVox {
             translateY: this.options.translate,
             opacity: 0,
             duration: 10,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
           break;
         case 'rightup':
@@ -168,6 +187,9 @@ export class FlowVox {
             translateY: this.options.translate,
             opacity: 0,
             duration: 10,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
           break;
         case 'zoom':
@@ -176,6 +198,9 @@ export class FlowVox {
             scale: 0,
             opacity: 0,
             duration: this.options.duration,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
           break;
         case 'away':
@@ -183,6 +208,9 @@ export class FlowVox {
             targets: ITEM.target,
             opacity: 0,
             duration: this.options.duration,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
           break;
         case 'mark':
@@ -200,6 +228,9 @@ export class FlowVox {
             translateY: this.options.translate,
             opacity: 0,
             duration: this.options.duration,
+            complete: () => {
+              v.classList.remove('is-finished-flowAnime');
+            },
           });
       }
       this.observer.observe(ITEM.elem);
@@ -220,6 +251,9 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -229,6 +263,9 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -240,6 +277,9 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -249,6 +289,9 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -260,6 +303,9 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -269,6 +315,9 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -281,6 +330,9 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -291,6 +343,9 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -303,6 +358,9 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -313,6 +371,9 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -325,6 +386,9 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -335,6 +399,9 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -347,6 +414,9 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -357,6 +427,9 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -369,6 +442,9 @@ export class FlowVox {
             duration: this.options.duration,
             easing: 'spring',
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -379,6 +455,9 @@ export class FlowVox {
             duration: this.options.duration,
             easing: 'spring',
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -390,6 +469,9 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             easing: this.options.easing,
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -399,6 +481,9 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             easing: this.options.easing,
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
         break;
@@ -429,6 +514,9 @@ export class FlowVox {
             duration: this.options.duration,
             easing: this.options.easing,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.add('is-finished-flowAnime');
+            },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
@@ -439,6 +527,9 @@ export class FlowVox {
             duration: this.options.duration,
             easing: this.options.easing,
             delay: anime.stagger(this.options.delay),
+            complete: () => {
+              ITEM.elem.classList.remove('is-finished-flowAnime');
+            },
           });
         }
     }
