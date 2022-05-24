@@ -118,8 +118,8 @@ export class FlowVox {
             opacity: 0,
             duration: 10,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime')
-            }
+              v.classList.remove('is-finishedFlowAnime');
+            },
           });
           break;
         case 'left':
@@ -129,7 +129,7 @@ export class FlowVox {
             opacity: 0,
             duration: 10,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
           break;
@@ -140,7 +140,7 @@ export class FlowVox {
             opacity: 0,
             duration: this.options.duration,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
           break;
@@ -152,7 +152,7 @@ export class FlowVox {
             opacity: 0,
             duration: 10,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
           break;
@@ -164,7 +164,7 @@ export class FlowVox {
             opacity: 0,
             duration: 10,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
           break;
@@ -176,7 +176,7 @@ export class FlowVox {
             opacity: 0,
             duration: 10,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
           break;
@@ -188,7 +188,7 @@ export class FlowVox {
             opacity: 0,
             duration: 10,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
           break;
@@ -199,7 +199,7 @@ export class FlowVox {
             opacity: 0,
             duration: this.options.duration,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
           break;
@@ -209,7 +209,7 @@ export class FlowVox {
             opacity: 0,
             duration: this.options.duration,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
           break;
@@ -229,7 +229,7 @@ export class FlowVox {
             opacity: 0,
             duration: this.options.duration,
             complete: () => {
-              v.classList.remove('is-finished-flowAnime');
+              v.classList.remove('is-finishedFlowAnime');
             },
           });
       }
@@ -252,7 +252,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -264,7 +264,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -278,7 +278,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -290,7 +290,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -304,7 +304,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -316,7 +316,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -331,7 +331,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -344,7 +344,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -359,7 +359,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -372,7 +372,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -387,7 +387,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -400,7 +400,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -415,7 +415,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -428,7 +428,7 @@ export class FlowVox {
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -443,7 +443,7 @@ export class FlowVox {
             easing: 'spring',
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -456,7 +456,7 @@ export class FlowVox {
             easing: 'spring',
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -470,7 +470,7 @@ export class FlowVox {
             delay: anime.stagger(this.options.delay),
             easing: this.options.easing,
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -482,7 +482,7 @@ export class FlowVox {
             delay: anime.stagger(this.options.delay),
             easing: this.options.easing,
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
@@ -515,7 +515,7 @@ export class FlowVox {
             easing: this.options.easing,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.add('is-finished-flowAnime');
+              ITEM.elem.classList.add('is-finishedFlowAnime');
             },
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
@@ -528,7 +528,7 @@ export class FlowVox {
             easing: this.options.easing,
             delay: anime.stagger(this.options.delay),
             complete: () => {
-              ITEM.elem.classList.remove('is-finished-flowAnime');
+              ITEM.elem.classList.remove('is-finishedFlowAnime');
             },
           });
         }
