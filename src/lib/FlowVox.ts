@@ -109,6 +109,7 @@ export class FlowVox {
       // Utilities.printType(ITEM.target);
       const KEY = `${this.time}_${i}`;
       v.setAttribute('data-flow-item', KEY);
+      v.classList.remove('is-finishedFlowAnime');
       // ITEM.anime = ITEM;
       switch (ITEM.mode) {
         case 'down':
@@ -117,9 +118,6 @@ export class FlowVox {
             translateY: -this.options.translate,
             opacity: 0,
             duration: 10,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'left':
@@ -128,9 +126,6 @@ export class FlowVox {
             translateX: this.options.translate,
             opacity: 0,
             duration: 10,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'right':
@@ -139,9 +134,6 @@ export class FlowVox {
             translateX: -this.options.translate,
             opacity: 0,
             duration: this.options.duration,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'leftdown':
@@ -151,9 +143,6 @@ export class FlowVox {
             translateY: -this.options.translate,
             opacity: 0,
             duration: 10,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'rightdown':
@@ -163,9 +152,6 @@ export class FlowVox {
             translateY: -this.options.translate,
             opacity: 0,
             duration: 10,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'leftup':
@@ -175,9 +161,6 @@ export class FlowVox {
             translateY: this.options.translate,
             opacity: 0,
             duration: 10,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'rightup':
@@ -187,9 +170,6 @@ export class FlowVox {
             translateY: this.options.translate,
             opacity: 0,
             duration: 10,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'zoom':
@@ -198,9 +178,6 @@ export class FlowVox {
             scale: 0,
             opacity: 0,
             duration: this.options.duration,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'away':
@@ -208,9 +185,6 @@ export class FlowVox {
             targets: ITEM.target,
             opacity: 0,
             duration: this.options.duration,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
           break;
         case 'mark':
@@ -228,9 +202,6 @@ export class FlowVox {
             translateY: this.options.translate,
             opacity: 0,
             duration: this.options.duration,
-            complete: () => {
-              v.classList.remove('is-finishedFlowAnime');
-            },
           });
       }
       this.observer.observe(ITEM.elem);
@@ -241,6 +212,10 @@ export class FlowVox {
   run(ITEM: Params, isVisible: boolean) {
     // console.log(ITEM)
     if (ITEM.isDone) return;
+
+    if (isVisible) {
+      if (!ITEM.elem.classList.contains('is-beganFlowAnime')) ITEM.elem.classList.add('is-beganFlowAnime');
+    }
 
     switch (ITEM.mode) {
       case 'down':
@@ -520,6 +495,7 @@ export class FlowVox {
           });
           if (!this.options.isRepeat) ITEM.isDone = true;
         } else {
+          if (!ITEM.elem.classList.contains('is-beganFlowAnime')) return;
           ITEM.anime = anime({
             targets: ITEM.target,
             translateY: this.options.translate,

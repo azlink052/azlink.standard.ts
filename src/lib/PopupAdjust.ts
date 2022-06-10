@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2021.07.15
+ * @final 		2022.06.10
  *
  * @param {*} $selector
  * @param {*} $options
@@ -224,6 +224,7 @@ export class PopupAdjust {
       anime({
         targets: document.querySelector(this.options.bg),
         opacity: [0, this.options.bgOpacity],
+        easing: 'linear',
         duration: this.options.durationChange,
         begin: () => {
           document.querySelector<HTMLElement>(this.options.bg).style.display =
@@ -272,6 +273,7 @@ export class PopupAdjust {
             targets: this.options.bg,
             opacity: [1, 0],
             duration: this.options.durationClose,
+            easing: 'linear',
             complete: () => {
               document.querySelector<HTMLElement>(
                 this.options.bg
