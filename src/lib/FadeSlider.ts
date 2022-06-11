@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2021.09.26
+ * @final 		2022.06.11
  *
  * @param {*} $selector
  * @param {*} $options
@@ -62,7 +62,8 @@ export class FadeSlider {
     this.current = 0;
     this.count = 0;
     this.isAllowSlide = false;
-    (this.rTimer = false), (this.pagerEvent = []);
+    this.rTimer = false;
+    this.pagerEvent = [];
     this.options = {
       isAuto: isAuto,
       isLoop: isLoop,
