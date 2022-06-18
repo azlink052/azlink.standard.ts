@@ -41,8 +41,8 @@ export class RSSFeed {
       this.die();
     }
   }
-  run() {
-    window[this.options.callback] = (json) => {
+  async run(): Promise<void> {
+    window[this.options.callback] = (json: {}) => {
       // return json;
       if (this.options.onComplete) this.options.onComplete(json);
     };

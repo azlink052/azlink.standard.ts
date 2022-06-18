@@ -47,11 +47,11 @@ export class ReplaceImageSP {
 
     this.init();
   }
-  init() {
+  init(): void {
     // this.setRespMode = this.setRespMode.bind(this);
     window.addEventListener('resize', this.setEventAdjust);
   }
-  adjust() {
+  adjust(): void {
     this.setRespMode();
 
     return this.collection.forEach((v, i) => {
@@ -68,10 +68,10 @@ export class ReplaceImageSP {
       }
     });
   }
-  destroy() {
+  destroy(): void {
     window.removeEventListener('resize', this.setEventAdjust);
   }
-  setRespMode() {
+  setRespMode(): void {
     this.wHeight = Number(document.documentElement.clientHeight);
     this.wWidth = Number(document.documentElement.clientWidth);
     this.wIWidth = Number(window.innerWidth);

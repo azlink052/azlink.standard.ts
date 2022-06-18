@@ -98,7 +98,7 @@ export class PopupAdjust {
 
     this.init();
   }
-  init() {
+  init(): void {
     if (!document.querySelector(this.options.bg)) {
       const ALPHA_BG = document.createElement('div');
       ALPHA_BG.id = 'alphaBg';
@@ -130,16 +130,16 @@ export class PopupAdjust {
         const POPUP_SRC = document.createElement('div');
         POPUP_SRC.className = 'popupWrapper vertical';
         POPUP_SRC.innerHTML = `
-        <div class="closeVox">
-          <a href="javascript:void(0)" class="popupCloseBt">
-            <span><!-- --></span>
-            <span><!-- --></span>
-          </a>
-        </div>
-        <div class="contentWrapper">
-          <div class="content"><!-- --></div>
-        </div>
-      `;
+          <div class="closeVox">
+            <a href="javascript:void(0)" class="popupCloseBt">
+              <span><!-- --></span>
+              <span><!-- --></span>
+            </a>
+          </div>
+          <div class="contentWrapper">
+            <div class="content"><!-- --></div>
+          </div>
+        `;
 
         document.querySelector(this.options.wrapper).appendChild(POPUP_SRC);
         POPUP_SRC.id = POPUP_IDS[i];
@@ -215,7 +215,7 @@ export class PopupAdjust {
       this.options.onComplete();
     }
   }
-  change(id: string) {
+  change(id: string): void {
     if (!this.isOpen) {
       this.isOpen = true;
 
@@ -255,7 +255,7 @@ export class PopupAdjust {
       });
     }
   }
-  close() {
+  close(): void {
     document.querySelectorAll('.popupWrapper').forEach((v, i) => {
       document.body.classList.remove('is-pOpen', 'is-pOpenUnlock');
       if (this.isRespMode && this.options.isSpFixed) {
@@ -322,7 +322,7 @@ export class PopupAdjust {
       });
     });
   }
-  adjust(target: string) {
+  adjust(target: string): void {
     if (!this.options.isAdjust) return;
     if (!target) target = this.popupTarget;
     this.setRespMode();
@@ -351,11 +351,11 @@ export class PopupAdjust {
       document.body.style.top = `-${this.scrTopTemp}px`;
     }
   }
-  setScrPos() {
+  setScrPos(): void {
     this.scrTop = window.scrollY || window.pageYOffset;
     this.scrLeft = window.scrollX || window.pageXOffset;
   }
-  setRespMode() {
+  setRespMode(): void {
     this.wHeight = Number(document.documentElement.clientHeight);
     this.wWidth = Number(document.documentElement.clientWidth);
     this.wIWidth = Number(window.innerWidth);

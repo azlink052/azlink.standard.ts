@@ -53,7 +53,7 @@ export class AdjustSize {
 
     this.init();
   }
-  init() {
+  init(): void {
     if (this.options.isResizeAuto) {
       window.addEventListener('resize', () => {
         if (this.rTimer !== false) {
@@ -69,7 +69,7 @@ export class AdjustSize {
 
     this.adjust();
   }
-  adjust() {
+  adjust(): void {
     this.collection.forEach((value, index) => {
       // 対象子要素
       value.style.height = 'auto';
@@ -143,13 +143,13 @@ export class AdjustSize {
       }
     });
   }
-  destroy() {
+  destroy(): void {
     this.collection.forEach((value, index) => {
       value.style.removeProperty('height');
     });
     window.removeEventListener('resize', this.adjust);
   }
-  reload() {
+  reload(): void {
     this.destroy();
     this.init();
   }

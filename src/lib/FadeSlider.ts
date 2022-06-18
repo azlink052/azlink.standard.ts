@@ -84,7 +84,7 @@ export class FadeSlider {
 
     this.init();
   }
-  init() {
+  init(): void {
     // console.log(this)
     if (this.options.pause < this.options.speed) {
       this.options.speed = this.options.pause - 1;
@@ -177,7 +177,7 @@ export class FadeSlider {
       this.options.onSliderLoad();
     }
   }
-  change(target?: number | boolean) {
+  change(target?: number | boolean): void {
     clearTimeout(Number(this.rTimer));
     if (!this.isAllowSlide) return;
     if (target === false) return;
@@ -240,7 +240,7 @@ export class FadeSlider {
       }
     });
   }
-  togglePager() {
+  togglePager(): void {
     this.options.wrapper
       .querySelectorAll('.fs-pager-item a')
       .forEach((value) => {
@@ -251,18 +251,18 @@ export class FadeSlider {
       [this.current]?.querySelector('a')
       .classList.add('is-active');
   }
-  slideAuto() {
+  slideAuto(): void {
     if (!this.isAllowSlide || !this.options.isAuto) return;
     this.startSlideAuto();
   }
-  startSlideAuto() {
+  startSlideAuto(): void {
     this.isAllowSlide = this.options.isAuto = true;
     // console.log('slideAuto');
     this.rTimer = window.setTimeout(() => {
       this.change();
     }, this.options.pause);
   }
-  stopAuto() {
+  stopAuto(): void {
     clearTimeout(Number(this.rTimer));
     this.options.isAuto = false;
   }
@@ -288,19 +288,19 @@ export class FadeSlider {
       }
     }
   }
-  updateParams(object: Options) {
+  updateParams(object: Options): void {
     for (let key in object) {
       this.options[key] = object[key];
     }
   }
-  getParams() {
+  getParams(): any {
     return this;
   }
-  reset() {
+  reset(): void {
     this.current = this.count - 1;
     this.change(0);
   }
-  destroy() {
+  destroy(): void {
     clearTimeout(Number(this.rTimer));
     for (const EVENT of this.pagerEvent) {
       document.removeEventListener('click', this.pagerEvent[EVENT]);

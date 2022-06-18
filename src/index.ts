@@ -112,15 +112,15 @@ if (document.getElementById('feedVox')) {
 }
 if (document.getElementById('instaVox')) {
   // instafeed
-  const INSTAFEED01 = new azlib.InstaFeed({
-    igID: '17841412223846154',
-    count: 10,
-    version: '10.0',
-    token:
-      'EAAHZBBdclfd0BALKdxmUsOqd1B7APEMwOBwTozZBtmIX7txrtYvhdlo4gx2m81ZBRQBkwd9mhrHZBNZAezPVXKYgpHQAPe5InhORTWSOit8y1r1gMsoJVQIDLhUZAkqPGE7jlCQ3BxuZBN8WIIIu5yMAeP9hrxbKer8rnmdYdHa98hrI1tKqC2G',
-    elem: '#instaVox',
-    onComplete: (response) => {
-      console.log(response);
-    },
-  });
+  // const INSTAFEED01 = new azlib.InstaFeed({
+  //   igID: '17841412223846154',
+  //   count: 10,
+  //   version: '10.0',
+  //   token:
+  //     'EAAHZBBdclfd0BALKdxmUsOqd1B7APEMwOBwTozZBtmIX7txrtYvhdlo4gx2m81ZBRQBkwd9mhrHZBNZAezPVXKYgpHQAPe5InhORTWSOit8y1r1gMsoJVQIDLhUZAkqPGE7jlCQ3BxuZBN8WIIIu5yMAeP9hrxbKer8rnmdYdHa98hrI1tKqC2G',
+  //   elem: '#instaVox',
+  //   onComplete: (response) => {
+  //     console.log(response);
+  //   },
+  // });
 }

@@ -55,7 +55,7 @@ export class RatioAdjust {
 
     this.init();
   }
-  init() {
+  init(): void {
     setTimeout(() => {
       this.setH();
       this.adjust();
@@ -63,18 +63,18 @@ export class RatioAdjust {
 
     window.addEventListener('resize', this.doEvent);
   }
-  setH() {
+  setH(): void {
     this.collection.forEach((v, i) => {
       (<HTMLElement>v).style.height = 'auto';
       this.targetHeight[i] = v.style.height;
     });
   }
-  setR() {
+  setR(): void {
     const ratio =
       this.wWidth < this.options.bp ? window.innerWidth / this.options.w : 1;
     this.ratio = Number(ratio.toFixed(2));
   }
-  adjust() {
+  adjust(): void {
     this.setRespMode();
     this.setR();
 
@@ -93,10 +93,10 @@ export class RatioAdjust {
         }
       })();
 
-      v.style.height = H + 'px';
+      v.style.height = `${H}px`;
     });
   }
-  setEvent() {
+  setEvent(): void {
     if (this.rTimer !== false) {
       clearTimeout(Number(this.rTimer));
       this.rTimer = false;
@@ -110,7 +110,7 @@ export class RatioAdjust {
       }
     }, 500);
   }
-  destroy() {
+  destroy(): void {
     window.removeEventListener('resize', this.doEvent);
 
     this.collection.forEach((v, i) => {
@@ -118,11 +118,11 @@ export class RatioAdjust {
       v.style.removeProperty('transform');
     });
   }
-  reset() {
+  reset(): void {
     this.destroy();
     this.init();
   }
-  setRespMode() {
+  setRespMode(): void {
     this.wHeight = Number(document.documentElement.clientHeight);
     this.wWidth = Number(document.documentElement.clientWidth);
     this.wIWidth = Number(window.innerWidth);

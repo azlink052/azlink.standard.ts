@@ -94,7 +94,7 @@ export class FlowVox {
 
     this.init($selector);
   }
-  init($selector: string) {
+  init($selector: string): void {
     document.querySelectorAll<HTMLElement>($selector).forEach((v, i) => {
       const ITEM = {
         elem: v,
@@ -209,12 +209,13 @@ export class FlowVox {
       this.flowAnime[KEY] = ITEM;
     });
   }
-  run(ITEM: Params, isVisible: boolean) {
+  run(ITEM: Params, isVisible: boolean): void {
     // console.log(ITEM)
     if (ITEM.isDone) return;
 
     if (isVisible) {
-      if (!ITEM.elem.classList.contains('is-beganFlowAnime')) ITEM.elem.classList.add('is-beganFlowAnime');
+      if (!ITEM.elem.classList.contains('is-beganFlowAnime'))
+        ITEM.elem.classList.add('is-beganFlowAnime');
     }
 
     switch (ITEM.mode) {
@@ -510,7 +511,7 @@ export class FlowVox {
         }
     }
   }
-  destroy() {
+  destroy(): void {
     // TODO 未実装
   }
 }

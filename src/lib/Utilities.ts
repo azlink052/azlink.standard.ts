@@ -253,7 +253,7 @@ export class Utilities {
    * strict対策blank open
    * @param 開くURL
    */
-  openBlank(url: string) {
+  openBlank(url: string): void {
     window.open(url);
   }
   /**
@@ -272,7 +272,7 @@ export class Utilities {
    * GET値の取得
    * @return GET値をセットしたオブジェクト
    */
-  getGETqs() {
+  getGETqs(): {} {
     this.tmp.query = window.location.search.substring(1);
     this.tmp.parms = this.tmp.query.split('&');
     // console.log(this.tmp)
@@ -294,7 +294,7 @@ export class Utilities {
   /**
    * GET値の設定
    */
-  setGETqs() {
+  setGETqs(): void {
     this.qsParm = this.getGETqs();
   }
   /**
@@ -598,7 +598,7 @@ export class Utilities {
       });
     }
   }
-  static printType(x: any) {
+  static printType(x: any): void {
     console.log(`${typeof x} ${Object.prototype.toString.call(x)}`);
   }
 }

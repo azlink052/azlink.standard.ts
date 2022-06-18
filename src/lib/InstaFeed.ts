@@ -26,7 +26,7 @@ export class InstaFeed {
     igID = '', // InstagramビジネスアカウントID
     token = '', // トークン
     count = 5, // 最大表示件数
-    version = '3.0', // Graph API バージョン
+    version = '10.0', // Graph API バージョン
     elem = '', // セレクタ
     onComplete = false, // 終了後コールバック
   }: Partial<Options> = {}) {
@@ -47,7 +47,7 @@ export class InstaFeed {
 
     this.run();
   }
-  async run() {
+  async run(): Promise<void> {
     await axios.get(this.app_url).then((response) => {
       if (response.data.media.data.length <= 0) return;
 
@@ -71,8 +71,11 @@ export class InstaFeed {
         this.options.onComplete(response);
       }
     });
+
+    // console.log('resolve');
+    // return 'resolve';
   }
-  destroy() {
+  destroy(): void {
     document.querySelector(this.options.elem).innerHTML = '';
   }
   die(): boolean {
