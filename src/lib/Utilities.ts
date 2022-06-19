@@ -243,7 +243,14 @@ export class Utilities {
 
     for (let key in this) {
       if (typeof this[key] === 'function') continue;
-      src += `<div><span style="font-weight: bold;">${key}</span> : ${this[key]}</div>`;
+      if (key !== 'qsParm') {
+        src += `<div><span style="font-weight: bold;">${key}</span> : ${this[key]}</div>`;
+      } else {
+        src += 'qsParm : ';
+        for (let k in this[key]) {
+          src += `<div><span style="font-weight: bold;">${k}</span> : ${this[key][k]}</div>`;
+        }
+      }
     }
 
     document.querySelector('#pDebug .inner').innerHTML = src;

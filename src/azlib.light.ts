@@ -5,6 +5,7 @@ export { AdjustSize } from './lib/AdjustSize';
 export { PopupAdjust } from './lib/PopupAdjust';
 export { FlowVox } from './lib/FlowVox';
 export { FadeSlider } from './lib/FadeSlider';
+export { SimpleSlider } from './lib/SimpleSlider';
 export { ReplaceImageSP } from './lib/ReplaceImageSP';
 // import {
 //   RSSFeed

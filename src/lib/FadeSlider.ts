@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2022.06.11
+ * @final 		2022.06.20
  *
  * @param {*} $selector
  * @param {*} $options
@@ -165,9 +165,9 @@ export class FadeSlider {
         .forEach((v, i) => {
           v.addEventListener('click', (e) => {
             if (!this.isAllowSlide) return;
-            const index = (<HTMLElement>e.target).getAttribute('data-index'); // 文字列変換
+            const INDEX = (<HTMLElement>e.target).getAttribute('data-index'); // 文字列変換
 
-            this.change(Number(index));
+            this.change(Number(INDEX));
           });
         });
     }
@@ -182,27 +182,27 @@ export class FadeSlider {
     if (!this.isAllowSlide) return;
     if (target === false) return;
     this.isAllowSlide = false;
-    const oldIndex = this.current;
-    const newIndex =
+    const OLD_INDEX = this.current;
+    const NEW_INDEX =
       target >= 0
         ? Number(target)
         : this.current !== this.count - 1
         ? this.current + 1
         : 0;
-    this.current = newIndex === this.count ? 0 : newIndex;
+    this.current = NEW_INDEX === this.count ? 0 : NEW_INDEX;
     if (typeof this.options.onSlideBefore === 'function') {
-      this.options.onSlideBefore(oldIndex, newIndex);
+      this.options.onSlideBefore(OLD_INDEX, NEW_INDEX);
     }
     if (this.options.pager) this.togglePager();
     Array.from(this.elem.children).forEach((v, i) => {
       v.classList.remove('slide-old', 'slide-active');
     });
-    // console.log(oldIndex, newIndex)
+    // console.log(OLD_INDEX, NEW_INDEX)
     Array.from(this.elem.children).forEach((v, i) => {
       (<HTMLElement>v).style.zIndex = String(this.options.etcIndexInt);
     });
     Array.from(this.elem.children).forEach((v, i) => {
-      if (i === oldIndex) {
+      if (i === OLD_INDEX) {
         (<HTMLElement>v).style.zIndex = String(this.options.oldIndexInt);
         v.classList.add('slide-old');
       }
@@ -218,7 +218,7 @@ export class FadeSlider {
           easing: this.options.easing,
           complete: () => {
             if (typeof this.options.onSlideAfter === 'function') {
-              this.options.onSlideAfter(oldIndex, this.current);
+              this.options.onSlideAfter(OLD_INDEX, this.current);
             }
             Array.from(this.elem.children).forEach((v, i) => {
               if (i !== this.current) {

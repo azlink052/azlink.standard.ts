@@ -75,6 +75,13 @@
         speed: 500,
         pause: 3000,
       });
+      const SLIDER03 = new azlib.SimpleSlider('#slider03', {
+        ctrl: true,
+        pager: true,
+        speed: 500,
+        pause: 3000,
+        isLoop: false
+      });
       new azlib.anime({
         targets: '.animeObj01',
         translateX: 250,
@@ -145,6 +152,21 @@
       background-size: cover;
     }
 
+    .simpleSliderWrapper {
+      width: 500px;
+    }
+
+    .simpleSlider {
+      width: 100%;
+      padding: 0;
+      margin: 50px 0;
+      list-style-type: none;
+    }
+
+    .simpleSlider li {
+      width: 50%;
+    }
+
     #instaVox {
       display: grid;
       gap: 10px;
@@ -155,6 +177,13 @@
 
 <body>
   <div id="wrapper">
+    <div class="simpleSliderWrapper sliderWrapper">
+      <ul class="simpleSlider" id="slider03">
+        <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>
+      </ul>
+    </div>
     <div class="spTel" data-tel="0522630185">0522630185</div>
     <div>
       <p>
