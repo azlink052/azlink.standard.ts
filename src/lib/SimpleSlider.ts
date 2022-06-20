@@ -152,7 +152,7 @@ export class SimpleSlider {
               if (!this.isAllowSlide) return;
               if ((<HTMLElement>e.target).classList.contains('is-disabled'))
                 return;
-              this.slidePrev();
+              this.slide(this.getPrevSlide());
             },
             false
           );
@@ -162,7 +162,7 @@ export class SimpleSlider {
               if (!this.isAllowSlide) return;
               if ((<HTMLElement>e.target).classList.contains('is-disabled'))
                 return;
-              this.slideNext();
+              this.slide(this.getNextSlide());
             },
             false
           );
@@ -205,51 +205,18 @@ export class SimpleSlider {
       }
     }
     this.isAllowSlide = true;
-    this.toggleCtrls();
-    this.togglePager();
+    this.slide(0);
     // this.slideAuto();
     if (typeof this.options.onSliderLoad === 'function') {
       this.options.onSliderLoad();
     }
-  }
-  slidePrev(): void {
-    this.isAllowSlide = false;
-    this.current = this.current - 1;
-    this.remainder = this.pageLength - this.current;
-    if (this.options.ctrl) this.toggleCtrls();
-    if (this.options.pager) this.togglePager();
-    anime({
-      targets: this.elem,
-      translateX: `+=${this.itemWidth}px`,
-      easing: this.options.easing,
-      duration: this.options.duration,
-      complete: () => {
-        this.isAllowSlide = true;
-      },
-    });
-  }
-  slideNext(): void {
-    this.isAllowSlide = false;
-    this.current = this.current + 1;
-    this.remainder = this.pageLength - this.current;
-    if (this.options.ctrl) this.toggleCtrls();
-    if (this.options.pager) this.togglePager();
-    anime({
-      targets: this.elem,
-      translateX: `-=${this.itemWidth}px`,
-      easing: this.options.easing,
-      duration: this.options.duration,
-      complete: () => {
-        this.isAllowSlide = true;
-      },
-    });
   }
   slide(target?: number | boolean): void {
     clearTimeout(Number(this.rTimer));
     if (!this.isAllowSlide) return;
     if (target === false) return;
     this.isAllowSlide = false;
-    const OLD_INDEX = this.current;
+    const OLD_INDEX = target !== this.current ? this.current : null;
     const NEW_INDEX = Number(target);
     this.current = NEW_INDEX;
     this.remainder = this.pageLength - this.current;
@@ -258,10 +225,12 @@ export class SimpleSlider {
     }
     if (this.options.pager) this.togglePager();
     if (this.options.ctrl) this.toggleCtrls();
-    Array.from(this.elem.children).forEach((v: HTMLElement, i) => {
+    Array.from(this.elem.children).forEach((v, i) => {
       v.classList.remove('slide-old', 'slide-active');
     });
-    console.log(OLD_INDEX, NEW_INDEX, target);
+    this.elem.children[NEW_INDEX].classList.add('slide-active');
+    this.elem.children[OLD_INDEX]?.classList.add('slide-old');
+    // console.log(OLD_INDEX, NEW_INDEX, target);
     this.isAllowSlide = true;
     // return;
     anime({
@@ -314,7 +283,7 @@ export class SimpleSlider {
   }
   getNextSlide(): number | boolean {
     if (this.options.isLoop) {
-      return this.current === this.itemLength - 1 ? 0 : this.current + 1;
+      return this.current === this.pageLength - 1 ? 0 : this.current + 1;
     } else {
       if (this.current !== this.itemLength - 1) {
         return this.current + 1;
@@ -325,7 +294,7 @@ export class SimpleSlider {
   }
   getPrevSlide(): number | boolean {
     if (this.options.isLoop) {
-      return this.current === 0 ? this.itemLength - 1 : this.current - 1;
+      return this.current === 0 ? this.pageLength - 1 : this.current - 1;
     } else {
       if (this.current !== 0) {
         return this.current - 1;
