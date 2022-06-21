@@ -90,6 +90,7 @@ export class SimpleSlider {
       onSlideBefore: onSlideBefore,
       onSlideAfter: onSlideAfter,
     };
+    // console.log(this.options, this.options.rootCount);
 
     this.init();
   }
@@ -105,16 +106,21 @@ export class SimpleSlider {
     });
 
     if (this.itemLength > 1) {
-      if (!this.options.rootCount || this.options.rootCount === 1) {
+      // console.log(this.options, this.options.rootCount);
+      // console.log(this.options.rootCount === 1);
+      if (!this.options.rootCount) {
         this.itemWidth = this.elem.firstElementChild.clientWidth;
         this.options.rootCount = Math.ceil(
           this.elem.clientWidth / this.itemWidth
         );
-        Array.from(this.elem.children).forEach(
-          (v: HTMLElement) => (v.style.width = `${this.itemWidth}px`)
-        );
+      } else {
+        // console.log(this.options.wrapper);
+        this.itemWidth = (<HTMLElement>this.options.wrapper).clientWidth;
       }
-      console.log(this.options.rootCount, this.itemLength, this.itemWidth);
+      Array.from(this.elem.children).forEach(
+        (v: HTMLElement) => (v.style.width = `${this.itemWidth}px`)
+      );
+      // console.log(this.options.rootCount, this.itemLength, this.itemWidth);
       if (this.itemLength > this.options.rootCount) {
         this.elem.outerHTML = `<div class="sliderContainer">${this.elem.outerHTML}</div>`;
         this.elem = document.querySelector(this.selector);
@@ -220,6 +226,7 @@ export class SimpleSlider {
     const NEW_INDEX = Number(target);
     this.current = NEW_INDEX;
     this.remainder = this.pageLength - this.current;
+    // console.log(NEW_INDEX);
     if (typeof this.options.onSlideBefore === 'function') {
       this.options.onSlideBefore(OLD_INDEX, NEW_INDEX);
     }
@@ -237,9 +244,9 @@ export class SimpleSlider {
       targets: this.elem,
       translateX: () => {
         if (NEW_INDEX > OLD_INDEX) {
-          return `-=${this.itemWidth * NEW_INDEX - OLD_INDEX}px`;
+          return `-=${this.itemWidth * (NEW_INDEX - OLD_INDEX)}px`;
         } else {
-          return `+=${this.itemWidth * OLD_INDEX - NEW_INDEX}px`;
+          return `+=${this.itemWidth * (OLD_INDEX - NEW_INDEX)}px`;
         }
       },
       easing: this.options.easing,
@@ -265,9 +272,8 @@ export class SimpleSlider {
     if (this.options.isLoop || !this.options.ctrl) return;
     this.prevBtn.classList.remove('is-disabled');
     this.nextBtn.classList.remove('is-disabled');
-    if (this.remainder === this.pageLength)
-      this.prevBtn.classList.add('is-disabled');
-    if (this.remainder === this.pageLength - 1)
+    if (this.current === 0) this.prevBtn.classList.add('is-disabled');
+    if (this.current === this.pageLength - 1)
       this.nextBtn.classList.add('is-disabled');
   }
   slideAuto(): void {
