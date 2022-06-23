@@ -1,4 +1,5 @@
 import anime from 'animejs/lib/anime.es.js';
+import { Utilities } from './Utilities';
 /**
  * シンプルなカルーセルスライダ
  * @category 	Application of AZLINK.
@@ -19,8 +20,9 @@ interface Options {
   ctrl: boolean;
   pager: boolean;
   wrapper: HTMLElement | ParentNode;
-  threshold: number;
   rootCount: number;
+  cloneCount: number;
+  threshold: number;
   onSliderLoad: any;
   onSlideBefore: any;
   onSlideAfter: any;
@@ -35,6 +37,7 @@ export class SimpleSlider {
   private nextBtn: HTMLAnchorElement;
   private itemWidth: number;
   private itemLength: number;
+  private itemLengthOrg: number;
   private current: number;
   private remainder: number;
   private pageLength: number;
@@ -57,8 +60,9 @@ export class SimpleSlider {
       ctrl = false,
       pager = false,
       wrapper = document.querySelector($selector).parentNode,
-      threshold = 0,
       rootCount = 1,
+      cloneCount = 2,
+      threshold = 0,
       onSliderLoad = false,
       onSlideBefore = false, // oldIndex, newIndex
       onSlideAfter = false, // oldIndex, newIndex
@@ -70,6 +74,7 @@ export class SimpleSlider {
     this.current = 0;
     this.pageLength = 1;
     this.itemLength = 0;
+    this.itemLengthOrg = 0;
     this.remainder = 0;
     this.isAllowSlide = false;
     this.rTimer = false;
@@ -84,8 +89,9 @@ export class SimpleSlider {
       ctrl: ctrl,
       pager: pager,
       wrapper: wrapper,
-      threshold: threshold,
       rootCount: rootCount,
+      cloneCount: cloneCount,
+      threshold: threshold,
       onSliderLoad: onSliderLoad,
       onSlideBefore: onSlideBefore,
       onSlideAfter: onSlideAfter,
@@ -98,7 +104,7 @@ export class SimpleSlider {
     if (this.options.pause < this.options.speed) {
       this.options.speed = this.options.pause - 1;
     }
-    this.itemLength = this.elem.children.length;
+    this.itemLength = this.itemLengthOrg = this.elem.children.length;
 
     Object.assign(this.elem.style, {
       display: 'flex',
@@ -129,9 +135,27 @@ export class SimpleSlider {
         Object.assign(this.container.style, {
           overflow: 'hidden',
         });
-        this.pageLength = Math.ceil(this.itemLength / this.options.rootCount);
-        this.remainder = this.pageLength - this.current;
         this.elem.style.width = `${this.itemWidth * this.itemLength}px`;
+        this.pageLength = Math.ceil(this.itemLength / this.options.rootCount);
+        if (this.options.isLoop) {
+          let w = this.elem.clientWidth;
+          // console.log(W, UTIL.wWidth * 2)
+          // const COPY = this.elem.children;
+          // console.log(COPY);
+          while (w <= this.container.clientWidth * this.options.cloneCount) {
+            const COPY = this.elem.innerHTML;
+            // this.elem.append(COPY);
+            this.elem.insertAdjacentHTML('afterbegin', COPY);
+            this.elem.insertAdjacentHTML('beforeend', COPY);
+            this.itemLength = this.elem.childElementCount;
+            this.elem.style.width = `${this.itemWidth * this.itemLength}px`;
+            w = this.elem.clientWidth;
+          }
+          this.elem.style.transform = `translateX(-${
+            this.itemWidth * this.itemLengthOrg
+          }px)`;
+        }
+        this.remainder = this.pageLength - this.current;
         if (this.options.ctrl) {
           (<HTMLElement>this.options.wrapper).insertAdjacentHTML(
             'beforeend',
@@ -218,6 +242,7 @@ export class SimpleSlider {
     }
   }
   slide(target?: number | boolean): void {
+    console.log(this.itemLength, this.pageLength);
     clearTimeout(Number(this.rTimer));
     if (!this.isAllowSlide) return;
     if (target === false) return;
@@ -235,11 +260,11 @@ export class SimpleSlider {
     Array.from(this.elem.children).forEach((v, i) => {
       v.classList.remove('slide-old', 'slide-active');
     });
-    this.elem.children[NEW_INDEX].classList.add('slide-active');
-    this.elem.children[OLD_INDEX]?.classList.add('slide-old');
+    this.elem.children[NEW_INDEX + this.pageLength].classList.add(
+      'slide-active'
+    );
+    this.elem.children[OLD_INDEX + this.pageLength]?.classList.add('slide-old');
     // console.log(OLD_INDEX, NEW_INDEX, target);
-    this.isAllowSlide = true;
-    // return;
     anime({
       targets: this.elem,
       translateX: () => {
