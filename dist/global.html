@@ -86,6 +86,17 @@
         // cloneCount: 10,
         isDebug: true
       });
+      const SLIDER04 = new azlib.SimpleSlider('#slider04', {
+        ctrl: true,
+        pager: true,
+        speed: 500,
+        pause: 3000,
+        isAuto: false,
+        // isLoop: false,
+        // rootCount: 2,
+        // cloneCount: 10,
+        isDebug: true
+      });
       new azlib.anime({
         targets: '.animeObj01',
         translateX: 250,
@@ -169,6 +180,18 @@
 
     .simpleSlider li {
       width: 50%;
+      transition: opacity 1s;
+    }
+
+    .simpleSlider li:not(.slide-active) {
+      opacity: .5;
+    }
+
+    .simpleSliderWrapper .ss-pager {}
+
+    .simpleSliderWrapper .ss-pager .is-active {
+      background: #000;
+      color: #FFF;
     }
 
     #instaVox {
@@ -183,6 +206,13 @@
   <div id="wrapper">
     <div class="simpleSliderWrapper sliderWrapper">
       <ul class="simpleSlider" id="slider03">
+        <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>
+      </ul>
+    </div>
+    <div class="simpleSliderWrapper sliderWrapper">
+      <ul class="simpleSlider" id="slider04">
         <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
         <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
         <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>

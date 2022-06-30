@@ -121,7 +121,7 @@ export class SimpleSlider {
     });
 
     if (this.itemLength > 1) {
-      console.log(this.options, this.options.rootCount);
+      // console.log(this.options, this.options.rootCount);
       // console.log(this.options.rootCount === 1);
       if (this.options.rootCount) {
         this.itemWidth = this.elem.firstElementChild.clientWidth;
@@ -166,7 +166,11 @@ export class SimpleSlider {
           this.elem.style.transform = `translateX(-${
             this.itemWidth * this.itemLengthOrg
           }px)`;
-          this.realCurrent = this.current + this.pageLength;
+          if (this.options.rootCount <= 1) {
+            this.realCurrent = this.current + this.pageLength;
+          } else {
+            this.realCurrent = this.current + this.itemLengthOrg;
+          }
         }
         this.remainder = this.getRemainder();
         if (this.options.ctrl) {
@@ -263,12 +267,16 @@ export class SimpleSlider {
     this.oldIndex = target !== this.realCurrent ? this.realCurrent : null;
     this.current = Number(target);
     if (this.options.isLoop) {
-      this.realCurrent = this.current + this.pageLength;
+      if (this.options.rootCount <= 1) {
+        this.realCurrent = this.current + this.pageLength;
+      } else {
+        this.realCurrent = this.current + this.itemLengthOrg;
+      }
     } else {
       this.realCurrent = this.current;
     }
     this.remainder = this.getRemainder();
-    // console.log(NEW_INDEX);
+    console.log(this.current, this.realCurrent);
     if (typeof this.options.onSlideBefore === 'function') {
       this.options.onSlideBefore(this.oldIndex, this.realCurrent);
     }
@@ -293,18 +301,33 @@ export class SimpleSlider {
         // console.log(REMAINDER, LENGTH);
         // console.log(this.current);
         if (this.options.isLoop) {
-          if (this.current >= this.pageLength) {
-            this.elem.style.transform = `translateX(-${
-              this.itemWidth * this.itemLengthOrg
-            }px)`;
-            this.current = 0;
-          } else if (this.current < 0) {
-            this.elem.style.transform = `translateX(-${
-              this.itemWidth * (this.itemLengthOrg + (this.pageLength - 1))
-            }px)`;
-            this.current = this.pageLength - 1;
+          if (this.options.rootCount <= 1) {
+            if (this.current >= this.pageLength) {
+              this.elem.style.transform = `translateX(-${
+                this.itemWidth * this.itemLengthOrg
+              }px)`;
+              this.current = 0;
+            } else if (this.current < 0) {
+              this.elem.style.transform = `translateX(-${
+                this.itemWidth * (this.itemLengthOrg + (this.pageLength - 1))
+              }px)`;
+              this.current = this.pageLength - 1;
+            }
+            this.realCurrent = this.current + this.pageLength;
+          } else {
+            if (this.current > this.pageLength) {
+              this.elem.style.transform = `translateX(-${
+                this.itemWidth * this.itemLengthOrg
+              }px)`;
+              this.current = 0;
+            } else if (this.current < 0) {
+              this.elem.style.transform = `translateX(-${
+                this.itemWidth * (this.itemLengthOrg + this.pageLength)
+              }px)`;
+              this.current = this.itemLengthOrg - 1;
+            }
+            this.realCurrent = this.current + this.itemLengthOrg;
           }
-          this.realCurrent = this.current + this.pageLength;
           this.oldIndex = this.oldIndex - this.pageLength;
         }
         if (this.options.pager) this.togglePager();
@@ -413,7 +436,7 @@ export class SimpleSlider {
   initDebug(): void {
     if (!this.options.isDebug) return;
     const SS_DEBUG = document.createElement('div');
-    SS_DEBUG.id = 'ssDebug';
+    SS_DEBUG.id = `ssDebug_${Date.now()}`;
     Object.assign(SS_DEBUG.style, {
       position: 'fixed',
       zIndex: 99999,
@@ -447,12 +470,12 @@ export class SimpleSlider {
       }
     });
 
-    this.showDebug();
+    this.showDebug(SS_DEBUG.id);
   }
   /**
    * デバッグ情報の出力
    */
-  showDebug(): void {
+  showDebug(id: string): void {
     let src = '';
 
     for (let key in this) {
@@ -467,13 +490,13 @@ export class SimpleSlider {
       }
     }
 
-    document.querySelector('#ssDebug .inner').innerHTML = src;
+    document.querySelector(`#${id} .inner`).innerHTML = src;
     // document.querySelector('#ssDebug .inner').insertAdjacentHTML('afterbegin', src);
-    this.runDebugAuto();
+    this.runDebugAuto(id);
   }
-  runDebugAuto(): void {
+  runDebugAuto(id: string): void {
     this.debugTimer = window.setTimeout(() => {
-      this.showDebug();
+      this.showDebug(id);
     }, 500);
   }
 }
