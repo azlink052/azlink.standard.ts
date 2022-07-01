@@ -276,7 +276,7 @@ export class SimpleSlider {
       this.realCurrent = this.current;
     }
     this.remainder = this.getRemainder();
-    console.log(this.current, this.realCurrent);
+    // console.log(this.current, this.realCurrent);
     if (typeof this.options.onSlideBefore === 'function') {
       this.options.onSlideBefore(this.oldIndex, this.realCurrent);
     }
@@ -386,7 +386,15 @@ export class SimpleSlider {
   }
   getNextSlide(): number | boolean {
     if (this.options.isLoop) {
-      return this.current + 1;
+      if (Number(this.options.rootCount) % this.pageLength !== 1) {
+        if (this.current + 1 === this.itemLengthOrg - 1) {
+          return 0;
+        } else {
+          return this.current + 1;
+        }
+      } else {
+        return this.current + 1;
+      }
     } else {
       if (this.current !== this.itemLength - 1) {
         return this.current + 1;
@@ -397,7 +405,15 @@ export class SimpleSlider {
   }
   getPrevSlide(): number | boolean {
     if (this.options.isLoop) {
-      return this.current - 1;
+      if (Number(this.options.rootCount) % this.pageLength !== 1) {
+        if (this.current - 1 < 0) {
+          return this.pageLength - 1;
+        } else {
+          return this.current - 1;
+        }
+      } else {
+        return this.current - 1;
+      }
     } else {
       if (this.current !== 0) {
         return this.current - 1;
