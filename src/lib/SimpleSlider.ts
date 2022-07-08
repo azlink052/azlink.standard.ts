@@ -21,6 +21,7 @@ interface Options {
   pager: boolean;
   wrapper: HTMLElement | ParentNode;
   rootCount: number | boolean;
+  slideCount: number;
   cloneCount: number;
   threshold: number;
   onSliderLoad: any;
@@ -63,7 +64,8 @@ export class SimpleSlider {
       ctrl = false,
       pager = false,
       wrapper = document.querySelector($selector).parentNode,
-      rootCount = false,
+      rootCount = false, // 1ページに表示する量
+      slideCount = 1, // 1度に動かす量
       cloneCount = 2,
       threshold = 0,
       onSliderLoad = false,
@@ -96,6 +98,7 @@ export class SimpleSlider {
       pager: pager,
       wrapper: wrapper,
       rootCount: rootCount,
+      slideCount: slideCount,
       cloneCount: cloneCount,
       threshold: threshold,
       onSliderLoad: onSliderLoad,
@@ -121,12 +124,11 @@ export class SimpleSlider {
     });
 
     if (this.itemLength > 1) {
-      // console.log(this.options, this.options.rootCount);
-      // console.log(this.options.rootCount === 1);
       if (this.options.rootCount) {
-        this.itemWidth = this.elem.firstElementChild.clientWidth;
-        this.options.rootCount = Math.ceil(
-          this.elem.clientWidth / this.itemWidth
+        if (this.options.rootCount === 1) this.options.slideCount = 1;
+        this.itemWidth = Math.floor(
+          (<HTMLElement>this.options.wrapper).clientWidth /
+            Number(this.options.rootCount)
         );
       } else {
         // console.log(this.options.wrapper);
@@ -145,23 +147,21 @@ export class SimpleSlider {
         Object.assign(this.container.style, {
           overflow: 'hidden',
         });
-        this.elem.style.width = `${this.itemWidth * this.itemLength}px`;
-        this.pageLength = Math.ceil(this.itemLength / this.options.rootCount);
+        this.elem.style.width = `${this.itemWidth * this.itemLengthOrg}px`;
+        this.pageLength = Math.ceil(
+          this.itemLength / Number(this.options.rootCount)
+        );
         if (this.options.isLoop) {
-          let w = this.elem.clientWidth;
-          // console.log(W, UTIL.wWidth * 2)
-          // const COPY = this.elem.children;
-          // console.log(COPY);
           const CLONE_COUNT =
             this.options.cloneCount < 3 ? 3 : this.options.cloneCount;
-          while (w <= this.container.clientWidth * CLONE_COUNT) {
+          for (let i = 1; i < CLONE_COUNT; i++) {
             const COPY = this.elem.innerHTML;
             // this.elem.append(COPY);
             this.elem.insertAdjacentHTML('afterbegin', COPY);
             this.elem.insertAdjacentHTML('beforeend', COPY);
             this.itemLength = this.elem.childElementCount;
             this.elem.style.width = `${this.itemWidth * this.itemLength}px`;
-            w = this.elem.clientWidth;
+            // w = this.elem.clientWidth;
           }
           this.elem.style.transform = `translateX(-${
             this.itemWidth * this.itemLengthOrg
@@ -259,7 +259,6 @@ export class SimpleSlider {
     }
   }
   slide(target?: number | boolean): void {
-    // console.log(this.itemLength, this.pageLength);
     clearTimeout(Number(this.rTimer));
     if (!this.isAllowSlide) return;
     if (target === false) return;
@@ -280,12 +279,6 @@ export class SimpleSlider {
     if (typeof this.options.onSlideBefore === 'function') {
       this.options.onSlideBefore(this.oldIndex, this.realCurrent);
     }
-    // Array.from(this.elem.children).forEach((v, i) => {
-    //   v.classList.remove('slide-old', 'slide-active');
-    // });
-    // this.elem.children[this.realCurrent].classList.add('slide-active');
-    // this.elem.children[OLD_INDEX + this.pageLength]?.classList.add('slide-old');
-    // console.log(OLD_INDEX, NEW_INDEX, target);
     anime({
       targets: this.elem,
       translateX: () => {
@@ -298,8 +291,6 @@ export class SimpleSlider {
       easing: this.options.easing,
       duration: this.options.duration,
       complete: () => {
-        // console.log(REMAINDER, LENGTH);
-        // console.log(this.current);
         if (this.options.isLoop) {
           if (this.options.rootCount <= 1) {
             if (this.current >= this.pageLength) {
@@ -356,9 +347,12 @@ export class SimpleSlider {
       .forEach((value) => {
         value.classList.remove('is-active');
       });
+    const TARGET_INDEX = Math.ceil(
+      this.current / Number(this.options.rootCount)
+    );
     this.options.wrapper
       .querySelectorAll('.ss-pager-item')
-      [this.current]?.querySelector('a')
+      [TARGET_INDEX]?.querySelector('a')
       .classList.add('is-active');
   }
   toggleCtrls(): void {
@@ -366,7 +360,7 @@ export class SimpleSlider {
     this.prevBtn.classList.remove('is-disabled');
     this.nextBtn.classList.remove('is-disabled');
     if (this.current === 0) this.prevBtn.classList.add('is-disabled');
-    if (this.current === this.pageLength - 1)
+    if (this.itemLengthOrg - this.current <= this.options.rootCount)
       this.nextBtn.classList.add('is-disabled');
   }
   slideAuto(): void {
@@ -397,7 +391,11 @@ export class SimpleSlider {
       }
     } else {
       if (this.current !== this.itemLength - 1) {
-        return this.current + 1;
+        if (this.remainder - this.options.slideCount < this.options.rootCount) {
+          return this.current + (this.remainder - 1 - this.options.slideCount);
+        } else {
+          return this.current + this.options.slideCount;
+        }
       } else {
         return false;
       }
@@ -416,15 +414,19 @@ export class SimpleSlider {
       }
     } else {
       if (this.current !== 0) {
-        return this.current - 1;
+        if (this.remainder + this.options.slideCount > this.itemLengthOrg) {
+          return 0;
+        } else {
+          return this.current - this.options.slideCount;
+        }
       } else {
         return false;
       }
     }
   }
   getRemainder(): number {
-    const REMAINDER = this.pageLength - 1 - this.current;
-    return REMAINDER < 0 ? this.pageLength - 1 : REMAINDER;
+    const REMAINDER = this.itemLengthOrg - this.current;
+    return REMAINDER < 0 ? this.itemLengthOrg : REMAINDER;
   }
   updateParams(object: Options): void {
     for (let key in object) {
