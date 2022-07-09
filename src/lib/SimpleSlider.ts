@@ -50,6 +50,7 @@ export class SimpleSlider {
   private pagerEvent: string[];
   private startX: number;
   private moveX: number;
+  private orgElement: Element | boolean;
   private debugTimer: number | boolean;
 
   constructor(
@@ -87,6 +88,7 @@ export class SimpleSlider {
     this.isAllowSlide = false;
     this.rTimer = false;
     this.pagerEvent = [];
+    this.orgElement = document.querySelector($selector);
     this.options = {
       isAuto: isAuto,
       isLoop: isLoop,
@@ -244,8 +246,23 @@ export class SimpleSlider {
                 const index = (<HTMLElement>e.target).getAttribute(
                   'data-index'
                 );
-                // 文字列変換
-                this.slide(Number(index));
+                const TARGET_INDEX = (() => {
+                  const INDEX = Number(index) * this.options.slideCount;
+                  if (
+                    INDEX + Number(this.options.rootCount) >
+                    this.itemLengthOrg
+                  ) {
+                    return (
+                      this.current +
+                      this.getRemainder() -
+                      Number(this.options.rootCount)
+                    );
+                    return this.itemLengthOrg - INDEX;
+                  } else {
+                    return INDEX;
+                  }
+                })();
+                this.slide(TARGET_INDEX);
               });
             });
         }

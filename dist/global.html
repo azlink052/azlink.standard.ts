@@ -85,7 +85,7 @@
         rootCount: 2,
         slideCount: 2,
         // cloneCount: 10,
-        // isDebug: true
+        isDebug: true
       });
       const SLIDER04 = new azlib.SimpleSlider('#slider04', {
         ctrl: true,
@@ -212,11 +212,13 @@
       opacity: .5;
     }
 
-    .simpleSliderWrapper .ss-pager {}
-
     .simpleSliderWrapper .ss-pager .is-active {
       background: #000;
       color: #FFF;
+    }
+
+    .simpleSliderWrapper .ss-ctrls .is-disabled {
+      opacity: .5;
     }
 
     #instaVox {
@@ -240,6 +242,13 @@
       </ul>
     </div>
     <div class="simpleSliderWrapper sliderWrapper">
+      <ul class="simpleSlider" id="slider04">
+        <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
+        <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>
+      </ul>
+    </div>
+    <div class="simpleSliderWrapper sliderWrapper">
       <ul class="simpleSlider" id="slider05">
         <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
         <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
@@ -255,13 +264,6 @@
         <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
         <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
         <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>
-        <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
-        <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
-        <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>
-      </ul>
-    </div>
-    <div class="simpleSliderWrapper sliderWrapper">
-      <ul class="simpleSlider" id="slider04">
         <li><img src="./assets/images/content/service/graphic_img01.jpg" alt=""></li>
         <li><img src="./assets/images/content/service/system_img01.jpg" alt=""></li>
         <li><img src="./assets/images/content/service/web_img01.jpg" alt=""></li>
