@@ -1,5 +1,4 @@
 import anime from 'animejs/lib/anime.es.js';
-import { Utilities } from './Utilities';
 /**
  * シンプルなカルーセルスライダ
  * @category 	Application of AZLINK.
@@ -66,8 +65,8 @@ export class SimpleSlider {
       pager = false,
       wrapper = document.querySelector($selector).parentNode,
       rootCount = false, // 1ページに表示する量
-      slideCount = 1, // 1度に動かす量
-      cloneCount = 2,
+      slideCount = 1, // 1度に動かす量 ※isLoopがtrueで1以外の場合rootCountと同じになる
+      cloneCount = 1,
       threshold = 0,
       onSliderLoad = false,
       onSlideBefore = false, // oldIndex, newIndex, this
@@ -134,8 +133,13 @@ export class SimpleSlider {
         );
       } else {
         // console.log(this.options.wrapper);
-        this.options.rootCount = 1;
+        this.options.rootCount = 1 as number;
         this.itemWidth = (<HTMLElement>this.options.wrapper).clientWidth;
+      }
+      if (this.options.isLoop) {
+        if (this.options.slideCount !== 1) {
+          this.options.slideCount = Number(this.options.rootCount);
+        }
       }
       Array.from(this.elem.children).forEach(
         (v: HTMLElement) => (v.style.width = `${this.itemWidth}px`)
@@ -154,10 +158,8 @@ export class SimpleSlider {
           this.itemLength / Number(this.options.rootCount)
         );
         if (this.options.isLoop) {
-          const CLONE_COUNT =
-            this.options.cloneCount < 3 ? 3 : this.options.cloneCount;
-          for (let i = 1; i < CLONE_COUNT; i++) {
-            const COPY = this.elem.innerHTML;
+          const COPY = this.elem.innerHTML;
+          for (let i = 0; i < this.options.cloneCount; i++) {
             // this.elem.append(COPY);
             this.elem.insertAdjacentHTML('afterbegin', COPY);
             this.elem.insertAdjacentHTML('beforeend', COPY);
@@ -248,18 +250,22 @@ export class SimpleSlider {
                 );
                 const TARGET_INDEX = (() => {
                   const INDEX = Number(index) * this.options.slideCount;
-                  if (
-                    INDEX + Number(this.options.rootCount) >
-                    this.itemLengthOrg
-                  ) {
-                    return (
-                      this.current +
-                      this.getRemainder() -
-                      Number(this.options.rootCount)
-                    );
-                    return this.itemLengthOrg - INDEX;
-                  } else {
+                  if (this.options.isLoop) {
                     return INDEX;
+                  } else {
+                    if (
+                      INDEX + Number(this.options.rootCount) >
+                      this.itemLengthOrg
+                    ) {
+                      return (
+                        this.current +
+                        this.getRemainder() -
+                        Number(this.options.rootCount)
+                      );
+                      return this.itemLengthOrg - INDEX;
+                    } else {
+                      return INDEX;
+                    }
                   }
                 })();
                 this.slide(TARGET_INDEX);
@@ -276,6 +282,7 @@ export class SimpleSlider {
     }
   }
   slide(target?: number | boolean): void {
+    console.log(target);
     clearTimeout(Number(this.rTimer));
     if (!this.isAllowSlide) return;
     if (target === false) return;
@@ -323,16 +330,26 @@ export class SimpleSlider {
             }
             this.realCurrent = this.current + this.pageLength;
           } else {
-            if (this.current > this.pageLength) {
+            if (this.current > this.itemLengthOrg - 1) {
               this.elem.style.transform = `translateX(-${
                 this.itemWidth * this.itemLengthOrg
               }px)`;
               this.current = 0;
             } else if (this.current < 0) {
-              this.elem.style.transform = `translateX(-${
-                this.itemWidth * (this.itemLengthOrg + this.pageLength)
-              }px)`;
-              this.current = this.itemLengthOrg - 1;
+              if (this.options.rootCount === 1) {
+                this.elem.style.transform = `translateX(-${
+                  this.itemWidth * (this.itemLengthOrg + this.pageLength)
+                }px)`;
+              } else {
+                this.elem.style.transform = `translateX(-${
+                  this.itemWidth *
+                  (this.itemLengthOrg +
+                    this.pageLength * Number(this.options.rootCount) -
+                    Number(this.options.rootCount))
+                }px)`;
+              }
+              this.current =
+                this.itemLengthOrg - Number(this.options.rootCount);
             }
             this.realCurrent = this.current + this.itemLengthOrg;
           }
@@ -397,14 +414,14 @@ export class SimpleSlider {
   }
   getNextSlide(): number | boolean {
     if (this.options.isLoop) {
-      if (Number(this.options.rootCount) % this.pageLength !== 1) {
-        if (this.current + 1 === this.itemLengthOrg - 1) {
+      if (this.itemLengthOrg % Number(this.options.rootCount)) {
+        if (this.current !== 0 && this.remainder <= this.options.rootCount) {
           return 0;
         } else {
-          return this.current + 1;
+          return this.current + this.options.slideCount;
         }
       } else {
-        return this.current + 1;
+        return this.current + this.options.slideCount;
       }
     } else {
       if (this.current !== this.itemLength - 1) {
@@ -420,14 +437,27 @@ export class SimpleSlider {
   }
   getPrevSlide(): number | boolean {
     if (this.options.isLoop) {
-      if (Number(this.options.rootCount) % this.pageLength !== 1) {
-        if (this.current - 1 < 0) {
-          return this.pageLength - 1;
+      if (this.itemLengthOrg % Number(this.options.rootCount)) {
+        if (this.remainder === this.itemLengthOrg) {
+          const R = Math.floor(
+            this.itemLengthOrg % Number(this.options.rootCount)
+          );
+          // const P = Math.floor(
+          //   this.itemLengthOrg / Number(this.options.rootCount)
+          // );
+          // console.log(P * Number(this.options.rootCount));
+
+          // console.log(
+          //   (this.pageLength - 1) * Number(this.options.rootCount) + R
+          // );
+          // console.log(this.itemLengthOrg - R);
+          // return R;
+          return this.itemLengthOrg - R;
         } else {
-          return this.current - 1;
+          return this.current - this.options.slideCount;
         }
       } else {
-        return this.current - 1;
+        return this.current - this.options.slideCount;
       }
     } else {
       if (this.current !== 0) {
