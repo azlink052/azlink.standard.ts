@@ -67,7 +67,7 @@ export class SimpleSlider {
       rootCount = false, // 1ページに表示する量
       slideCount = 1, // 1度に動かす量 ※isLoopがtrueで1以外の場合rootCountと同じになる
       cloneCount = 1,
-      threshold = 0,
+      threshold = 30,
       onSliderLoad = false,
       onSlideBefore = false, // oldIndex, newIndex, this
       onSlideAfter = false, // oldIndex, newIndex
@@ -271,6 +271,36 @@ export class SimpleSlider {
                 this.slide(TARGET_INDEX);
               });
             });
+          // スワイプ処理
+          this.elem.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            this.moveX = e.changedTouches[0].pageX;
+          });
+          this.elem.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.startX = e.touches[0].pageX;
+            this.moveX = 0;
+          });
+          this.elem.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            // console.log(`startX: ${this.startX}, moveX: ${this.moveX}`);
+            if (this.moveX === 0) {
+              return false;
+            } else {
+              if (this.startX + this.options.threshold < this.moveX) {
+                // 右向き
+                // console.log('→');
+                if (!this.isAllowSlide) return;
+                this.slide(this.getPrevSlide());
+              }
+              if (this.startX > this.moveX + this.options.threshold) {
+                // 左向き
+                // console.log('←');
+                if (!this.isAllowSlide) return;
+                this.slide(this.getNextSlide());
+              }
+            }
+          });
         }
       }
     }
