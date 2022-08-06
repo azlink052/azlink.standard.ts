@@ -83,7 +83,7 @@ export class RatioAdjust {
         transformOrigin: this.options.to,
         transform: `scale(${this.ratio})`,
       });
-      const H = (() => {
+      const h = (() => {
         if (this.ratio > 1 || this.ratio < 1) {
           return this.wWidth < this.options.bp
             ? this.targetHeight[i] * this.ratio
@@ -93,7 +93,7 @@ export class RatioAdjust {
         }
       })();
 
-      v.style.height = `${H}px`;
+      v.style.height = `${h}px`;
     });
   }
   setEvent(): void {

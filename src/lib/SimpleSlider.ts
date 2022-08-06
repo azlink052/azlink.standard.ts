@@ -158,11 +158,11 @@ export class SimpleSlider {
           this.itemLength / Number(this.options.rootCount)
         );
         if (this.options.isLoop) {
-          const COPY = this.elem.innerHTML;
+          const copy = this.elem.innerHTML;
           for (let i = 0; i < this.options.cloneCount; i++) {
-            // this.elem.append(COPY);
-            this.elem.insertAdjacentHTML('afterbegin', COPY);
-            this.elem.insertAdjacentHTML('beforeend', COPY);
+            // this.elem.append(copy);
+            this.elem.insertAdjacentHTML('afterbegin', copy);
+            this.elem.insertAdjacentHTML('beforeend', copy);
             this.itemLength = this.elem.childElementCount;
             this.elem.style.width = `${this.itemWidth * this.itemLength}px`;
             // w = this.elem.clientWidth;
@@ -245,16 +245,14 @@ export class SimpleSlider {
                 if (!this.isAllowSlide) return;
                 if ((<HTMLElement>e.target).classList.contains('is-active'))
                   return;
-                const index = (<HTMLElement>e.target).getAttribute(
-                  'data-index'
-                );
-                const TARGET_INDEX = (() => {
-                  const INDEX = Number(index) * this.options.slideCount;
+                const i = (<HTMLElement>e.target).getAttribute('data-index');
+                const targetIndex = (() => {
+                  const index = Number(i) * this.options.slideCount;
                   if (this.options.isLoop) {
-                    return INDEX;
+                    return index;
                   } else {
                     if (
-                      INDEX + Number(this.options.rootCount) >
+                      index + Number(this.options.rootCount) >
                       this.itemLengthOrg
                     ) {
                       return (
@@ -262,13 +260,13 @@ export class SimpleSlider {
                         this.getRemainder() -
                         Number(this.options.rootCount)
                       );
-                      return this.itemLengthOrg - INDEX;
+                      return this.itemLengthOrg - index;
                     } else {
-                      return INDEX;
+                      return index;
                     }
                   }
                 })();
-                this.slide(TARGET_INDEX);
+                this.slide(targetIndex);
               });
             });
           // スワイプ処理
@@ -312,7 +310,7 @@ export class SimpleSlider {
     }
   }
   slide(target?: number | boolean): void {
-    console.log(target);
+    // console.log(target);
     clearTimeout(Number(this.rTimer));
     if (!this.isAllowSlide) return;
     if (target === false) return;
@@ -411,12 +409,12 @@ export class SimpleSlider {
       .forEach((value) => {
         value.classList.remove('is-active');
       });
-    const TARGET_INDEX = Math.ceil(
+    const targetIndex = Math.ceil(
       this.current / Number(this.options.rootCount)
     );
     this.options.wrapper
       .querySelectorAll('.ss-pager-item')
-      [TARGET_INDEX]?.querySelector('a')
+      [targetIndex]?.querySelector('a')
       .classList.add('is-active');
   }
   toggleCtrls(): void {
@@ -469,20 +467,20 @@ export class SimpleSlider {
     if (this.options.isLoop) {
       if (this.itemLengthOrg % Number(this.options.rootCount)) {
         if (this.remainder === this.itemLengthOrg) {
-          const R = Math.floor(
+          const r = Math.floor(
             this.itemLengthOrg % Number(this.options.rootCount)
           );
-          // const P = Math.floor(
+          // const p = Math.floor(
           //   this.itemLengthOrg / Number(this.options.rootCount)
           // );
-          // console.log(P * Number(this.options.rootCount));
+          // console.log(p * Number(this.options.rootCount));
 
           // console.log(
-          //   (this.pageLength - 1) * Number(this.options.rootCount) + R
+          //   (this.pageLength - 1) * Number(this.options.rootCount) + r
           // );
-          // console.log(this.itemLengthOrg - R);
-          // return R;
-          return this.itemLengthOrg - R;
+          // console.log(this.itemLengthOrg - r);
+          // return r;
+          return this.itemLengthOrg - r;
         } else {
           return this.current - this.options.slideCount;
         }
@@ -502,8 +500,8 @@ export class SimpleSlider {
     }
   }
   getRemainder(): number {
-    const REMAINDER = this.itemLengthOrg - this.current;
-    return REMAINDER < 0 ? this.itemLengthOrg : REMAINDER;
+    const remainder = this.itemLengthOrg - this.current;
+    return remainder < 0 ? this.itemLengthOrg : remainder;
   }
   updateParams(object: Options): void {
     for (let key in object) {
@@ -519,8 +517,8 @@ export class SimpleSlider {
   }
   destroy(): void {
     clearTimeout(Number(this.rTimer));
-    for (const EVENT of this.pagerEvent) {
-      document.removeEventListener('click', this.pagerEvent[EVENT]);
+    for (const event of this.pagerEvent) {
+      document.removeEventListener('click', this.pagerEvent[event]);
     }
     this.options.wrapper.querySelector('.ss-ctrls').remove();
     this.options.wrapper.querySelector('.ss-pager').remove();
@@ -530,9 +528,9 @@ export class SimpleSlider {
    */
   initDebug(): void {
     if (!this.options.isDebug) return;
-    const SS_DEBUG = document.createElement('div');
-    SS_DEBUG.id = `ssDebug_${Date.now()}`;
-    Object.assign(SS_DEBUG.style, {
+    const ssDebug = document.createElement('div');
+    ssDebug.id = `ssDebug_${Date.now()}`;
+    Object.assign(ssDebug.style, {
       position: 'fixed',
       zIndex: 99999,
       top: 0,
@@ -545,27 +543,27 @@ export class SimpleSlider {
       overflow: 'auto',
     });
 
-    document.body.appendChild(SS_DEBUG);
-    SS_DEBUG.innerHTML =
+    document.body.appendChild(ssDebug);
+    ssDebug.innerHTML =
       '<div><a href="javascript:void(0)" class="toggle" style="color: #FFFFFF;">HIDE</a></div><div class="inner" />';
 
-    const ELEM = {
-      toggle: SS_DEBUG.querySelector<HTMLElement>('.toggle'),
-      inner: SS_DEBUG.querySelector<HTMLElement>('.inner'),
+    const elem = {
+      toggle: ssDebug.querySelector<HTMLElement>('.toggle'),
+      inner: ssDebug.querySelector<HTMLElement>('.inner'),
     };
-    ELEM.toggle.addEventListener('click', () => {
-      if (ELEM.inner.style.display !== 'none') {
-        ELEM.inner.style.display = 'none';
-        SS_DEBUG.style.height = 'auto';
-        ELEM.toggle.textContent = 'SHOW';
+    elem.toggle.addEventListener('click', () => {
+      if (elem.inner.style.display !== 'none') {
+        elem.inner.style.display = 'none';
+        ssDebug.style.height = 'auto';
+        elem.toggle.textContent = 'SHOW';
       } else {
-        ELEM.inner.style.display = 'block';
-        SS_DEBUG.style.height = '100%';
-        ELEM.toggle.textContent = 'HIDE';
+        elem.inner.style.display = 'block';
+        ssDebug.style.height = '100%';
+        elem.toggle.textContent = 'HIDE';
       }
     });
 
-    this.showDebug(SS_DEBUG.id);
+    this.showDebug(ssDebug.id);
   }
   /**
    * デバッグ情報の出力

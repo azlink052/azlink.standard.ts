@@ -74,17 +74,17 @@ export class AdjustSize {
       // 対象子要素
       value.style.height = 'auto';
       let getHeight = 0;
-      const IMAGES = [];
+      const images = [];
       let loaded = 0;
 
       value.querySelectorAll('img').forEach((v) => {
         // 子要素内のimgを配列に格納
-        IMAGES.push(v.src);
+        images.push(v.src);
       });
 
       let promise = Promise.resolve();
 
-      const CALLBACK = () => {
+      const callback = () => {
         switch (this.options.type) {
           case 'inner':
             getHeight = value.clientHeight;
@@ -111,35 +111,35 @@ export class AdjustSize {
         });
       };
 
-      if (IMAGES.length) {
+      if (images.length) {
         let inPromise = Promise.resolve();
 
-        for (let i = 0; i < IMAGES.length; i++) {
-          const IMG = document.createElement('img');
-          IMG.src = IMAGES[i];
+        for (let i = 0; i < images.length; i++) {
+          const img = document.createElement('img');
+          img.src = images[i];
 
-          const IMG_PRE_LOADER = new Image();
-          IMG_PRE_LOADER.src = IMAGES[i];
-          IMG_PRE_LOADER.onerror = () => {
+          const imgPreLoader = new Image();
+          imgPreLoader.src = images[i];
+          imgPreLoader.onerror = () => {
             console.log('AdjustSize: error!File does not exist.');
             inPromise = inPromise.then(() => {
               loaded++;
-              if (loaded === IMAGES.length) {
-                CALLBACK();
+              if (loaded === images.length) {
+                callback();
               }
             });
           };
-          IMG_PRE_LOADER.onload = () => {
+          imgPreLoader.onload = () => {
             inPromise = inPromise.then(() => {
               loaded++;
-              if (loaded === IMAGES.length) {
-                CALLBACK();
+              if (loaded === images.length) {
+                callback();
               }
             });
           };
         }
       } else {
-        CALLBACK();
+        callback();
       }
     });
   }

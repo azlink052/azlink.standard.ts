@@ -178,9 +178,9 @@ export class Utilities {
    */
   initDebug(): void {
     if (!this.isDebug) return;
-    const P_DEBUG = document.createElement('div');
-    P_DEBUG.id = 'pDebug';
-    Object.assign(P_DEBUG.style, {
+    const pDebug = document.createElement('div');
+    pDebug.id = 'pDebug';
+    Object.assign(pDebug.style, {
       position: 'fixed',
       zIndex: 99999,
       top: 0,
@@ -193,23 +193,23 @@ export class Utilities {
       overflow: 'auto',
     });
 
-    document.body.appendChild(P_DEBUG);
-    P_DEBUG.innerHTML =
+    document.body.appendChild(pDebug);
+    pDebug.innerHTML =
       '<div><a href="javascript:void(0)" class="toggle" style="color: #FFFFFF;">HIDE</a></div><div class="inner" />';
 
-    const ELEM = {
-      toggle: P_DEBUG.querySelector<HTMLElement>('.toggle'),
-      inner: P_DEBUG.querySelector<HTMLElement>('.inner'),
+    const elem = {
+      toggle: pDebug.querySelector<HTMLElement>('.toggle'),
+      inner: pDebug.querySelector<HTMLElement>('.inner'),
     };
-    ELEM.toggle.addEventListener('click', () => {
-      if (ELEM.inner.style.display !== 'none') {
-        ELEM.inner.style.display = 'none';
-        P_DEBUG.style.height = 'auto';
-        ELEM.toggle.textContent = 'SHOW';
+    elem.toggle.addEventListener('click', () => {
+      if (elem.inner.style.display !== 'none') {
+        elem.inner.style.display = 'none';
+        pDebug.style.height = 'auto';
+        elem.toggle.textContent = 'SHOW';
       } else {
-        ELEM.inner.style.display = 'block';
-        P_DEBUG.style.height = '100%';
-        ELEM.toggle.textContent = 'HIDE';
+        elem.inner.style.display = 'block';
+        pDebug.style.height = '100%';
+        elem.toggle.textContent = 'HIDE';
       }
     });
 
@@ -271,8 +271,8 @@ export class Utilities {
     if (!args) return;
 
     for (var i = 0; i < args.length; i++) {
-      const IMG = document.createElement('img');
-      IMG.src = args[i];
+      const img = document.createElement('img');
+      img.src = args[i];
     }
   }
   /**
@@ -284,19 +284,19 @@ export class Utilities {
     this.tmp.parms = this.tmp.query.split('&');
     // console.log(this.tmp)
 
-    const OBJ = {};
+    const obj = {};
 
-    for (const PARM of this.tmp.parms) {
-      const POS = PARM.indexOf('=');
-      if (POS > 0) {
-        const KEY = PARM.substring(0, POS);
-        const VAL = PARM.substring(POS + 1);
+    for (const parm of this.tmp.parms) {
+      const pos = parm.indexOf('=');
+      if (pos > 0) {
+        const key = parm.substring(0, pos);
+        const val = parm.substring(pos + 1);
 
-        OBJ[KEY] = VAL;
+        obj[key] = val;
       }
     }
 
-    return OBJ;
+    return obj;
   }
   /**
    * GET値の設定
@@ -345,36 +345,36 @@ export class Utilities {
    * 画像切り替えロールオーバー
    */
   roImg(): void {
-    const IMG_CACHE = [];
+    const imgCache = [];
 
     document
       .querySelectorAll<HTMLImageElement>('a > .roImg')
       .forEach((v, i) => {
-        const TIME = Date.now();
+        const time = Date.now();
         v.addEventListener('mouseenter', () => {
           if (this.isRespMode) return;
 
-          const PARAMS = {
+          const params = {
             src: '',
             srcDot: 0,
             srcOver: '',
           };
-          PARAMS.src = v.src;
-          PARAMS.srcDot = PARAMS.src.lastIndexOf('.');
-          PARAMS.srcOver = `${PARAMS.src.substr(
+          params.src = v.src;
+          params.srcDot = params.src.lastIndexOf('.');
+          params.srcOver = `${params.src.substr(
             0,
-            PARAMS.srcDot
-          )}_on${PARAMS.src.substr(PARAMS.srcDot, 4)}`;
+            params.srcDot
+          )}_on${params.src.substr(params.srcDot, 4)}`;
 
-          IMG_CACHE[TIME] = PARAMS.src;
+          imgCache[time] = params.src;
 
-          v.src = PARAMS.srcOver;
+          v.src = params.srcOver;
         });
 
         v.addEventListener('mouseleave', (e) => {
           if (this.isRespMode) return;
 
-          v.src = IMG_CACHE[TIME];
+          v.src = imgCache[time];
         });
       }, this);
   }
@@ -418,7 +418,7 @@ export class Utilities {
       )
       .forEach((v, i) => {
         v.addEventListener('click', (e) => {
-          const PARAMS = {
+          const params = {
             anchor: '',
             anchorURL: '',
             current: '',
@@ -426,34 +426,34 @@ export class Utilities {
             targetArray: [],
             target: '',
           };
-          PARAMS.anchor = (<HTMLAnchorElement>e.target).href;
-          PARAMS.anchorURL = PARAMS.anchor.split('#')[0];
-          PARAMS.current = window.location.href;
-          PARAMS.currentURL = PARAMS.current.split('#')[0];
+          params.anchor = (<HTMLAnchorElement>e.target).href;
+          params.anchorURL = params.anchor.split('#')[0];
+          params.current = window.location.href;
+          params.currentURL = params.current.split('#')[0];
 
-          if (PARAMS.anchorURL === PARAMS.currentURL) {
-            PARAMS.targetArray = PARAMS.anchor.split('#');
-            PARAMS.target = PARAMS.targetArray.pop();
+          if (params.anchorURL === params.currentURL) {
+            params.targetArray = params.anchor.split('#');
+            params.target = params.targetArray.pop();
 
-            const OFFSET = $offset && Number.isInteger($offset) ? $offset : 0;
-            const DURATION =
+            const offset = $offset && Number.isInteger($offset) ? $offset : 0;
+            const duration =
               $duration && $duration !== 500 && Number.isInteger($duration)
                 ? $duration
                 : 500;
-            const EASING =
+            const easing =
               $easing && $easing !== 'cubicBezier(0.11, 0, 0.5, 0)'
                 ? $easing
                 : 'cubicBezier(0.11, 0, 0.5, 0)';
-            const TARGET = document.getElementById(PARAMS.target);
+            const target = document.getElementById(params.target);
             anime.remove('html, body');
             anime({
               targets: 'html, body',
               scrollTop:
-                TARGET.getBoundingClientRect().top +
+                target.getBoundingClientRect().top +
                 window.pageYOffset +
-                OFFSET,
-              duration: DURATION,
-              easing: EASING,
+                offset,
+              duration: duration,
+              easing: easing,
             });
 
             return false;
@@ -501,9 +501,9 @@ export class Utilities {
    * スクロール位置の取得とセット
    */
   setScrPos(): void {
-    const CURRENT_Y = window.scrollY || window.pageYOffset;
-    this.scrMode = CURRENT_Y <= this.scrTop ? 'up' : 'down';
-    this.scrTop = CURRENT_Y;
+    const currentY = window.scrollY || window.pageYOffset;
+    this.scrMode = currentY <= this.scrTop ? 'up' : 'down';
+    this.scrTop = currentY;
     this.scrLeft = window.scrollX || window.pageXOffset;
   }
   /**
@@ -512,8 +512,8 @@ export class Utilities {
    * 後から追加する要素には未対応
    */
   pageTop(): void {
-    const PAGE_TOP_VOX = document.getElementById('pageTopVox');
-    if (!PAGE_TOP_VOX) return;
+    const pageTopVox = document.getElementById('pageTopVox');
+    if (!pageTopVox) return;
 
     if (this.rTimer.pagetop !== false) {
       clearTimeout(Number(this.rTimer.pagetop));
@@ -523,9 +523,9 @@ export class Utilities {
       if (this.scrTop >= this.pageTopPoint) {
         if (!this.isPageTopShow) {
           this.isPageTopShow = true;
-          PAGE_TOP_VOX.style.display = 'block';
+          pageTopVox.style.display = 'block';
           anime({
-            targets: PAGE_TOP_VOX,
+            targets: pageTopVox,
             opacity: 1,
             duration: 100,
           });
@@ -534,11 +534,11 @@ export class Utilities {
         if (this.isPageTopShow) {
           this.isPageTopShow = false;
           anime({
-            targets: PAGE_TOP_VOX,
+            targets: pageTopVox,
             opacity: 0,
             duration: 200,
             complete: () => {
-              PAGE_TOP_VOX.style.display = 'none';
+              pageTopVox.style.display = 'none';
             },
           });
         }
@@ -585,22 +585,22 @@ export class Utilities {
   toggleSPTel(): void {
     if (!this.isRespMode) {
       document.querySelectorAll<HTMLElement>('.spTel').forEach((e) => {
-        const PARENT = <HTMLElement>e.parentNode;
-        if (PARENT.tagName === 'A') {
-          PARENT.before(e);
-          PARENT.remove();
+        const parent = <HTMLElement>e.parentNode;
+        if (parent.tagName === 'A') {
+          parent.before(e);
+          parent.remove();
         }
       });
     } else {
       document.querySelectorAll<HTMLElement>('.spTel').forEach((e) => {
-        const TEL = e.getAttribute('data-tel');
-        // console.log(TEL);
-        const PARENT = <HTMLElement>e.parentNode;
-        if (PARENT.tagName !== 'A') {
-          const WRAP = document.createElement('a');
-          e.before(WRAP);
-          WRAP.append(e);
-          WRAP.href = 'tel:' + TEL;
+        const tel = e.getAttribute('data-tel');
+        // console.log(tel);
+        const parent = <HTMLElement>e.parentNode;
+        if (parent.tagName !== 'A') {
+          const wrap = document.createElement('a');
+          e.before(wrap);
+          wrap.append(e);
+          wrap.href = 'tel:' + tel;
         }
       });
     }

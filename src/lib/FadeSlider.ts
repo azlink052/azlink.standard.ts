@@ -165,9 +165,9 @@ export class FadeSlider {
         .forEach((v, i) => {
           v.addEventListener('click', (e) => {
             if (!this.isAllowSlide) return;
-            const INDEX = (<HTMLElement>e.target).getAttribute('data-index'); // 文字列変換
+            const index = (<HTMLElement>e.target).getAttribute('data-index'); // 文字列変換
 
-            this.change(Number(INDEX));
+            this.change(Number(index));
           });
         });
     }
@@ -182,27 +182,27 @@ export class FadeSlider {
     if (!this.isAllowSlide) return;
     if (target === false) return;
     this.isAllowSlide = false;
-    const OLD_INDEX = this.current;
-    const NEW_INDEX =
+    const oldIndex = this.current;
+    const newIndex =
       target >= 0
         ? Number(target)
         : this.current !== this.count - 1
         ? this.current + 1
         : 0;
-    this.current = NEW_INDEX === this.count ? 0 : NEW_INDEX;
+    this.current = newIndex === this.count ? 0 : newIndex;
     if (typeof this.options.onSlideBefore === 'function') {
-      this.options.onSlideBefore(OLD_INDEX, NEW_INDEX);
+      this.options.onSlideBefore(oldIndex, newIndex);
     }
     if (this.options.pager) this.togglePager();
     Array.from(this.elem.children).forEach((v, i) => {
       v.classList.remove('slide-old', 'slide-active');
     });
-    // console.log(OLD_INDEX, NEW_INDEX)
+    // console.log(oldIndex, newIndex)
     Array.from(this.elem.children).forEach((v, i) => {
       (<HTMLElement>v).style.zIndex = String(this.options.etcIndexInt);
     });
     Array.from(this.elem.children).forEach((v, i) => {
-      if (i === OLD_INDEX) {
+      if (i === oldIndex) {
         (<HTMLElement>v).style.zIndex = String(this.options.oldIndexInt);
         v.classList.add('slide-old');
       }
@@ -218,7 +218,7 @@ export class FadeSlider {
           easing: this.options.easing,
           complete: () => {
             if (typeof this.options.onSlideAfter === 'function') {
-              this.options.onSlideAfter(OLD_INDEX, this.current);
+              this.options.onSlideAfter(oldIndex, this.current);
             }
             Array.from(this.elem.children).forEach((v, i) => {
               if (i !== this.current) {
@@ -302,8 +302,8 @@ export class FadeSlider {
   }
   destroy(): void {
     clearTimeout(Number(this.rTimer));
-    for (const EVENT of this.pagerEvent) {
-      document.removeEventListener('click', this.pagerEvent[EVENT]);
+    for (const event of this.pagerEvent) {
+      document.removeEventListener('click', this.pagerEvent[event]);
     }
     this.options.wrapper.querySelector('.fs-ctrls').remove();
     this.options.wrapper.querySelector('.fs-pager').remove();

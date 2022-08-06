@@ -83,53 +83,53 @@ export class PopupAdjust {
       onClose: onClose,
     };
 
-    const CSS = document.createElement('style');
-    document.head.appendChild(CSS);
-    CSS.sheet.insertRule(
+    const css = document.createElement('style');
+    document.head.appendChild(css);
+    css.sheet.insertRule(
       'body.is-pOpenUnlock { overflow: visible; }',
-      // @ts-ignore CSS.sheet の型が不明
-      CSS.sheet.length
+      // @ts-ignore css.sheet の型が不明
+      css.sheet.length
     );
-    CSS.sheet.insertRule(
+    css.sheet.insertRule(
       'body.is-pOpenFixed { position: fixed; }',
-      // @ts-ignore CSS.sheet の型が不明
-      CSS.sheet.length
+      // @ts-ignore css.sheet の型が不明
+      css.sheet.length
     );
 
     this.init();
   }
   init(): void {
     if (!document.querySelector(this.options.bg)) {
-      const ALPHA_BG = document.createElement('div');
-      ALPHA_BG.id = 'alphaBg';
+      const alphaBg = document.createElement('div');
+      alphaBg.id = 'alphaBg';
       document
         .querySelector(this.options.wrapper)
         .insertBefore(
-          ALPHA_BG,
+          alphaBg,
           document.querySelector(this.options.wrapper).childNodes[0]
         );
     }
 
-    const POPUP_IDS = [];
+    const popupIDs = [];
     document
       .querySelectorAll(`${this.options.btn}:not(.exclude)`)
       .forEach((v, i) => {
-        const POPUP_ID = v.getAttribute('data-popup');
+        const popupID = v.getAttribute('data-popup');
 
-        if (POPUP_IDS.includes(POPUP_ID) !== true) {
-          POPUP_IDS.push(POPUP_ID);
+        if (popupIDs.includes(popupID) !== true) {
+          popupIDs.push(popupID);
         }
       });
 
     document
       .querySelectorAll(`${this.popupContent} .content`)
       .forEach((v, i) => {
-        const SRC = v.innerHTML;
-        const GROUP = v.getAttribute('data-group');
+        const src = v.innerHTML;
+        const group = v.getAttribute('data-group');
 
-        const POPUP_SRC = document.createElement('div');
-        POPUP_SRC.className = 'popupWrapper vertical';
-        POPUP_SRC.innerHTML = `
+        const popupSrc = document.createElement('div');
+        popupSrc.className = 'popupWrapper vertical';
+        popupSrc.innerHTML = `
           <div class="closeVox">
             <a href="javascript:void(0)" class="popupCloseBt">
               <span><!-- --></span>
@@ -141,13 +141,13 @@ export class PopupAdjust {
           </div>
         `;
 
-        document.querySelector(this.options.wrapper).appendChild(POPUP_SRC);
-        POPUP_SRC.id = POPUP_IDS[i];
-        if (GROUP) POPUP_SRC.classList.add(GROUP);
+        document.querySelector(this.options.wrapper).appendChild(popupSrc);
+        popupSrc.id = popupIDs[i];
+        if (group) popupSrc.classList.add(group);
         document
-          .querySelector(`#${POPUP_IDS[i]}`)
+          .querySelector(`#${popupIDs[i]}`)
           .querySelector('.content')
-          .insertAdjacentHTML('beforeend', SRC);
+          .insertAdjacentHTML('beforeend', src);
         v.remove();
         // v.parentNode.removeChild(v);
       });
@@ -188,15 +188,15 @@ export class PopupAdjust {
             if (vv.classList.contains('is-animating')) return;
           });
 
-        const ID = v.getAttribute('data-popup');
-        this.popupTarget = `#${ID}`;
+        const id = v.getAttribute('data-popup');
+        this.popupTarget = `#${id}`;
 
         document.querySelector<HTMLElement>(this.popupTarget).style.opacity =
           '0';
         document.querySelector<HTMLElement>(this.popupTarget).style.display =
           'block';
 
-        this.change(`#${ID}`);
+        this.change(`#${id}`);
 
         document.querySelector<HTMLElement>(this.popupTarget).style.display =
           'none';
@@ -328,23 +328,23 @@ export class PopupAdjust {
     this.setRespMode();
     this.setScrPos();
 
-    const POPUP_HEIGHT =
+    const popupHeight =
       document.querySelector<HTMLElement>(target).offsetHeight;
-    const POPUP_WIDTH = document.querySelector<HTMLElement>(target).offsetWidth;
-    const TOP_POS =
-      this.wHeight > POPUP_HEIGHT ? (this.wHeight - POPUP_HEIGHT) / 2 : 0;
-    const LEFT_POS =
-      this.wWidth > POPUP_WIDTH ? (this.wWidth - POPUP_WIDTH) / 2 : 0;
+    const popupWidth = document.querySelector<HTMLElement>(target).offsetWidth;
+    const topPos =
+      this.wHeight > popupHeight ? (this.wHeight - popupHeight) / 2 : 0;
+    const leftPos =
+      this.wWidth > popupWidth ? (this.wWidth - popupWidth) / 2 : 0;
 
     this.scrTopTemp = this.scrTop;
-    // console.log(POPUP_HEIGHT, POPUP_WIDTH, TOP_POS, LEFT_POS, this.scrTopTemp)
+    // console.log(popupHeight, popupWidth, topPos, leftPos, this.scrTopTemp)
     if (!this.options.isUnlock) {
-      if (POPUP_HEIGHT >= this.wHeight) {
+      if (popupHeight >= this.wHeight) {
         document.body.classList.add('is-pOpenUnlock');
       }
     }
     document.querySelector<HTMLElement>(target).style.top = `${
-      TOP_POS + this.scrTop
+      topPos + this.scrTop
     }px`;
     if (this.isRespMode && this.options.isSpFixed) {
       document.body.classList.add('is-pOpenFixed');

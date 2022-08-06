@@ -55,9 +55,9 @@ export class InstaFeed {
         let src = '';
         const insta = response.data.media.data;
         for (const item of insta) {
-          const THUMB =
+          const thumb =
             item.media_type !== 'VIDEO' ? item.media_url : item.thumbnail_url;
-          src += `<div class="instaItem"><a href="${item.permalink}" target="_blank"><img src="${THUMB}"></a></div>`;
+          src += `<div class="instaItem"><a href="${item.permalink}" target="_blank"><img src="${thumb}"></a></div>`;
         }
         document
           .querySelector(this.options.elem)
