@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" media="all" href="./assets/css/global/import.min.css">
+  <script src="./azlib.bundle.js"></script>
+  <script>
+    class ContentJS {
+      constructor() {
+        this.isSkip = false;
+        this.isFlowAnime = false;
+        this.isPopup = false;
+        this.isAcc = false;
+        this.isOpen = false;
+        this.isAllowClose = false;
+        this.isDefaultFirst = true;
+        this.isScroll = true;
+        this.hHeight = 0;
+        this.hHeightOrg = 0;
+        this.hWidth = 0;
+        this.isNavMainHover = [];
+        this.isNavSubHover = [];
+        this.subHeights = [];
+        this.resizeTimer = false;
+        this.adminMargin = 0;
+      }
+      init() {
+        this.isSkip = document.body.classList.contains('is-skip') ? true : false;
+        this.isFlowAnime =
+          document.body.classList.contains('is-flowAnime') && !UTIL.isMobile
+            ? true
+            : false;
+        this.isPopup = document.body.classList.contains('is-popup') ? true : false;
+        this.isAcc = document.body.classList.contains('is-acc') ? true : false;
+
+        window.addEventListener('resize', () => {
+          if (this.resizeTimer !== false) {
+            clearTimeout(this.resizeTimer);
+          }
+
+          this.resizeTimer = setTimeout(() => {
+            this.adjust();
+            if (UTIL.isChangeMode) {
+              if (!UTIL.isRespMode) {
+                document.getElementById('gNavWrapper').style.display = 'block';
+              } else {
+                if (UTIL.isNavOpen) document.getElementById('gNavWrapper').click();
+              }
+            }
+          }, 500);
+        });
+
+        if (document.getElementById('pageTopVox')) {
+          document.querySelector('#pageTopVox a').addEventListener('click', e => {
+            new azlib.anime({
+              targets: 'html, body',
+              scrollTop: 0,
+              duration: 500,
+              easing: 'easeInOutQuart'
+            });
+          });
+        }
+
+        const RPL_SP_IMG01 = new azlib.ReplaceImageSP('.rplSPImg', {
+          spBreakPoint: UTIL.spBreakPoint
+        });
+
+        if (this.isPopup) {
+          const POPUP = new azlib.PopupAdjust('.popupBtItem', {
+            onComplete: () => {
+              console.log('loaded')
+            }
+          });
+        }
+
+        if (this.isAcc) {
+          this.initAcc();
+        }
+
+        const FLOW_VOX = new azlib.FlowVox('.flowVox', {
+          isRepeat: true
+        });
+
+        setTimeout(() => {
+          this.runIntro();
+        }, 500);
+
+        this.adjust();
+      }
+      adjust() {
+        this.hHeight = document.getElementById('siteHeader').clientHeight;
+        this.adminMargin = document.documentElement.style.marginTop;
+
+        UTIL.sScroll(
+          -(Number(this.adminMargin) + Number(this.hHeight)),
+          500,
+          'easeInQuad'
+        );
+
+        this.adjustHeader();
+      }
+      runIntro() {
+        if (this.isSkip) return;
+
+        // document.getElementById('wrapper').style.visibility = 'visible';
+
+        new azlib.anime({
+          targets: '#loading',
+          opacity: [ 1, 0 ],
+          complete: anim => {
+            if (document.getElementById('loading')) {
+              document.getElementById('loading').style.display = 'none';
+            }
+          }
+        });
+
+        if (location.hash !== '') {
+          const TARGET = location.hash;
+          const OFFSET = UTIL.isRespMode ? -(this.hHeight + this.adminMargin) : -this.adminMargin;
+          new azlib.anime({
+            targets: 'html, body',
+            scrollTop: TARGET.offsetTop + OFFSET,
+            duration: 10,
+            easing: 'easeInQuad'
+          });
+        }
+
+        new azlib.anime({
+          targets: '#wrapper',
+          opacity: 1,
+          delay: 400,
+          duration: 250,
+          easing: 'linear',
+          complete: anim => {
+            this.isDefaultFirst = false;
+          }
+        });
+      }
+      adjustHeader() {
+      }
+      initAcc() {
+        // 汎用アコーディオン
+        document
+          .querySelectorAll('.accVox')
+          .forEach((v, i) => {
+            const ITEM_DATE = (() => {
+              const TIME = new Date();
+              return TIME.getTime();
+            })();
+            const ACC_PARAMS = {
+              wrap: v,
+              opener: v.querySelector('.opener'),
+              body: v.querySelector('.accContent'),
+              height: 0,
+              isAllowChange: false,
+              id: parseInt(`${ITEM_DATE}_${i}`),
+            };
+            ACC_PARAMS.height = ACC_PARAMS.body.clientHeight;
+            // console.log(ACC_PARAMS);
+            new azlib.anime({
+              targets: ACC_PARAMS.body,
+              height: 0,
+              duration: 1,
+              complete: () => {
+                ACC_PARAMS.isAllowChange = true;
+                Object.assign(ACC_PARAMS.body.style, {
+                  display: 'none',
+                  overflow: 'hidden',
+                });
+                document.body.classList.add('is-allowChangeAcc');
+              },
+            });
+            ACC_PARAMS.wrap.classList.remove('is-open');
+            // イベント
+            ACC_PARAMS.opener.addEventListener('click', (e) => {
+              if (!ACC_PARAMS.isAllowChange) return;
+              ACC_PARAMS.isAllowChange = false;
+              if (ACC_PARAMS.body.style.display === 'block') {
+                ACC_PARAMS.wrap.classList.remove('is-open');
+                ACC_PARAMS.body.style.removeProperty('height');
+                new azlib.anime({
+                  targets: ACC_PARAMS.body,
+                  height: 0,
+                  duration: 400,
+                  easing: 'easeOutCubic',
+                  complete: () => {
+                    ACC_PARAMS.isAllowChange = true;
+                    ACC_PARAMS.body.style.display = 'none';
+                  },
+                });
+              } else {
+                ACC_PARAMS.wrap.classList.add('is-open');
+                Object.assign(ACC_PARAMS.body.style, {
+                  display: 'block',
+                  visibility: 'hidden',
+                  position: 'absolute',
+                  height: 'auto',
+                });
+                // ACC_PARAMS.height = ACC_PARAMS.body.clientHeight;
+                // console.log(ACC_PARAMS.height);
+                Object.assign(ACC_PARAMS.body.style, {
+                  visibility: 'visible',
+                  position: 'static',
+                  height: '0px',
+                });
+                // console.log(ACC_PARAMS.height);
+                new azlib.anime({
+                  targets: ACC_PARAMS.body,
+                  height: [0, ACC_PARAMS.height],
+                  duration: 400,
+                  easing: 'easeOutCubic',
+                  complete: () => {
+                    ACC_PARAMS.body.style.height = 'auto';
+                    ACC_PARAMS.height = ACC_PARAMS.body.clientHeight;
+                    ACC_PARAMS.isAllowChange = true;
+                    // console.log(ACC_PARAMS);
+                  },
+                });
+              }
+            });
+          });
+      }
+    }
+    /**
+     * Home用JSクラス
+     */
+    class HomeJS {
+      constructor() {
+        this.rTimer = false;
+        this.isFirst = true;
+      }
+      init() {
+        window.addEventListener('resize', () => {
+          if (this.rTimer !== false) {
+            clearTimeout(this.rTimer);
+          }
+
+          this.rTimer = setTimeout(() => {
+            this.adjust();
+            if (UTIL.isChangeMode) {
+              location.reload();
+              // this.adjust();
+            }
+          }, 500);
+        });
+        this.adjust();
+      }
+      adjust() {
+      }
+      runIntro() {
+        this.isFirst = false;
+
+        Object.assign(document.getElementById('wrapper').style, {
+          visibility: 'visible',
+          opacity: 0
+        });
+        new azlib.anime({
+          targets: '#wrapper',
+          opacity: 1,
+          duration: 500
+        });
+      }
+    }
+    /**
+     * インスタンス化
+     */
+    const UTIL = new azlib.Utilities({
+      spBreakPoint: 991
+    });
+    const CONTENT_JS = new ContentJS;
+    const HOME_JS = new HomeJS;
+    /**
+     * 実行
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      UTIL.init();
+      CONTENT_JS.init();
+      if (document.body.classList.contains('home')) {
+        HOME_JS.init();
+      }
+    });
+  </script>
+  <style>
+    #wrapper {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body class="home is-acc">
+    <div id="wrapper">
+      <header id="siteHeader">
+        <h1>lib.sample</h1>
+      </header><!-- /siteHeader -->
+
+      <div id="container">
+        <div id="accContainer">
+          <article class="accVox">
+            <h4 class="title opener"><a href="javascript:void(0)">他店で購入した品でも修復いただけますか？</a></h4>
+            <div class="txt accContent">
+              <p>
+                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+              </p>
+            </div>
+          </article>
+          <article class="accVox">
+            <h4 class="title opener"><a href="javascript:void(0)">輸送中の破損が気になります。</a></h4>
+            <div class="txt accContent">
+              <p>
+                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+              </p>
+            </div>
+          </article>
+          <article class="accVox">
+            <h4 class="title opener"><a href="javascript:void(0)">どのようなお支払い方法がありますか？</a></h4>
+            <div class="txt accContent">
+              <p>
+                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+              </p>
+            </div>
+          </article>
+        </div>
+      </div><!-- /container -->
+    </div><!-- /wrapper -->
+  </body>
+
+</html>
