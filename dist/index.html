@@ -9,20 +9,20 @@
   <link rel="stylesheet" type="text/css" media="all" href="./assets/css/global/import.min.css">
   <script src="./azlib.bundle.js"></script>
   <script>
-    const UTIL = new azlib.Utilities({
+    const util = new azlib.Utilities({
       spBreakPoint: 960,
       isDebug: true
     });
     window.addEventListener('DOMContentLoaded', () => {
-      UTIL.init();
-      // const ADJUST_SIZE = [];
+      util.init();
+      // const adjustSize = [];
       // document.querySelectorAll('.vox01, .vox02').forEach((v, i) => {
-      //   ADJUST_SIZE[i] = new azlib.AdjustSize(v.querySelectorAll('p'));
+      //   adjustSize[i] = new azlib.AdjustSize(v.querySelectorAll('p'));
       // });
       // azlib.adjustSize('.vox01, .vox02');
-      const ADJUST_SIZE1 = new azlib.AdjustSize('.vox01 p');
-      const ADJUST_SIZE2 = new azlib.AdjustSize('.vox02 p');
-      const POPUP = new azlib.PopupAdjust('.popupBtItem', {
+      const adjustSize1 = new azlib.AdjustSize('.vox01 p');
+      const adjustSize2 = new azlib.AdjustSize('.vox02 p');
+      const popup = new azlib.PopupAdjust('.popupBtItem', {
         // isAdjust: false,
         onComplete: () => {
           console.log('loaded')
@@ -30,52 +30,52 @@
       });
       document.querySelectorAll('.popupBtItem.movie').forEach((v, i) => {
         v.addEventListener('click', e => {
-          const MOVIE = v.getAttribute('data-movie');
-          const SRC = `<iframe src="https://www.youtube.com/embed/${MOVIE}?autoplay=1&rel=0" frameborder="0"
+          const movie = v.getAttribute('data-movie');
+          const src = `<iframe src="https://www.youtube.com/embed/${movie}?autoplay=1&rel=0" frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-          document.querySelector('#popupWrapperMovie .content').insertAdjacentHTML('beforeend', SRC);
+          document.querySelector('#popupWrapperMovie .content').insertAdjacentHTML('beforeend', src);
         });
       });
-      const RPL_SP_IMG01 = new azlib.ReplaceImageSP();
+      const rplSPImg = new azlib.ReplaceImageSP();
       // setTimeout(() => {
       //   rplSPImg1.destroy();
       // }, 5000);
-      const FLOW_VOX1 = new azlib.FlowVox('.flowVox', {
+      const flowVox1 = new azlib.FlowVox('.flowVox', {
         isRepeat: true
       });
-      const FLOW_VOX2 = new azlib.FlowVox('.flowVox2', {
+      const flowVox2 = new azlib.FlowVox('.flowVox2', {
         isRepeat: true
       });
-      const FLOW_VOX3 = new azlib.FlowVox('.flowVox3', {
+      const flowVox3 = new azlib.FlowVox('.flowVox3', {
         isRepeat: true
       });
-      const FLOW_VOX4 = new azlib.FlowVox('.flowVox4', {
+      const flowVox4 = new azlib.FlowVox('.flowVox4', {
         isRepeat: true,
         per: .3
       });
       document.querySelectorAll('.slider').forEach((value, index) => {
         Array.from(value.children).forEach((v, i) => {
-          const SRC = v.querySelector('img').src;
+          const src = v.querySelector('img').src;
           // console.log(src)
-          if (SRC) {
-            v.style.backgroundImage = `url(${SRC})`;
+          if (src) {
+            v.style.backgroundImage = `url(${src})`;
             v.querySelector('img').remove();
           }
         });
       });
-      const SLIDER01 = new azlib.FadeSlider('#slider01', {
+      const slider01 = new azlib.FadeSlider('#slider01', {
         ctrl: true,
         pager: true,
         speed: 1000,
         pause: 1500,
       });
-      const SLIDER02 = new azlib.FadeSlider('#slider02', {
+      const slider02 = new azlib.FadeSlider('#slider02', {
         ctrl: true,
         pager: true,
         speed: 500,
         pause: 3000,
       });
-      const SLIDER03 = new azlib.SimpleSlider('#slider03', {
+      const slider03 = new azlib.SimpleSlider('#slider03', {
         ctrl: true,
         pager: true,
         speed: 500,
@@ -87,7 +87,7 @@
         // cloneCount: 10,
         // isDebug: true
       });
-      const SLIDER04 = new azlib.SimpleSlider('#slider04', {
+      const slider04 = new azlib.SimpleSlider('#slider04', {
         ctrl: true,
         pager: true,
         speed: 500,
@@ -98,7 +98,7 @@
         // cloneCount: 10,
         // isDebug: true
       });
-      const SLIDER05 = new azlib.SimpleSlider('#slider05', {
+      const slider05 = new azlib.SimpleSlider('#slider05', {
         ctrl: true,
         pager: true,
         speed: 500,
@@ -110,7 +110,7 @@
         // cloneCount: 10,
         // isDebug: true
       });
-      const SLIDER06 = new azlib.SimpleSlider('#slider06', {
+      const slider06 = new azlib.SimpleSlider('#slider06', {
         ctrl: true,
         pager: true,
         speed: 500,
@@ -129,7 +129,7 @@
         loop: true,
         easing: 'spring(1, 80, 10, 0)'
       });
-      UTIL.sScroll();
+      util.sScroll();
     });
     let rTimer;
     window.addEventListener('resize', () => {
@@ -138,7 +138,7 @@
       }
 
       rTimer = setTimeout(() => {
-        console.log(UTIL.isChangeWIWidth)
+        console.log(util.isChangeWIWidth)
       }, 500);
     });
     // feedサンプル
