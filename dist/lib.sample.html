@@ -31,7 +31,7 @@
       init() {
         this.isSkip = document.body.classList.contains('is-skip') ? true : false;
         this.isFlowAnime =
-          document.body.classList.contains('is-flowAnime') && !UTIL.isMobile
+          document.body.classList.contains('is-flowAnime') && !util.isMobile
             ? true
             : false;
         this.isPopup = document.body.classList.contains('is-popup') ? true : false;
@@ -44,11 +44,11 @@
 
           this.resizeTimer = setTimeout(() => {
             this.adjust();
-            if (UTIL.isChangeMode) {
-              if (!UTIL.isRespMode) {
+            if (util.isChangeMode) {
+              if (!util.isRespMode) {
                 document.getElementById('gNavWrapper').style.display = 'block';
               } else {
-                if (UTIL.isNavOpen) document.getElementById('gNavWrapper').click();
+                if (util.isNavOpen) document.getElementById('gNavWrapper').click();
               }
             }
           }, 500);
@@ -65,12 +65,12 @@
           });
         }
 
-        const RPL_SP_IMG01 = new azlib.ReplaceImageSP('.rplSPImg', {
-          spBreakPoint: UTIL.spBreakPoint
+        const rplSPImg = new azlib.ReplaceImageSP('.rplSPImg', {
+          spBreakPoint: util.spBreakPoint
         });
 
         if (this.isPopup) {
-          const POPUP = new azlib.PopupAdjust('.popupBtItem', {
+          const popup = new azlib.PopupAdjust('.popupBtItem', {
             onComplete: () => {
               console.log('loaded')
             }
@@ -81,7 +81,7 @@
           this.initAcc();
         }
 
-        const FLOW_VOX = new azlib.FlowVox('.flowVox', {
+        const flowVox = new azlib.FlowVox('.flowVox', {
           isRepeat: true
         });
 
@@ -95,7 +95,7 @@
         this.hHeight = document.getElementById('siteHeader').clientHeight;
         this.adminMargin = document.documentElement.style.marginTop;
 
-        UTIL.sScroll(
+        util.sScroll(
           -(Number(this.adminMargin) + Number(this.hHeight)),
           500,
           'easeInQuad'
@@ -119,11 +119,11 @@
         });
 
         if (location.hash !== '') {
-          const TARGET = location.hash;
-          const OFFSET = UTIL.isRespMode ? -(this.hHeight + this.adminMargin) : -this.adminMargin;
+          const target = location.hash;
+          const offset = util.isRespMode ? -(this.hHeight + this.adminMargin) : -this.adminMargin;
           new azlib.anime({
             targets: 'html, body',
-            scrollTop: TARGET.offsetTop + OFFSET,
+            scrollTop: target.offsetTop + offset,
             duration: 10,
             easing: 'easeInQuad'
           });
@@ -147,77 +147,77 @@
         document
           .querySelectorAll('.accVox')
           .forEach((v, i) => {
-            const ITEM_DATE = (() => {
-              const TIME = new Date();
-              return TIME.getTime();
+            const itemDate = (() => {
+              const time = new Date();
+              return time.getTime();
             })();
-            const ACC_PARAMS = {
+            const accParams = {
               wrap: v,
               opener: v.querySelector('.opener'),
               body: v.querySelector('.accContent'),
               height: 0,
               isAllowChange: false,
-              id: parseInt(`${ITEM_DATE}_${i}`),
+              id: parseInt(`${itemDate}_${i}`),
             };
-            ACC_PARAMS.height = ACC_PARAMS.body.clientHeight;
-            // console.log(ACC_PARAMS);
+            accParams.height = accParams.body.clientHeight;
+            // console.log(accParams);
             new azlib.anime({
-              targets: ACC_PARAMS.body,
+              targets: accParams.body,
               height: 0,
               duration: 1,
               complete: () => {
-                ACC_PARAMS.isAllowChange = true;
-                Object.assign(ACC_PARAMS.body.style, {
+                accParams.isAllowChange = true;
+                Object.assign(accParams.body.style, {
                   display: 'none',
                   overflow: 'hidden',
                 });
                 document.body.classList.add('is-allowChangeAcc');
               },
             });
-            ACC_PARAMS.wrap.classList.remove('is-open');
+            accParams.wrap.classList.remove('is-open');
             // イベント
-            ACC_PARAMS.opener.addEventListener('click', (e) => {
-              if (!ACC_PARAMS.isAllowChange) return;
-              ACC_PARAMS.isAllowChange = false;
-              if (ACC_PARAMS.body.style.display === 'block') {
-                ACC_PARAMS.wrap.classList.remove('is-open');
-                ACC_PARAMS.body.style.removeProperty('height');
+            accParams.opener.addEventListener('click', (e) => {
+              if (!accParams.isAllowChange) return;
+              accParams.isAllowChange = false;
+              if (accParams.body.style.display === 'block') {
+                accParams.wrap.classList.remove('is-open');
+                accParams.body.style.removeProperty('height');
                 new azlib.anime({
-                  targets: ACC_PARAMS.body,
+                  targets: accParams.body,
                   height: 0,
                   duration: 400,
                   easing: 'easeOutCubic',
                   complete: () => {
-                    ACC_PARAMS.isAllowChange = true;
-                    ACC_PARAMS.body.style.display = 'none';
+                    accParams.isAllowChange = true;
+                    accParams.body.style.display = 'none';
                   },
                 });
               } else {
-                ACC_PARAMS.wrap.classList.add('is-open');
-                Object.assign(ACC_PARAMS.body.style, {
+                accParams.wrap.classList.add('is-open');
+                Object.assign(accParams.body.style, {
                   display: 'block',
                   visibility: 'hidden',
                   position: 'absolute',
                   height: 'auto',
                 });
-                // ACC_PARAMS.height = ACC_PARAMS.body.clientHeight;
-                // console.log(ACC_PARAMS.height);
-                Object.assign(ACC_PARAMS.body.style, {
+                // accParams.height = accParams.body.clientHeight;
+                // console.log(accParams.height);
+                Object.assign(accParams.body.style, {
                   visibility: 'visible',
                   position: 'static',
                   height: '0px',
                 });
-                // console.log(ACC_PARAMS.height);
+                // console.log(accParams.height);
                 new azlib.anime({
-                  targets: ACC_PARAMS.body,
-                  height: [0, ACC_PARAMS.height],
+                  targets: accParams.body,
+                  height: [0, accParams.height],
                   duration: 400,
                   easing: 'easeOutCubic',
                   complete: () => {
-                    ACC_PARAMS.body.style.height = 'auto';
-                    ACC_PARAMS.height = ACC_PARAMS.body.clientHeight;
-                    ACC_PARAMS.isAllowChange = true;
-                    // console.log(ACC_PARAMS);
+                    accParams.body.style.height = 'auto';
+                    accParams.height = accParams.body.clientHeight;
+                    accParams.isAllowChange = true;
+                    // console.log(accParams);
                   },
                 });
               }
@@ -241,7 +241,7 @@
 
           this.rTimer = setTimeout(() => {
             this.adjust();
-            if (UTIL.isChangeMode) {
+            if (util.isChangeMode) {
               location.reload();
               // this.adjust();
             }
@@ -268,19 +268,19 @@
     /**
      * インスタンス化
      */
-    const UTIL = new azlib.Utilities({
+    const util = new azlib.Utilities({
       spBreakPoint: 991
     });
-    const CONTENT_JS = new ContentJS;
-    const HOME_JS = new HomeJS;
+    const contentJS = new ContentJS;
+    const homeJS = new HomeJS;
     /**
      * 実行
      */
     document.addEventListener('DOMContentLoaded', () => {
-      UTIL.init();
-      CONTENT_JS.init();
+      util.init();
+      contentJS.init();
       if (document.body.classList.contains('home')) {
-        HOME_JS.init();
+        homeJS.init();
       }
     });
   </script>
