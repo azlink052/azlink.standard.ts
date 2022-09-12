@@ -7,7 +7,7 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 	2010- AZLINK. <https://azlink.jp>
- * @final 		2022.04.20
+ * @final 		2022.09.12
  *
  * ================================================
  */
@@ -418,6 +418,7 @@ export class Utilities {
       )
       .forEach((v, i) => {
         v.addEventListener('click', (e) => {
+          e.preventDefault();
           const params = {
             anchor: '',
             anchorURL: '',
@@ -426,7 +427,7 @@ export class Utilities {
             targetArray: [],
             target: '',
           };
-          params.anchor = (<HTMLAnchorElement>e.target).href;
+          params.anchor = (<HTMLAnchorElement>e.currentTarget).href;
           params.anchorURL = params.anchor.split('#')[0];
           params.current = window.location.href;
           params.currentURL = params.current.split('#')[0];
