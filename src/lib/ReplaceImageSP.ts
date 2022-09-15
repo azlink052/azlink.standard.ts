@@ -4,7 +4,7 @@
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2021.06.27
+ * @final 		2022.09.15
  *
  * @param {*} $target
  * @param {*} $options
@@ -49,6 +49,7 @@ export class ReplaceImageSP {
   }
   init(): void {
     // this.setRespMode = this.setRespMode.bind(this);
+    window.addEventListener('load', this.setEventAdjust);
     window.addEventListener('resize', this.setEventAdjust);
   }
   adjust(): void {
@@ -69,6 +70,7 @@ export class ReplaceImageSP {
     });
   }
   destroy(): void {
+    window.removeEventListener('laod', this.setEventAdjust);
     window.removeEventListener('resize', this.setEventAdjust);
   }
   setRespMode(): void {
