@@ -130,6 +130,7 @@
         easing: 'spring(1, 80, 10, 0)'
       });
       util.sScroll();
+      const lazyBg = new azlib.LazyLoadBg('.js-lazyBg');
     });
     let rTimer;
     window.addEventListener('resize', () => {
@@ -225,6 +226,10 @@
       display: grid;
       gap: 10px;
       grid-template-columns: 25fr 25fr 25fr 25fr;
+    }
+    .js-lazyBg,
+    .js-lazyBg * {
+      background-image: none !important;
     }
   </style>
 </head>
@@ -475,6 +480,13 @@
           <img src="assets/images/content/service/Koala.jpg" alt="" width="300">
         </p>
       </div>
+    </div>
+    <div class="js-lazyBg">
+      <p style="background: url('assets/images/content/service/Koala.jpg') no-repeat center / cover; height: 300px; display: flex; align-items: center; color: white">
+        Uncaught ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not definedUncaught ReferenceError: Velocity is not definedUncaught
+        ReferenceError: Velocity is not defined
+      </p>
     </div>
     <div class="sliderWrapper">
       <ul class="slider" id="slider01">
