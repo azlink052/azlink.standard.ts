@@ -6,8 +6,8 @@ import { Utilities } from './Utilities';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2022.04.28
- * 20220523 autorun 削除
+ * @final 		2022.10.24
+ * 20221024 easing 初期値設定
  *
  * @param {*} $selector
  * @param {*} $options
@@ -133,7 +133,7 @@ export class FlowVox {
             targets: item.target,
             translateX: -this.options.translate,
             opacity: 0,
-            duration: this.options.duration,
+            duration: 10,
           });
           break;
         case 'leftdown':
@@ -177,14 +177,14 @@ export class FlowVox {
             targets: item.target,
             scale: 0,
             opacity: 0,
-            duration: this.options.duration,
+            duration: 10,
           });
           break;
         case 'away':
           item.anime = anime({
             targets: item.target,
             opacity: 0,
-            duration: this.options.duration,
+            duration: 10,
           });
           break;
         case 'mark':
@@ -201,7 +201,7 @@ export class FlowVox {
             targets: item.target,
             translateY: this.options.translate,
             opacity: 0,
-            duration: this.options.duration,
+            duration: 10,
           });
       }
       this.observer.observe(item.elem);
@@ -227,6 +227,7 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.add('is-finishedFlowAnime');
             },
@@ -239,6 +240,7 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.remove('is-finishedFlowAnime');
             },
@@ -253,6 +255,7 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.add('is-finishedFlowAnime');
             },
@@ -265,6 +268,7 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.remove('is-finishedFlowAnime');
             },
@@ -279,6 +283,7 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.add('is-finishedFlowAnime');
             },
@@ -291,6 +296,7 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.remove('is-finishedFlowAnime');
             },
@@ -306,6 +312,7 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.add('is-finishedFlowAnime');
             },
@@ -319,6 +326,7 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.remove('is-finishedFlowAnime');
             },
@@ -334,6 +342,7 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.add('is-finishedFlowAnime');
             },
@@ -347,6 +356,7 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.remove('is-finishedFlowAnime');
             },
@@ -362,6 +372,7 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.add('is-finishedFlowAnime');
             },
@@ -375,6 +386,7 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.remove('is-finishedFlowAnime');
             },
@@ -390,6 +402,7 @@ export class FlowVox {
             opacity: [0, 1],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.add('is-finishedFlowAnime');
             },
@@ -403,6 +416,7 @@ export class FlowVox {
             opacity: [1, 0],
             duration: this.options.duration,
             delay: anime.stagger(this.options.delay),
+            easing: this.options.easing,
             complete: () => {
               item.elem.classList.remove('is-finishedFlowAnime');
             },
