@@ -446,6 +446,8 @@ export class Utilities {
                 ? $easing
                 : 'cubicBezier(0.11, 0, 0.5, 0)';
             const target = document.getElementById(params.target);
+            const targetPosition =
+              target.getBoundingClientRect().top + window.pageYOffset + offset;
             anime.remove('html, body');
             anime({
               targets: 'html, body',
@@ -455,6 +457,19 @@ export class Utilities {
                 offset,
               duration: duration,
               easing: easing,
+              update: () => {
+                const newTargetPosition =
+                  target.getBoundingClientRect().top +
+                  window.pageYOffset +
+                  offset;
+                if (targetPosition !== newTargetPosition) {
+                  anime.set('html, body', {
+                    scrollTop: () => {
+                      return newTargetPosition;
+                    },
+                  });
+                }
+              },
             });
 
             return false;
