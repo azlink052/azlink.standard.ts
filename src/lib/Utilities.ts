@@ -410,69 +410,71 @@ export class Utilities {
    * @param オフセット値
    * @param スピード
    * @param イージング
+   * @param 発火要素
    */
-  sScroll($offset?: number, $duration?: number, $easing?: string): void {
-    document
-      .querySelectorAll<HTMLAnchorElement>(
-        'a[href*="#"].scroll, area[href*="#"].scroll'
-      )
-      .forEach((v, i) => {
-        v.addEventListener('click', (e) => {
-          e.preventDefault();
-          const params = {
-            anchor: '',
-            anchorURL: '',
-            current: '',
-            currentURL: '',
-            targetArray: [],
-            target: '',
-          };
-          params.anchor = (<HTMLAnchorElement>e.currentTarget).href;
-          params.anchorURL = params.anchor.split('#')[0];
-          params.current = window.location.href;
-          params.currentURL = params.current.split('#')[0];
+  sScroll(
+    $offset?: number,
+    $duration?: number,
+    $easing?: string,
+    $target: string = 'a[href*="#"].scroll, area[href*="#"].scroll'
+  ): void {
+    document.querySelectorAll<HTMLAnchorElement>($target).forEach((v, i) => {
+      v.addEventListener('click', (e) => {
+        e.preventDefault();
+        const params = {
+          anchor: '',
+          anchorURL: '',
+          current: '',
+          currentURL: '',
+          targetArray: [],
+          target: '',
+        };
+        params.anchor = (<HTMLAnchorElement>e.currentTarget).href;
+        params.anchorURL = params.anchor.split('#')[0];
+        params.current = window.location.href;
+        params.currentURL = params.current.split('#')[0];
 
-          if (params.anchorURL === params.currentURL) {
-            params.targetArray = params.anchor.split('#');
-            params.target = params.targetArray.pop();
+        if (params.anchorURL === params.currentURL) {
+          params.targetArray = params.anchor.split('#');
+          params.target = params.targetArray.pop();
 
-            const offset = $offset && Number.isInteger($offset) ? $offset : 0;
-            const duration =
-              $duration && $duration !== 500 && Number.isInteger($duration)
-                ? $duration
-                : 500;
-            const easing =
-              $easing && $easing !== 'cubicBezier(0.11, 0, 0.5, 0)'
-                ? $easing
-                : 'cubicBezier(0.11, 0, 0.5, 0)';
-            const target = document.getElementById(params.target);
-            const targetPos =
-              target.getBoundingClientRect().top + window.pageYOffset + offset;
-            anime.remove('html, body');
-            anime({
-              targets: 'html, body',
-              scrollTop: targetPos,
-              duration: duration,
-              easing: easing,
-              update: () => {
-                const newTargetPos =
-                  target.getBoundingClientRect().top +
-                  window.pageYOffset +
-                  offset;
-                if (targetPos !== newTargetPos) {
-                  anime.set('html, body', {
-                    scrollTop: () => {
-                      return newTargetPos;
-                    },
-                  });
-                }
-              },
-            });
+          const offset = $offset && Number.isInteger($offset) ? $offset : 0;
+          const duration =
+            $duration && $duration !== 500 && Number.isInteger($duration)
+              ? $duration
+              : 500;
+          const easing =
+            $easing && $easing !== 'cubicBezier(0.11, 0, 0.5, 0)'
+              ? $easing
+              : 'cubicBezier(0.11, 0, 0.5, 0)';
+          const target = document.getElementById(params.target);
+          const targetPos =
+            target.getBoundingClientRect().top + window.pageYOffset + offset;
+          anime.remove('html, body');
+          anime({
+            targets: 'html, body',
+            scrollTop: targetPos,
+            duration: duration,
+            easing: easing,
+            update: () => {
+              const newTargetPos =
+                target.getBoundingClientRect().top +
+                window.pageYOffset +
+                offset;
+              if (targetPos !== newTargetPos) {
+                anime.set('html, body', {
+                  scrollTop: () => {
+                    return newTargetPos;
+                  },
+                });
+              }
+            },
+          });
 
-            return false;
-          }
-        });
+          return false;
+        }
       });
+    });
   }
   /**
    * レスポンシブ状態のチェック
