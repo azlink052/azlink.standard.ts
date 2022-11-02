@@ -420,8 +420,16 @@ export class Utilities {
   ): void {
     document.querySelectorAll<HTMLAnchorElement>($target).forEach((v, i) => {
       v.addEventListener('click', (e) => {
-        e.preventDefault();
-        const params = {
+        // e.preventDefault();
+        interface Params {
+          anchor: string;
+          anchorURL: string;
+          current: string;
+          currentURL: string;
+          targetArray: string[];
+          target: string;
+        }
+        const params: Params = {
           anchor: '',
           anchorURL: '',
           current: '',
@@ -435,6 +443,7 @@ export class Utilities {
         params.currentURL = params.current.split('#')[0];
 
         if (params.anchorURL === params.currentURL) {
+          e.preventDefault();
           params.targetArray = params.anchor.split('#');
           params.target = params.targetArray.pop();
 
@@ -470,7 +479,6 @@ export class Utilities {
               }
             },
           });
-
           return false;
         }
       });
