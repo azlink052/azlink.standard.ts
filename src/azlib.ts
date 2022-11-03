@@ -6,6 +6,7 @@ export { PopupAdjust } from './lib/PopupAdjust';
 export { FlowVox } from './lib/FlowVox';
 export { FadeSlider } from './lib/FadeSlider';
 export { SimpleSlider } from './lib/SimpleSlider';
+export { SimpleAccordion } from './lib/SimpleAccordion';
 export { ReplaceImageSP } from './lib/ReplaceImageSP';
 export { LazyLoadBg } from './lib/LazyLoadBg';
 export { RSSFeed } from './lib/RSSFeed';
