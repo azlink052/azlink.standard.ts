@@ -14,13 +14,23 @@ interface Options {
   changeDisplay: string;
   speed: number;
   easing: string;
-  parentContainer: HTMLElement | ParentNode;
+  parentContainer: HTMLElement;
   isAutoClose: boolean; // 兄弟要素のアコーディオンを自動で閉じるか
   onCloseAfter: any;
   onOpenAfter: any;
 }
+interface AccParam {
+  wrap: HTMLElement;
+  opener: HTMLElement;
+  body: HTMLElement;
+  height: number;
+  isAllowChange: boolean;
+  id: string;
+}
 export class SimpleAccordion {
   private collection: NodeListOf<HTMLElement>;
+  private selector: string;
+  private accParams: {} = {};
   public options: Options;
 
   constructor(
@@ -30,13 +40,14 @@ export class SimpleAccordion {
       changeDisplay = 'block',
       speed = 400,
       easing = 'easeOutCubic',
-      parentContainer = document.querySelector($selector).parentNode,
+      parentContainer = document.querySelector($selector)?.parentElement,
       isAutoClose = false,
       onCloseAfter = false, // id
       onOpenAfter = false, // id
     }: Partial<Options> = {}
   ) {
     this.collection = document.querySelectorAll($selector);
+    this.selector = $selector;
     this.options = {
       openClassName: openClassName,
       changeDisplay: changeDisplay,
@@ -51,20 +62,14 @@ export class SimpleAccordion {
     this.init();
   }
   init(): void {
-    this.collection.forEach((v, i) => {
+    if (!this.collection.length) return;
+
+    this.collection.forEach((v: HTMLElement, i: number) => {
       const itemDate: number = (() => {
         const time: Date = new Date();
         return time.getTime();
       })();
-      interface AccParams {
-        wrap: HTMLElement;
-        opener: HTMLElement;
-        body: HTMLElement;
-        height: number;
-        isAllowChange: boolean;
-        id: string;
-      }
-      const accParam: AccParams = {
+      const accParam: AccParam = {
         wrap: v,
         opener: v.querySelector('.opener'),
         body: v.querySelector('.accContent'),
@@ -75,6 +80,7 @@ export class SimpleAccordion {
           return `accItem_${num}`;
         })(),
       };
+      this.accParams[accParam.id] = accParam;
       v.id = accParam.id;
       // 初期化
       accParam.height = accParam.body.offsetHeight;
@@ -98,58 +104,74 @@ export class SimpleAccordion {
         accParam.isAllowChange = false;
         // console.log(accParam.body.style.display);
         if (accParam.body.style.display === this.options.changeDisplay) {
-          accParam.wrap.classList.remove(this.options.openClassName);
-          accParam.body.style.removeProperty('height');
-          anime({
-            targets: accParam.body,
-            height: 0,
-            duration: this.options.speed,
-            easing: this.options.easing,
-            complete: () => {
-              accParam.isAllowChange = true;
-              accParam.body.style.display = 'none';
-              if (typeof this.options.onCloseAfter === 'function') {
-                this.options.onCloseAfter(accParam.id);
-              }
-            },
-          });
+          this.close(accParam.id);
         } else {
-          accParam.wrap.classList.add(this.options.openClassName);
-          Object.assign(accParam.body.style, {
-            display: this.options.changeDisplay,
-            visibility: 'hidden',
-            position: 'absolute',
-            height: 'auto',
-          });
-          // accParam.height = accParam.body.clientHeight;
-          // console.log(accParam.height);
-          Object.assign(accParam.body.style, {
-            visibility: 'visible',
-            position: 'static',
-            height: '0px',
-          });
-          // console.log(accParam.height);
+          this.open(accParam.id);
           // isAutoCloseが有効な場合、兄弟要素のアコーディオンを閉じる
           if (this.options.isAutoClose) {
-            // TODO autoClsoeの実装
+            const targets: string[] = [];
+            this.options.parentContainer
+              .querySelectorAll(this.selector)
+              .forEach((vv: HTMLElement, ii: number) => {
+                if (vv.id !== accParam.id) {
+                  this.close(vv.id);
+                }
+              });
           }
-          anime({
-            targets: accParam.body,
-            height: [0, accParam.height],
-            duration: this.options.speed,
-            easing: this.options.easing,
-            complete: () => {
-              accParam.body.style.height = 'auto';
-              accParam.height = accParam.body.clientHeight;
-              accParam.isAllowChange = true;
-              // console.log(accParam);
-              if (typeof this.options.onOpenAfter === 'function') {
-                this.options.onOpenAfter(accParam.id);
-              }
-            },
-          });
         }
       });
+    });
+  }
+  open(key: string): void {
+    const accParam = this.accParams[key];
+    accParam.wrap.classList.add(this.options.openClassName);
+    Object.assign(accParam.body.style, {
+      display: this.options.changeDisplay,
+      visibility: 'hidden',
+      position: 'absolute',
+      height: 'auto',
+    });
+    // accParam.height = accParam.body.clientHeight;
+    // console.log(accParam.height);
+    Object.assign(accParam.body.style, {
+      visibility: 'visible',
+      position: 'static',
+      height: '0px',
+    });
+    // console.log(accParam.height);
+    // isAutoCloseが有効な場合、兄弟要素のアコーディオンを閉じる
+    anime({
+      targets: accParam.body,
+      height: [0, accParam.height],
+      duration: this.options.speed,
+      easing: this.options.easing,
+      complete: () => {
+        accParam.body.style.height = 'auto';
+        accParam.height = accParam.body.clientHeight;
+        accParam.isAllowChange = true;
+        // console.log(accParam);
+        if (typeof this.options.onOpenAfter === 'function') {
+          this.options.onOpenAfter(accParam.id);
+        }
+      },
+    });
+  }
+  close(key: string): void {
+    const accParam = this.accParams[key];
+    accParam.wrap.classList.remove(this.options.openClassName);
+    accParam.body.style.removeProperty('height');
+    anime({
+      targets: accParam.body,
+      height: 0,
+      duration: this.options.speed,
+      easing: this.options.easing,
+      complete: () => {
+        accParam.isAllowChange = true;
+        accParam.body.style.display = 'none';
+        if (typeof this.options.onCloseAfter === 'function') {
+          this.options.onCloseAfter(accParam.id);
+        }
+      },
     });
   }
 }
