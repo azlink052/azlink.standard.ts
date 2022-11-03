@@ -76,7 +76,7 @@ export class SimpleAccordion {
         height: 0,
         isAllowChange: false,
         id: ((): string => {
-          const num: number = parseInt(`${itemDate}_${i}`);
+          const num: number = parseInt(`${itemDate}${i}`);
           return `accItem_${num}`;
         })(),
       };
