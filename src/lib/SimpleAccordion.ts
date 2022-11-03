@@ -24,7 +24,7 @@ export class SimpleAccordion {
   public options: Options;
 
   constructor(
-    $selector: string,
+    $selector: string = '.accVox',
     {
       openClassName = 'is-open',
       changeDisplay = 'block',
