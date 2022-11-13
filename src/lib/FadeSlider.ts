@@ -92,20 +92,22 @@ export class FadeSlider {
     this.count = this.elem.children.length;
     this.elem.style.position = 'relative';
 
-    Array.from(this.elem.children).forEach((v, i) => {
-      Object.assign((<HTMLElement>v).style, {
-        opacity: this.options.isChangeOpacity ? 0 : 1,
+    Array.from(this.elem.children).forEach((v: HTMLElement, i: number) => {
+      Object.assign(v.style, {
+        // opacity: this.options.isChangeOpacity ? 0 : 1,
         zIndex: this.options.etcIndexInt,
         position: 'absolute',
         left: 0,
         top: 0,
       });
+      if (this.options.isChangeOpacity) v.style.opacity = '0';
       // console.log(i, this.current);
       if (i === this.current) {
-        Object.assign((<HTMLElement>v).style, {
-          opacity: this.options.isChangeOpacity ? 1 : 1,
+        Object.assign(v.style, {
+          // opacity: this.options.isChangeOpacity ? 1 : 1,
           zIndex: this.options.activeIndexInt,
         });
+        if (this.options.isChangeOpacity) v.style.opacity = '1';
       }
     });
 
@@ -207,36 +209,57 @@ export class FadeSlider {
         v.classList.add('slide-old');
       }
     });
-    Array.from(this.elem.children).forEach((v, i) => {
+    Array.from(this.elem.children).forEach((v: HTMLElement, i: number) => {
       if (i === this.current) {
-        (<HTMLElement>v).style.zIndex = String(this.options.activeIndexInt);
+        v.style.zIndex = String(this.options.activeIndexInt);
         v.classList.add('slide-active');
-        anime({
-          targets: v,
-          opacity: 1,
-          duration: this.options.speed,
-          easing: this.options.easing,
-          complete: () => {
-            if (typeof this.options.onSlideAfter === 'function') {
-              this.options.onSlideAfter(oldIndex, this.current);
-            }
-            Array.from(this.elem.children).forEach((v, i) => {
-              if (i !== this.current) {
-                (<HTMLElement>v).style.opacity = String(
-                  this.options.isChangeOpacity ? 0 : 1
-                );
+        if (this.options.isChangeOpacity) {
+          anime({
+            targets: v,
+            opacity: 1,
+            duration: this.options.speed,
+            easing: this.options.easing,
+            complete: () => {
+              if (typeof this.options.onSlideAfter === 'function') {
+                this.options.onSlideAfter(oldIndex, this.current);
               }
-            });
-            this.isAllowSlide = true;
-            if (this.options.isLoop) {
-              this.slideAuto();
-            } else {
-              if (this.current !== this.count - 1) {
+              Array.from(this.elem.children).forEach(
+                (v: HTMLElement, i: number) => {
+                  if (i !== this.current) {
+                    v.style.opacity = '0';
+                  }
+                }
+              );
+              this.isAllowSlide = true;
+              if (this.options.isLoop) {
                 this.slideAuto();
+              } else {
+                if (this.current !== this.count - 1) {
+                  this.slideAuto();
+                }
               }
-            }
-          },
-        });
+            },
+          });
+        } else {
+          anime({
+            targets: v,
+            duration: this.options.speed,
+            easing: this.options.easing,
+            complete: () => {
+              if (typeof this.options.onSlideAfter === 'function') {
+                this.options.onSlideAfter(oldIndex, this.current);
+              }
+              this.isAllowSlide = true;
+              if (this.options.isLoop) {
+                this.slideAuto();
+              } else {
+                if (this.current !== this.count - 1) {
+                  this.slideAuto();
+                }
+              }
+            },
+          });
+        }
       }
     });
   }
