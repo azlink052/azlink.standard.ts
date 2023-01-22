@@ -47,6 +47,22 @@
             ? true
             : false;
 
+          // ロケーションハッシュ
+          window.addEventListener('load', () => {
+            if (location.hash !== '') {
+              const target = location.hash;
+              const offset = util.isRespMode
+                ? -(this.hHeight + this.adminMargin)
+                : -this.adminMargin;
+              new azlib.anime({
+                targets: 'html, body',
+                scrollTop: target.offsetTop + offset,
+                duration: 10,
+                easing: 'easeInQuad',
+              });
+            }
+          });
+
           window.addEventListener('resize', () => {
             if (this.resizeTimer !== false) {
               clearTimeout(this.resizeTimer);
@@ -131,19 +147,6 @@
               }
             },
           });
-
-          if (location.hash !== '') {
-            const target = location.hash;
-            const offset = util.isRespMode
-              ? -(this.hHeight + this.adminMargin)
-              : -this.adminMargin;
-            new azlib.anime({
-              targets: 'html, body',
-              scrollTop: target.offsetTop + offset,
-              duration: 10,
-              easing: 'easeInQuad',
-            });
-          }
 
           new azlib.anime({
             targets: '#wrapper',
