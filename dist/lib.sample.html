@@ -49,19 +49,31 @@
 
           // ロケーションハッシュ
           window.addEventListener('load', () => {
-            if (location.hash !== '') {
-              const target = location.hash;
-              const offset = util.isRespMode
-                ? -(this.hHeight + this.adminMargin)
-                : -this.adminMargin;
-              new azlib.anime({
-                targets: 'html, body',
-                scrollTop: target.offsetTop + offset,
-                duration: 10,
-                easing: 'easeInQuad',
-              });
-            }
-          });
+		      if (location.hash !== '') {
+		        const hash = location.hash.replace('#', '');
+		        const target = document.getElementById(hash);
+		        const offset = -Number(this.hHeight);
+		        const targetPos =
+		          target.getBoundingClientRect().top + window.pageYOffset + offset;
+		        const anime = new azlib.anime({
+		          targets: 'html, body',
+		          scrollTop: targetPos,
+		          duration: 10,
+		          easing: 'easeInQuad',
+		          update: () => {
+		            const newTargetPos =
+		              target.getBoundingClientRect().top + window.pageYOffset + offset;
+		            if (targetPos !== newTargetPos) {
+		              anime.set('html, body', {
+		                scrollTop: () => {
+		                  return newTargetPos;
+		                },
+		              });
+		            }
+		          },
+		        });
+		      }
+		    });
 
           window.addEventListener('resize', () => {
             if (this.resizeTimer !== false) {
