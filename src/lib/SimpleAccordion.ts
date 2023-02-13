@@ -18,6 +18,7 @@ interface Options {
   isAutoClose: boolean; // 兄弟要素のアコーディオンを自動で閉じるか
   onCloseAfter: any;
   onOpenAfter: any;
+  onComplete: any;
 }
 interface AccParam {
   wrap: HTMLElement;
@@ -44,6 +45,7 @@ export class SimpleAccordion {
       isAutoClose = false,
       onCloseAfter = false, // id
       onOpenAfter = false, // id
+      onComplete = false, // simpleAccordionの準備完了コールバック
     }: Partial<Options> = {}
   ) {
     this.collection = document.querySelectorAll($selector);
@@ -57,6 +59,7 @@ export class SimpleAccordion {
       isAutoClose: isAutoClose,
       onCloseAfter: onCloseAfter,
       onOpenAfter: onOpenAfter,
+      onComplete: onComplete,
     };
 
     this.init();
@@ -120,6 +123,11 @@ export class SimpleAccordion {
           }
         }
       });
+      if (i + 1 >= this.collection.length) {
+        if (typeof this.options.onComplete === 'function') {
+          this.options.onComplete();
+        }
+      }
     });
   }
   open(key: string): void {

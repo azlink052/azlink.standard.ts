@@ -26,6 +26,9 @@
         // azlib.adjustSize('.vox01, .vox02');
         const acc01 = new azlib.SimpleAccordion('.accVox', {
           isAutoClose: true,
+          onComplete: () => {
+            console.log('accordion loaded');
+          },
         });
         const adjustSize1 = new azlib.AdjustSize('.vox01 p');
         const adjustSize2 = new azlib.AdjustSize('.vox02 p');
