@@ -1,4 +1,5 @@
 import anime from 'animejs/lib/anime.es.js';
+import { util } from 'webpack';
 /**
  * ================================================
  *
@@ -322,8 +323,7 @@ export class Utilities {
       this.isIE10 = v.indexOf('10.', 0) === 0 ? true : false;
       this.isIE11 = v.indexOf('11.', 0) === 0 ? true : false;
     }
-
-    this.isEdge = this.ua.indexOf('edge') >= 0;
+    this.isEdge = this.ua.indexOf('edge') >= 0 || this.ua.indexOf('edg') >= 0 ? true : false;
   }
   /**
    * Webブラウザバージョンの取得
@@ -466,6 +466,7 @@ export class Utilities {
             duration: duration,
             easing: easing,
             update: () => {
+              if (this.isEdge) return;
               const newTargetPos =
                 target.getBoundingClientRect().top +
                 window.pageYOffset +
@@ -475,6 +476,21 @@ export class Utilities {
                   scrollTop: () => {
                     return newTargetPos;
                   },
+                });
+              }
+            },
+            complete: () => {
+              const newTargetPos =
+                target.getBoundingClientRect().top +
+                window.pageYOffset +
+                offset;
+              // console.log(targetPos, newTargetPos)
+              if (targetPos !== newTargetPos) {
+                anime({
+                  targets: 'html, body',
+                  scrollTop: newTargetPos,
+                  duration: 10,
+                  easing: easing,
                 });
               }
             },
