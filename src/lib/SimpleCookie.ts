@@ -29,7 +29,7 @@ export class SimpleCookie {
     // console.log(this.cParam);
     p.forEach((v, i) => {
       const obj = v.split('=');
-      console.log(obj);
+      // console.log(obj);
       this.cParam.push({
         key: obj[0],
         value: obj[1],
