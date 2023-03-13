@@ -149,6 +149,21 @@
           'a[href*="#"].sScroll'
         );
         const lazyBg = new azlib.LazyLoadBg('.js-lazyBg');
+        // cookie
+        const cookie = new azlib.SimpleCookie();
+        cookie.set('test', 'test', {
+          // Httponly: true,
+          // secure: true
+        });
+        // console.log(cookie.get('test'));
+        // document.cookie = `cookie_name=${encodeURIComponent('tokyo tower')}`;
+        // cookie.delete('test');
+        
+        // cookie.delete('test');
+        // setTimeout(() => {
+        //   console.log(decodeURIComponent(cookie.get('test')));
+        // }, 1000)
+        // console.log(cookie.get('test'))
       });
       let rTimer;
       window.addEventListener('resize', () => {

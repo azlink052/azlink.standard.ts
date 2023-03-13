@@ -7,6 +7,7 @@ export { FlowVox } from './lib/FlowVox';
 export { FadeSlider } from './lib/FadeSlider';
 export { SimpleSlider } from './lib/SimpleSlider';
 export { SimpleAccordion } from './lib/SimpleAccordion';
+export { SimpleCookie } from './lib/SimpleCookie';
 export { ReplaceImageSP } from './lib/ReplaceImageSP';
 export { LazyLoadBg } from './lib/LazyLoadBg';
 // import {
