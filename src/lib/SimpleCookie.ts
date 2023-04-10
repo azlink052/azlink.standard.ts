@@ -21,6 +21,15 @@ export class SimpleCookie {
   private cParam: CookieObj[];
 
   constructor() {
+    this.raw = '';
+    this.cParam = [];
+
+    this.update();
+  }
+  /**
+   * cookie パラメータの更新
+   */
+  update(): void {
     this.raw = document.cookie;
     // console.log(this.raw);
     this.cParam = [];
@@ -67,7 +76,9 @@ export class SimpleCookie {
    */
   delete(key: string): boolean {
     const v = this.get(key);
-    if ((document.cookie = `${key}=${encodeURIComponent(v)}; max-age=0`)) {
+    const r = (document.cookie = `${key}=${encodeURIComponent(v)};max-age=0`);
+    this.update();
+    if (r) {
       return true;
     } else {
       return false;
@@ -88,7 +99,9 @@ export class SimpleCookie {
         c += ` ${key}=${option[key]};`;
       });
     }
-    if ((document.cookie = c)) {
+    const r = (document.cookie = c);
+    this.update();
+    if (r) {
       return true;
     } else {
       return false;
