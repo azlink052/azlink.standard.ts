@@ -220,16 +220,14 @@ export class PopupAdjust {
       this.isOpen = true;
 
       this.adjust(id);
+      document.querySelector<HTMLElement>(this.options.bg).style.display =
+        'block';
 
       anime({
         targets: document.querySelector(this.options.bg),
         opacity: [0, this.options.bgOpacity],
         easing: 'linear',
         duration: this.options.durationChange,
-        begin: () => {
-          document.querySelector<HTMLElement>(this.options.bg).style.display =
-            'block';
-        },
         complete: () => {
           anime({
             targets: document.querySelector(id),
