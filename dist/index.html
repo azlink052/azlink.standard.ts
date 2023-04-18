@@ -34,6 +34,10 @@
         const adjustSize2 = new azlib.AdjustSize('.vox02 p');
         const popup = new azlib.PopupAdjust('.popupBtItem', {
           // isAdjust: false,
+          durationChange: 0,
+          durationClose: 0,
+          durationBgChange: 1000,
+          durationBgClose: 0,
           onComplete: () => {
             console.log('loaded');
           },
@@ -159,7 +163,7 @@
         // document.cookie = `cookie_name=${encodeURIComponent('tokyo tower')}`;
         cookie.delete('test');
         console.log(cookie.get('test'));
-        
+
         // cookie.delete('test');
         // setTimeout(() => {
         //   console.log(decodeURIComponent(cookie.get('test')));

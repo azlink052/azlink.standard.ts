@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2022.06.10
+ * @final 		2023.04.17
  *
  * @param {*} $selector
  * @param {*} $options
@@ -19,6 +19,8 @@ interface Options {
   bgOpacity: number;
   durationChange: number;
   durationClose: number;
+  durationBgChange: number;
+  durationBgClose: number;
   onComplete: any;
   onOpen: any;
   onClose: any;
@@ -48,8 +50,10 @@ export class PopupAdjust {
       isSpFixed = true, // SP時はbodyのスクロールを禁止する
       isAdjust = true, // popupの位置調整を行う
       bgOpacity = 0.8, // レイヤの透明度
-      durationChange = 200, // ポップアップが開く際のの表示速度
+      durationChange = 200, // ポップアップが開く際の表示速度
       durationClose = 150, // ポップアップが閉じる際の表示速度
+      durationBgChange = 50, // レイヤが開く際の表示速度
+      durationBgClose = 50, // レイヤが閉じる際の表示速度
       onComplete = false, // popupAdjustの準備完了コールバック
       onOpen = false, // popupが開いた際のコールバック @return クリックされたpopupのid
       onClose = false, // popupを閉じた際のコールバック @return クリックされたpopupのid
@@ -78,6 +82,8 @@ export class PopupAdjust {
       bgOpacity: bgOpacity,
       durationChange: durationChange,
       durationClose: durationClose,
+      durationBgChange: durationBgChange,
+      durationBgClose: durationBgClose,
       onComplete: onComplete,
       onOpen: onOpen,
       onClose: onClose,
@@ -102,6 +108,8 @@ export class PopupAdjust {
     if (!document.querySelector(this.options.bg)) {
       const alphaBg = document.createElement('div');
       alphaBg.id = 'alphaBg';
+      alphaBg.style.display = 'none';
+      alphaBg.style.opacity = '0';
       document
         .querySelector(this.options.wrapper)
         .insertBefore(
@@ -140,6 +148,8 @@ export class PopupAdjust {
             <div class="content"><!-- --></div>
           </div>
         `;
+        popupSrc.style.display = 'none';
+        popupSrc.style.opacity = '0';
 
         document.querySelector(this.options.wrapper).appendChild(popupSrc);
         popupSrc.id = popupIDs[i];
@@ -190,6 +200,7 @@ export class PopupAdjust {
 
         const id = v.getAttribute('data-popup');
         this.popupTarget = `#${id}`;
+        // console.log(this.popupTarget);
 
         document.querySelector<HTMLElement>(this.popupTarget).style.opacity =
           '0';
@@ -198,10 +209,10 @@ export class PopupAdjust {
 
         this.change(`#${id}`);
 
-        document.querySelector<HTMLElement>(this.popupTarget).style.display =
-          'none';
-        document.querySelector<HTMLElement>(this.popupTarget).style.opacity =
-          '1';
+        // document.querySelector<HTMLElement>(this.popupTarget).style.display =
+        //   'none';
+        // document.querySelector<HTMLElement>(this.popupTarget).style.opacity =
+        //   '1';
 
         document.body.classList.add('is-pOpen');
       });
@@ -227,7 +238,7 @@ export class PopupAdjust {
         targets: document.querySelector(this.options.bg),
         opacity: [0, this.options.bgOpacity],
         easing: 'linear',
-        duration: this.options.durationChange,
+        duration: this.options.durationBgChange,
         complete: () => {
           anime({
             targets: document.querySelector(id),
@@ -270,7 +281,7 @@ export class PopupAdjust {
           anime({
             targets: this.options.bg,
             opacity: [1, 0],
-            duration: this.options.durationClose,
+            duration: this.options.durationBgClose,
             easing: 'linear',
             complete: () => {
               document.querySelector<HTMLElement>(
@@ -288,36 +299,11 @@ export class PopupAdjust {
           });
         },
       });
-      anime({
-        targets: v,
-        opacity: [1, 0],
-        duration: this.options.durationClose,
-        complete: () => {
-          anime({
-            targets: v,
-            opacity: [1, 0],
-            duration: this.options.durationClose,
-            complete: () => {
-              document.querySelector<HTMLElement>(
-                this.options.bg
-              ).style.display = 'none';
-              document.querySelector<HTMLElement>(
-                '.popupWrapper'
-              ).style.display = 'none';
-              this.isOpen = false;
-
-              if (typeof this.options.onClose === 'function') {
-                this.options.onClose(this.popupTarget);
-              }
-            },
-          });
-          document
-            .querySelectorAll('.popupWrapper.movie .content')
-            .forEach((vv, i) => {
-              if (vv) vv.innerHTML = '';
-            });
-        },
-      });
+      document
+        .querySelectorAll('.popupWrapper.movie .content')
+        .forEach((vv, i) => {
+          if (vv) vv.innerHTML = '';
+        });
     });
   }
   adjust(target: string): void {
