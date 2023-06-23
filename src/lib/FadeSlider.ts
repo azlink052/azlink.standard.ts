@@ -186,7 +186,7 @@ export class FadeSlider {
     this.isAllowSlide = false;
     const oldIndex = this.current;
     const newIndex =
-      target >= 0
+      Number(target) >= 0
         ? Number(target)
         : this.current !== this.count - 1
         ? this.current + 1

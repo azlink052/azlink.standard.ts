@@ -7,13 +7,14 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 	2010- AZLINK. <https://azlink.jp>
- * @final 		2022.09.12
+ * @final 		2023.06.23
  *
  * ================================================
  */
 interface Options {
   spBreakPoint: number;
   pageTopPoint: number;
+  pageTopElemID: string;
   isDebug: boolean;
   isRunInit: boolean;
 }
@@ -60,6 +61,7 @@ export class Utilities {
   public isChangeWIHeight: boolean;
   public isPageTopShow: boolean;
   public pageTopPoint: number;
+  public pageTopElemID: string;
   public scrMode: string;
   public scrTop: number;
   public scrLeft: number;
@@ -77,11 +79,13 @@ export class Utilities {
   // 初期値として$optionsで渡せるもの
   // spBreakPoint: ブレークポイント値 Integer
   // pageTopPoint: pagetop表示地点 Integer
+  // pageTopElemID: pagetop エレメントID
   // isDebug: デバッグ実行フラグ boolean
   // isRunInit: Initの実行フラグ boolean
   constructor({
     spBreakPoint = 768,
     pageTopPoint = 100,
+    pageTopElemID = 'js-pageTopVox',
     isDebug = false,
     isRunInit = true,
   }: Partial<Options> = {}) {
@@ -121,6 +125,7 @@ export class Utilities {
     this.isChangeWIHeight = false; // 画面高の変更判定
     this.isPageTopShow = false; // pagetop表示判定
     this.pageTopPoint = pageTopPoint; // pagetop表示Y座標
+    this.pageTopElemID = pageTopElemID; // pagetop エレメントのID
     this.scrMode = ''; // スクロールダウン中ならdown / スクロールアップ中ならup
     this.scrTop = 0; // Y軸スクロール量
     this.scrLeft = 0; // X軸スクロール量
@@ -547,10 +552,11 @@ export class Utilities {
   /**
    * 標準的なpagetop(表示／非表示のみ)
    * 表示ポイントをpageTopPointに設定
+   * 要素名はpageTopElemIDで変更可
    * 後から追加する要素には未対応
    */
   pageTop(): void {
-    const pageTopVox = document.getElementById('pageTopVox');
+    const pageTopVox = document.getElementById(this.pageTopElemID);
     if (!pageTopVox) return;
 
     if (this.rTimer.pagetop !== false) {
