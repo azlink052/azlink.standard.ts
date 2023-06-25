@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2022.06.20
+ * @final 		2023.06.25
  *
  * @param {*} $selector
  * @param {*} $options
@@ -125,9 +125,9 @@ export class FadeSlider {
         .insertAdjacentHTML(
           'beforeend',
           `
-        <a class="fs-prev" href="javascript:void(0)">Prev</a>
-        <a class="fs-next" href="javascript:void(0)">Next</a>
-      `
+            <button class="fs-prev">Prev</button>
+            <button class="fs-next">Next</button>
+          `
         );
       this.pagerEvent['prev'] = this.options.wrapper
         .querySelector('.fs-prev')
@@ -153,17 +153,17 @@ export class FadeSlider {
           'beforeend',
           `
           <div class="fs-pager-item">
-            <a href="javascript:void(0)" data-index="${i}">${i + 1}</a>
+            <button data-index="${i}">${i + 1}</button>
           </div>
         `
         );
       }
       this.options.wrapper
         .querySelectorAll('.fs-pager-item')
-        [this.current]?.querySelector('a')
+        [this.current]?.querySelector('button')
         .classList.add('is-active');
       this.pagerEvent['pager'] = this.options.wrapper
-        .querySelectorAll('.fs-pager-item a')
+        .querySelectorAll('.fs-pager-item button')
         .forEach((v, i) => {
           v.addEventListener('click', (e) => {
             if (!this.isAllowSlide) return;
@@ -265,13 +265,13 @@ export class FadeSlider {
   }
   togglePager(): void {
     this.options.wrapper
-      .querySelectorAll('.fs-pager-item a')
+      .querySelectorAll('.fs-pager-item button')
       .forEach((value) => {
         value.classList.remove('is-active');
       });
     this.options.wrapper
       .querySelectorAll('.fs-pager-item')
-      [this.current]?.querySelector('a')
+      [this.current]?.querySelector('button')
       .classList.add('is-active');
   }
   slideAuto(): void {

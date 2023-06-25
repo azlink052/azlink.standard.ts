@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2022.06.27
+ * @final 		2023.06.25
  *
  * @param {*} $selector
  * @param {*} $options
@@ -19,7 +19,7 @@ interface Options {
   ctrl: boolean;
   pager: boolean;
   wrapper: HTMLElement | ParentNode;
-  rootCount: number | boolean;
+  rootCount: number;
   slideCount: number;
   cloneCount: number;
   threshold: number;
@@ -64,7 +64,7 @@ export class SimpleSlider {
       ctrl = false,
       pager = false,
       wrapper = document.querySelector($selector).parentNode,
-      rootCount = false, // 1ページに表示する量
+      rootCount = 0, // 1ページに表示する量
       slideCount = 1, // 1度に動かす量 ※isLoopがtrueで1以外の場合rootCountと同じになる
       cloneCount = 1,
       threshold = 30,
@@ -191,8 +191,8 @@ export class SimpleSlider {
             .insertAdjacentHTML(
               'beforeend',
               `
-                <a class="ss-prev" href="javascript:void(0)">Prev</a>
-                <a class="ss-next" href="javascript:void(0)">Next</a>
+                <button class="ss-prev">Prev</button>
+                <button class="ss-next">Next</button>
               `
             );
           this.prevBtn = this.options.wrapper.querySelector('.ss-prev');
@@ -229,17 +229,17 @@ export class SimpleSlider {
               'beforeend',
               `
                 <div class="ss-pager-item">
-                  <a href="javascript:void(0)" data-index="${i}">${i + 1}</a>
+                  <button data-index="${i}">${i + 1}</button>
                 </div>
               `
             );
           }
           this.options.wrapper
             .querySelectorAll('.ss-pager-item')
-            [this.current]?.querySelector('a')
+            [this.current]?.querySelector('button')
             .classList.add('is-active');
           this.pagerEvent['pager'] = this.options.wrapper
-            .querySelectorAll('.ss-pager-item a')
+            .querySelectorAll('.ss-pager-item button')
             .forEach((v, i) => {
               v.addEventListener('click', (e) => {
                 if (!this.isAllowSlide) return;
@@ -405,7 +405,7 @@ export class SimpleSlider {
   }
   togglePager(): void {
     this.options.wrapper
-      .querySelectorAll('.ss-pager-item a')
+      .querySelectorAll('.ss-pager-item button')
       .forEach((value) => {
         value.classList.remove('is-active');
       });
@@ -414,7 +414,7 @@ export class SimpleSlider {
     );
     this.options.wrapper
       .querySelectorAll('.ss-pager-item')
-      [targetIndex]?.querySelector('a')
+      [targetIndex]?.querySelector('button')
       .classList.add('is-active');
   }
   toggleCtrls(): void {
@@ -545,7 +545,7 @@ export class SimpleSlider {
 
     document.body.appendChild(ssDebug);
     ssDebug.innerHTML =
-      '<div><a href="javascript:void(0)" class="toggle" style="color: #FFFFFF;">HIDE</a></div><div class="inner" />';
+      '<div><button class="toggle" style="color: #FFFFFF;">HIDE</button></div><div class="inner" />';
 
     const elem = {
       toggle: ssDebug.querySelector<HTMLElement>('.toggle'),

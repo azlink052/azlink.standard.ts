@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2022.11.03
+ * @final 		2023.06.25
  *
  * @param {*} $selector string
  * @param {*} $options object
@@ -101,6 +101,10 @@ export class SimpleAccordion {
         },
       });
       accParam.wrap.classList.remove(this.options.openClassName);
+      accParam.opener.setAttribute('aria-expanded', 'false');
+      accParam.opener.setAttribute('aria-controls', `${accParam.id}_body`);
+      accParam.body.setAttribute('aria-hidden', 'true');
+      accParam.body.id = `${accParam.id}_body`;
       // イベント
       accParam.opener.addEventListener('click', (e) => {
         if (!accParam.isAllowChange) return;
@@ -155,6 +159,8 @@ export class SimpleAccordion {
       easing: this.options.easing,
       complete: () => {
         accParam.body.style.height = 'auto';
+        accParam.body.setAttribute('aria-hidden', 'false');
+        accParam.opener.setAttribute('aria-expanded', 'true');
         accParam.height = accParam.body.clientHeight;
         accParam.isAllowChange = true;
         // console.log(accParam);
@@ -176,6 +182,8 @@ export class SimpleAccordion {
       complete: () => {
         accParam.isAllowChange = true;
         accParam.body.style.display = 'none';
+        accParam.body.setAttribute('aria-hidden', 'true');
+        accParam.opener.setAttribute('aria-expanded', 'false');
         if (typeof this.options.onCloseAfter === 'function') {
           this.options.onCloseAfter(accParam.id);
         }
