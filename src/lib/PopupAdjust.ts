@@ -16,6 +16,7 @@ interface Options {
   isUnlock: boolean;
   isSpFixed: boolean;
   isAdjust: boolean;
+  isA11y: boolean;
   bgOpacity: number;
   durationChange: number;
   durationClose: number;
@@ -49,6 +50,7 @@ export class PopupAdjust {
       isUnlock = true, // bodyのスクロール禁止を「しない」
       isSpFixed = true, // SP時はbodyのスクロールを禁止する
       isAdjust = true, // popupの位置調整を行う
+      isA11y = true, // アクセシビリティ対応
       bgOpacity = 0.8, // レイヤの透明度
       durationChange = 200, // ポップアップが開く際の表示速度
       durationClose = 150, // ポップアップが閉じる際の表示速度
@@ -79,6 +81,7 @@ export class PopupAdjust {
       isUnlock: isUnlock,
       isSpFixed: isSpFixed,
       isAdjust: isAdjust,
+      isA11y: isA11y,
       bgOpacity: bgOpacity,
       durationChange: durationChange,
       durationClose: durationClose,
@@ -108,8 +111,11 @@ export class PopupAdjust {
     if (!document.querySelector(this.options.bg)) {
       const alphaBg = document.createElement('div');
       alphaBg.id = 'alphaBg';
-      alphaBg.style.display = 'none';
-      alphaBg.style.opacity = '0';
+
+      Object.assign(alphaBg.style, {
+        opacity: '0',
+        display: 'none',
+      });
       document
         .querySelector(this.options.wrapper)
         .insertBefore(
@@ -139,17 +145,19 @@ export class PopupAdjust {
         popupSrc.className = 'popupWrapper vertical';
         popupSrc.innerHTML = `
           <div class="closeVox">
-            <a href="javascript:void(0)" class="popupCloseBt">
+            <button aria-label="ポップアップを閉じる" class="popupCloseBt">
               <span><!-- --></span>
               <span><!-- --></span>
-            </a>
+            </button>
           </div>
           <div class="contentWrapper">
             <div class="content"><!-- --></div>
           </div>
         `;
-        popupSrc.style.display = 'none';
-        popupSrc.style.opacity = '0';
+        Object.assign(popupSrc.style, {
+          opacity: '0',
+          display: 'none',
+        });
 
         document.querySelector(this.options.wrapper).appendChild(popupSrc);
         popupSrc.id = popupIDs[i];
@@ -202,10 +210,13 @@ export class PopupAdjust {
         this.popupTarget = `#${id}`;
         // console.log(this.popupTarget);
 
-        document.querySelector<HTMLElement>(this.popupTarget).style.opacity =
-          '0';
-        document.querySelector<HTMLElement>(this.popupTarget).style.display =
-          'block';
+        Object.assign(
+          document.querySelector<HTMLElement>(this.popupTarget).style,
+          {
+            opacity: '0',
+            display: 'block',
+          }
+        );
 
         this.change(`#${id}`);
 
@@ -240,21 +251,34 @@ export class PopupAdjust {
         easing: 'linear',
         duration: this.options.durationBgChange,
         complete: () => {
+          document.querySelector<HTMLElement>(id).style.display = 'block';
+          const children: HTMLCollection = document.querySelector(
+            this.options.wrapper
+          ).children;
+          Array.from(children).forEach((v) => {
+            if (v !== document.querySelector<HTMLElement>(id)) {
+              v.setAttribute('aria-hidden', 'true');
+            }
+          });
+          document
+            .querySelector<HTMLElement>(id)
+            .setAttribute('aria-hidden', 'false');
+          document
+            .querySelector(`.popupWrapper, ${this.options.bg}`)
+            .classList.add('is-animating');
           anime({
             targets: document.querySelector(id),
             opacity: [0, 1],
             duration: this.options.durationChange,
-            begin: () => {
-              document.querySelector<HTMLElement>(id).style.display = 'block';
-              document
-                .querySelector(`.popupWrapper, ${this.options.bg}`)
-                .classList.add('is-animating');
-            },
             complete: () => {
               this.isAllowClose = true;
               document
-                .querySelector(`.popupWrapper, ${this.options.bg}`)
-                .classList.remove('is-animating');
+                .querySelectorAll(`.popupWrapper, ${this.options.bg}`)
+                .forEach((v) => v.classList.remove('is-animating'));
+              document
+                .querySelector<HTMLElement>(id)
+                .querySelector<HTMLElement>('.popupCloseBt')
+                .focus();
               if (typeof this.options.onOpen === 'function') {
                 this.options.onOpen(this.popupTarget);
               }
@@ -278,6 +302,17 @@ export class PopupAdjust {
         duration: this.options.durationClose,
         complete: () => {
           (<HTMLElement>v).style.display = 'none';
+          (<HTMLElement>v).setAttribute('aria-hidden', 'true');
+          // document.body.setAttribute('aria-hidden', 'false');
+          const children: HTMLCollection = document.querySelector(
+            this.options.wrapper
+          ).children;
+          Array.from(children).forEach((vv) => {
+            // console.log(vv !== v);
+            if (vv !== v) {
+              (<HTMLElement>vv).removeAttribute('aria-hidden');
+            }
+          });
           anime({
             targets: this.options.bg,
             opacity: [1, 0],

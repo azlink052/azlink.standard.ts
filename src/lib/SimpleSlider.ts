@@ -191,8 +191,8 @@ export class SimpleSlider {
             .insertAdjacentHTML(
               'beforeend',
               `
-                <button class="ss-prev">Prev</button>
-                <button class="ss-next">Next</button>
+                <button class="ss-prev" aria-label="前のスライドへ">Prev</button>
+                <button class="ss-next" aria-label="次のスライドへ">Next</button>
               `
             );
           this.prevBtn = this.options.wrapper.querySelector('.ss-prev');
@@ -229,7 +229,7 @@ export class SimpleSlider {
               'beforeend',
               `
                 <div class="ss-pager-item">
-                  <button data-index="${i}">${i + 1}</button>
+                  <button data-index="${i}" aria-label="${i + 1}のスライドへ">${i + 1}</button>
                 </div>
               `
             );

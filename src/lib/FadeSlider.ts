@@ -125,8 +125,8 @@ export class FadeSlider {
         .insertAdjacentHTML(
           'beforeend',
           `
-            <button class="fs-prev">Prev</button>
-            <button class="fs-next">Next</button>
+            <button class="fs-prev" aria-label="前のスライドへ">Prev</button>
+            <button class="fs-next" aria-label="次のスライドへ">Next</button>
           `
         );
       this.pagerEvent['prev'] = this.options.wrapper
@@ -153,7 +153,9 @@ export class FadeSlider {
           'beforeend',
           `
           <div class="fs-pager-item">
-            <button data-index="${i}">${i + 1}</button>
+            <button data-index="${i}" aria-label="${i + 1}のスライドへ">${
+            i + 1
+          }</button>
           </div>
         `
         );
