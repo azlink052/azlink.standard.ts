@@ -36,7 +36,7 @@
           // isAdjust: false,
           durationChange: 0,
           durationClose: 0,
-          durationBgChange: 1000,
+          durationBgChange: 500,
           durationBgClose: 0,
           onComplete: () => {
             console.log('loaded');
@@ -159,16 +159,63 @@
           // Httponly: true,
           // secure: true
         });
-        console.log(cookie.get('test'));
+        // console.log(cookie.get('test'));
         // document.cookie = `cookie_name=${encodeURIComponent('tokyo tower')}`;
         cookie.delete('test');
-        console.log(cookie.get('test'));
+        // console.log(cookie.get('test'));
 
         // cookie.delete('test');
         // setTimeout(() => {
         //   console.log(decodeURIComponent(cookie.get('test')));
         // }, 1000)
         // console.log(cookie.get('test'))
+        // GNAV
+        if (document.getElementById('gNavOpener')) {
+          document
+            .getElementById('gNavOpener')
+            .addEventListener('click', (e) => {
+              if (util.isNavOpen) {
+                document
+                  .getElementById('gNavOpener')
+                  .classList.remove('is-navOpen');
+                document.body.classList.remove('is-navOpen');
+                document
+                  .getElementById('gNavOpener')
+                  .setAttribute('aria-expanded', 'false');
+                document
+                  .getElementById('gNavWrapper')
+                  .setAttribute('aria-hidden', 'true');
+                // if (util.isRespMode) {
+                //   document.body.style.top = 'auto';
+                //   window.scrollTo(0, this.scrTopCache);
+                // }
+                util.isNavOpen = false;
+              } else {
+                util.isNavOpen = true;
+                // if (util.isRespMode) {
+                //   this.scrTopCache = util.scrTop;
+                //   this.adjust();
+                //   document.body.style.top = `-${this.scrTopCache}px`;
+                // }
+                document
+                  .getElementById('gNavOpener')
+                  .classList.add('is-navOpen');
+                document.body.classList.add('is-navOpen');
+                document
+                  .getElementById('gNavOpener')
+                  .setAttribute('aria-expanded', 'true');
+                document
+                  .getElementById('gNavWrapper')
+                  .setAttribute('aria-hidden', 'false');
+              }
+            });
+        }
+
+        document.querySelectorAll('#gNavWrapper a').forEach((v, i) => {
+          v.addEventListener('click', (e) => {
+            if (util.isNavOpen) document.getElementById('gNavOpener').click();
+          });
+        });
       });
       let rTimer;
       window.addEventListener('resize', () => {
@@ -307,8 +354,19 @@
       }
       .jumpContentVox a:focus {
         height: auto;
-        line-height: 2.0;
+        line-height: 2;
         padding: 1em 20px;
+      }
+      #siteFooter {
+        margin-top: 5vh;
+      }
+      section {
+        margin: 30vh 0;
+      }
+      section h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 30px;
       }
     </style>
   </head>
@@ -321,361 +379,239 @@
       <header>
         <h1>AZLINK.standard javascript Library</h1>
       </header>
-      <main id="content">
-        <div id="accContainer">
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>他店で購入した品でも修復いただけますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-              <p style="margin-top: 10em">
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>輸送中の破損が気になります。</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-          <article class="accVox">
-            <h4 class="title opener">
-              <button>どのようなお支払い方法がありますか？</button>
-            </h4>
-            <div class="txt accContent">
-              <p>
-                この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
-              </p>
-            </div>
-          </article>
-        </div>
-        <div class="simpleSliderWrapper sliderWrapper">
-          <ul class="simpleSlider" id="slider03">
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-          </ul>
-        </div>
-        <div class="simpleSliderWrapper sliderWrapper">
-          <ul class="simpleSlider" id="slider04">
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-          </ul>
-        </div>
-        <div class="simpleSliderWrapper sliderWrapper">
-          <ul class="simpleSlider" id="slider05">
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-          </ul>
-        </div>
-        <div class="simpleSliderWrapper sliderWrapper">
-          <ul class="simpleSlider" id="slider06">
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-          </ul>
-        </div>
-        <div class="spTel" data-tel="0522630185">0522630185</div>
-        <div>
+      <div class="dspNone">読み上げテスト</div>
+      <div id="content">
+        <section>
+          <h2>Simple Accordion Sample</h2>
+          <div id="accContainer">
+            <article class="accVox">
+              <h4 class="title opener">
+                <button>他店で購入した品でも修復いただけますか？</button>
+              </h4>
+              <div class="txt accContent">
+                <p>
+                  この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+                </p>
+                <p>
+                  この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+                </p>
+                <p>
+                  この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+                </p>
+                <p style="margin-top: 10em">
+                  この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+                </p>
+              </div>
+            </article>
+            <article class="accVox">
+              <h4 class="title opener">
+                <button>輸送中の破損が気になります。</button>
+              </h4>
+              <div class="txt accContent">
+                <p>
+                  この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+                </p>
+              </div>
+            </article>
+            <article class="accVox">
+              <h4 class="title opener">
+                <button>どのようなお支払い方法がありますか？</button>
+              </h4>
+              <div class="txt accContent">
+                <p>
+                  この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section>
+          <h2>Simple Slider Sample</h2>
+          <div class="simpleSliderWrapper sliderWrapper">
+            <ul class="simpleSlider" id="slider03">
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+            </ul>
+          </div>
+          <div class="simpleSliderWrapper sliderWrapper">
+            <ul class="simpleSlider" id="slider04">
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+            </ul>
+          </div>
+          <div class="simpleSliderWrapper sliderWrapper">
+            <ul class="simpleSlider" id="slider05">
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+            </ul>
+          </div>
+          <div class="simpleSliderWrapper sliderWrapper">
+            <ul class="simpleSlider" id="slider06">
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <h2>toggleSPTel Sample</h2>
+          <div class="spTel" data-tel="0522630185">0522630185</div>
+        </section>
+        <section>
+          <h2>sScroll Sample</h2>
           <p>
-            <button class="popupBtItem" data-popup="popupWrapper01">popup</button>
+            <a href="#anchor01" class="sScroll">アンカーテスト</a>
           </p>
-        </div>
-        <p>
-          <a href="#anchor01" class="sScroll">アンカーテスト</a>
-        </p>
-        <div class="animeObj01">
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError:
+        </section>
+        <section>
+          <h2>animejs Sample</h2>
+          <div class="animeObj01">
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+          </div>
+        </section>
+        <section>
+          <h2>Popup Adjust Sample</h2>
+          <h3>Normal</h3>
+          <p class="mB50">
+            <button class="popupBtItem" data-popup="popupWrapper01">
+              popup
+            </button>
           </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError:
-          </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError:
-          </p>
-        </div>
-        <div>
-          <a href="javascript:void(0)"
-            ><img src="assets/images/content/works/cms.png" alt="" class="roImg"
-          /></a>
-          <a href="javascript:void(0)"
-            ><img src="assets/images/content/works/copy.png" alt="" class="roImg"
-          /></a>
-        </div>
-        <div>
-          <a href="javascript:void(0)"
-            ><img
-              src="assets/images/content/works/cms.png"
-              alt=""
-              class="jqHover"
-          /></a>
-        </div>
-        <div class="rplSPImgVox">
-          <figure>
-            <img
-              src="assets/images/content/service/PC_Koala.jpg"
-              alt=""
-              width="300"
-              class="rplSPImg"
-            />
-          </figure>
-        </div>
-        <div id="feedVox"></div>
-        <div id="instaVox"></div>
-        <div class="vox01">
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined
-            <img
-              src="assets/images/content/service/Koala.jpg"
-              alt=""
-              width="300"
-            />
-          </p>
-          <p>Uncaught ReferenceError: Velocity is not defined</p>
-        </div>
-        <div class="vox01">
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined
-            <img
-              src="assets/images/content/service/Koala.jpg"
-              alt=""
-              width="300"
-            /><br />
-            <img
-              src="assets/images/content/service/Koala.jpg"
-              alt=""
-              width="300"
-            />
-          </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined
-          </p>
-          <p>
-            <button class="popupBtItem" data-popup="popupWrapper02">popup</button>
-          </p>
+          <h3>Youtube</h3>
           <p>
             <button
               class="popupBtItem movie"
@@ -685,292 +621,360 @@
               popup
             </button>
           </p>
-        </div>
-        <div class="flowVox">
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined
-            <img
-              src="assets/images/content/service/Koala.jpg"
-              alt=""
-              width="300"
-            />
-          </p>
-        </div>
-        <div class="vox02">
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined
-          </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined
-          </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined Uncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not defined Uncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined Uncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            defined Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined Uncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not defined
-          </p>
-        </div>
-        <div class="adjList">
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined
-          </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined
-          </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined Uncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not defined Uncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined
-          </p>
-        </div>
+        </section>
+        <section>
+          <h2>roImg Sample</h2>
+          <div>
+            <a href="javascript:void(0)"
+              ><img
+                src="assets/images/content/works/cms.png"
+                alt=""
+                class="roImg"
+            /></a>
+            <a href="javascript:void(0)"
+              ><img
+                src="assets/images/content/works/copy.png"
+                alt=""
+                class="roImg"
+            /></a>
+          </div>
+        </section>
+        <section>
+          <h2>jqHover Sample</h2>
+          <div>
+            <a href="javascript:void(0)"
+              ><img
+                src="assets/images/content/works/cms.png"
+                alt=""
+                class="jqHover"
+            /></a>
+          </div>
+        </section>
+        <section>
+          <h2>rplSPImg Sample</h2>
+          <div class="rplSPImgVox">
+            <figure>
+              <img
+                src="assets/images/content/service/PC_Koala.jpg"
+                alt=""
+                width="300"
+                class="rplSPImg"
+              />
+            </figure>
+          </div>
+        </section>
+        <section>
+          <h2>feed Sample</h2>
+          <div id="feedVox"></div>
+        </section>
+        <section>
+          <h2>Insta feed Sample</h2>
+          <div id="instaVox"></div>
+        </section>
+        <section>
+          <h2>AdjustSize Sample</h2>
+          <div class="vox01">
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin. Velocity is
+              not defined
+              <img
+                src="assets/images/content/service/Koala.jpg"
+                alt=""
+                width="300"
+              />
+            </p>
+            <p>Uncaught ReferenceError: Velocity is not defined</p>
+          </div>
+          <div class="vox01">
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin. Velocity is
+              not defined
+              <img
+                src="assets/images/content/service/Koala.jpg"
+                alt=""
+                width="300"
+              /><br />
+              <img
+                src="assets/images/content/service/Koala.jpg"
+                alt=""
+                width="300"
+              />
+            </p>
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+          </div>
+          <div class="vox02">
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin. Velocity is
+              not defined
+            </p>
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.<br />
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.<br />
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+          </div>
+          <div class="vox02">
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin. Velocity is
+              not defined
+            </p>
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.<br />
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.<br />
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+          </div>
+        </section>
         <div id="anchor01">
           <p>アンカー先のテストです。</p>
         </div>
-        <div class="vox02">
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined
-          </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined
-          </p>
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined Uncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not defined Uncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined Uncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            defined Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not defined Uncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not defined
-          </p>
-        </div>
-        <div class="flowVox" style="display: flex; margin-top: 50vh">
-          <div>
-            <p>
-              Uncaught ReferenceError: Velocity is not definedUncaught
-              ReferenceError: Velocity is not definedUncaught ReferenceError:
-              Velocity is not definedUncaught ReferenceError: Velocity is not
-              definedUncaught ReferenceError: Velocity is not defined
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              />
-            </p>
+        <section>
+          <h2>FlowVox Sample</h2>
+          <div class="flowVox" style="display: flex">
+            <div>
+              <p>
+                One morning, when Gregor Samsa woke from troubled dreams, he
+                found himself transformed in his bed into a horrible vermin.
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                />
+              </p>
+            </div>
+            <div>
+              <p>
+                One morning, when Gregor Samsa woke from troubled dreams, he
+                found himself transformed in his bed into a horrible vermin.
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                /><br />
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                />
+              </p>
+            </div>
           </div>
-          <div>
-            <p>
-              Uncaught ReferenceError: Velocity is not definedUncaught
-              ReferenceError: Velocity is not definedUncaught ReferenceError:
-              Velocity is not definedUncaught ReferenceError: Velocity is not
-              definedUncaught ReferenceError: Velocity is not defined
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              /><br />
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              />
-            </p>
-          </div>
-        </div>
-        <div
-          class="flowVox2"
-          style="display: flex; margin-top: 50vh"
-          data-flow="zoom"
-        >
-          <div>
-            <p>
-              Uncaught ReferenceError: Velocity is not definedUncaught
-              ReferenceError: Velocity is not definedUncaught ReferenceError:
-              Velocity is not definedUncaught ReferenceError: Velocity is not
-              definedUncaught ReferenceError: Velocity is not defined
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              />
-            </p>
-          </div>
-          <div>
-            <p>
-              Uncaught ReferenceError: Velocity is not definedUncaught
-              ReferenceError: Velocity is not definedUncaught ReferenceError:
-              Velocity is not definedUncaught ReferenceError: Velocity is not
-              definedUncaught ReferenceError: Velocity is not defined
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              /><br />
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              />
-            </p>
-          </div>
-        </div>
-        <div
-          class="flowVox3"
-          style="display: flex; margin-top: 50vh"
-          data-flow="mark"
-        >
-          <div>
-            <p>
-              Uncaught ReferenceError: Velocity is not definedUncaught
-              ReferenceError: Velocity is not definedUncaught ReferenceError:
-              Velocity is not definedUncaught ReferenceError: Velocity is not
-              definedUncaught ReferenceError: Velocity is not defined
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              />
-            </p>
-          </div>
-          <div>
-            <p>
-              Uncaught ReferenceError: Velocity is not definedUncaught
-              ReferenceError: Velocity is not definedUncaught ReferenceError:
-              Velocity is not definedUncaught ReferenceError: Velocity is not
-              definedUncaught ReferenceError: Velocity is not defined
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              /><br />
-              <img
-                src="assets/images/content/service/Koala.jpg"
-                alt=""
-                width="300"
-              />
-            </p>
-          </div>
-        </div>
-        <div class="js-lazyBg">
-          <p
-            style="
-              background: url('assets/images/content/service/Koala.jpg') no-repeat
-                center / cover;
-              height: 300px;
-              display: flex;
-              align-items: center;
-              color: white;
-            "
+          <div
+            class="flowVox2"
+            style="display: flex; margin-top: 30vh"
+            data-flow="zoom"
           >
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError: Velocity is not definedUncaught ReferenceError:
-            Velocity is not definedUncaught ReferenceError: Velocity is not
-            definedUncaught ReferenceError: Velocity is not defined
-          </p>
-        </div>
-        <div class="sliderWrapper">
-          <ul class="slider" id="slider01">
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-          </ul>
-        </div>
-        <div class="sliderWrapper">
-          <ul class="slider" id="slider02">
-            <li>
-              <img
-                src="./assets/images/content/service/graphic_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img
-                src="./assets/images/content/service/system_img01.jpg"
-                alt=""
-              />
-            </li>
-            <li>
-              <img src="./assets/images/content/service/web_img01.jpg" alt="" />
-            </li>
-          </ul>
-        </div>
-        <footer id="siteFooter">
-          <div id="js-pageTopVox">
-            <a href="#wrapper" class="sScroll">PAGE TOP</a>
+            <div>
+              <p>
+                One morning, when Gregor Samsa woke from troubled dreams, he
+                found himself transformed in his bed into a horrible vermin.
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                />
+              </p>
+            </div>
+            <div>
+              <p>
+                One morning, when Gregor Samsa woke from troubled dreams, he
+                found himself transformed in his bed into a horrible vermin.
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                /><br />
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                />
+              </p>
+            </div>
           </div>
-        </footer>
+          <div
+            class="flowVox3"
+            style="display: flex; margin-top: 30vh"
+            data-flow="mark"
+          >
+            <div>
+              <p>
+                One morning, when Gregor Samsa woke from troubled dreams, he
+                found himself transformed in his bed into a horrible vermin.
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                />
+              </p>
+            </div>
+            <div>
+              <p>
+                One morning, when Gregor Samsa woke from troubled dreams, he
+                found himself transformed in his bed into a horrible vermin.
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                /><br />
+                <img
+                  src="assets/images/content/service/Koala.jpg"
+                  alt=""
+                  width="300"
+                />
+              </p>
+            </div>
+          </div>
+          <div class="flowVox">
+            <p>
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+              <img
+                src="assets/images/content/service/Koala.jpg"
+                alt=""
+                width="300"
+              />
+            </p>
+          </div>
+        </section>
+        <section>
+          <h2>LazyLoadBg Sample</h2>
+          <div class="js-lazyBg">
+            <p
+              style="
+                background: url('assets/images/content/service/Koala.jpg')
+                  no-repeat center / cover;
+                height: 300px;
+                display: flex;
+                align-items: center;
+                color: white;
+              "
+            >
+              One morning, when Gregor Samsa woke from troubled dreams, he found
+              himself transformed in his bed into a horrible vermin.
+            </p>
+          </div>
+        </section>
+        <section>
+          <h2>Fade Slider Sample</h2>
+          <div class="sliderWrapper">
+            <ul class="slider" id="slider01">
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+            </ul>
+          </div>
+          <div class="sliderWrapper">
+            <ul class="slider" id="slider02">
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <h2>Markup Sample</h2>
+          <figure>
+            <img
+              src="assets/images/content/service/Koala.jpg"
+              alt="コアラの画像"
+              width="300"
+            />
+            <figcaption>コアラ</figcaption>
+          </figure>
+          <div class="mT50">
+            <button
+              id="gNavOpener"
+              aria-label="メニューを開く"
+              aria-expanded="true"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+            <div>
+              <div id="gNavWrapper" aria-hidden="true">
+                <ul>
+                  <li><a href="#wrapper" class="sScroll">TOP</a></li>
+                  <li>
+                    <a href="https://azlink.jp" target="_blank">AZLINK.</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
       <div id="popupContents">
         <div class="content">
-          <p>
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError
-          </p>
-        </div>
-        <div class="content">
           <p style="min-height: 50vh; color: #fff">
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError<br />
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError<br />
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError<br />
-            Uncaught ReferenceError: Velocity is not definedUncaught
-            ReferenceError
+            One morning, when Gregor Samsa woke from troubled dreams, he found
+            himself transformed in his bed into a horrible vermin.<br />
+            One morning, when Gregor Samsa woke from troubled dreams, he found
+            himself transformed in his bed into a horrible vermin.<br />
+            One morning, when Gregor Samsa woke from troubled dreams, he found
+            himself transformed in his bed into a horrible vermin.
           </p>
         </div>
         <div class="content" data-group="movie"></div>
-      </main>
+      </div>
+      <footer id="siteFooter">
+        <div id="js-pageTopVox">
+          <a href="#wrapper" class="sScroll">PAGE TOP</a>
+        </div>
+        <small id="copyright">Copyright © AZLINK. All rights reserved.</small>
+      </footer>
     </div>
   </body>
 </html>

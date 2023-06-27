@@ -54,6 +54,7 @@ export class AdjustSize {
     this.init();
   }
   init(): void {
+    // console.log(this);
     if (this.options.isResizeAuto) {
       window.addEventListener('resize', () => {
         if (this.rTimer !== false) {
@@ -96,9 +97,11 @@ export class AdjustSize {
 
         this.setHeight =
           getHeight > this.setHeight ? getHeight : this.setHeight;
+
         promise = promise.then(() => {
           this.count++;
           if (this.count == this.length) {
+            // console.log(this.setHeight);
             this.collection.forEach((v, i) => {
               v.style.height = this.setHeight + this.options.plus + 'px';
             });
@@ -151,6 +154,7 @@ export class AdjustSize {
   }
   reload(): void {
     this.destroy();
+    this.count = 0;
     this.init();
   }
   die(): boolean {
