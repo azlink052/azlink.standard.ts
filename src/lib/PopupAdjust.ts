@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2023.04.17
+ * @final 		2023.07.20
  *
  * @param {*} $selector
  * @param {*} $options
@@ -256,13 +256,17 @@ export class PopupAdjust {
             this.options.wrapper
           ).children;
           Array.from(children).forEach((v) => {
-            if (v !== document.querySelector<HTMLElement>(id)) {
+            if (v !== document.querySelector<HTMLElement>(id) && v !== (<HTMLElement>document.querySelector(this.options.bg))) {
               v.setAttribute('aria-hidden', 'true');
+              v.setAttribute('inert', 'true');
             }
           });
           document
             .querySelector<HTMLElement>(id)
             .setAttribute('aria-hidden', 'false');
+          document
+            .querySelector<HTMLElement>(id)
+            .removeAttribute('inert');
           document
             .querySelector(`.popupWrapper, ${this.options.bg}`)
             .classList.add('is-animating');
@@ -303,6 +307,7 @@ export class PopupAdjust {
         complete: () => {
           (<HTMLElement>v).style.display = 'none';
           (<HTMLElement>v).setAttribute('aria-hidden', 'true');
+          (<HTMLElement>v).setAttribute('inert', 'true');
           // document.body.setAttribute('aria-hidden', 'false');
           const children: HTMLCollection = document.querySelector(
             this.options.wrapper
@@ -311,6 +316,7 @@ export class PopupAdjust {
             // console.log(vv !== v);
             if (vv !== v) {
               (<HTMLElement>vv).removeAttribute('aria-hidden');
+              (<HTMLElement>vv).removeAttribute('inert');
             }
           });
           anime({
