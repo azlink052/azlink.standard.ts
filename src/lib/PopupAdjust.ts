@@ -1,4 +1,4 @@
-import anime from 'animejs/lib/anime.es';
+import anime from 'animejs/lib/anime.min';
 /**
  * シンプルなポップアップ処理
  * @category 	Application of AZLINK.

@@ -1,4 +1,4 @@
-import anime from 'animejs/lib/anime.es.js';
+import anime from 'animejs/lib/anime.min';
 /**
  * ================================================
  *
@@ -327,7 +327,10 @@ export class Utilities {
       this.isIE10 = v.indexOf('10.', 0) === 0 ? true : false;
       this.isIE11 = v.indexOf('11.', 0) === 0 ? true : false;
     }
-    this.isEdge = this.ua.indexOf('edge') >= 0 || this.ua.indexOf('edg') >= 0 ? true : false;
+    this.isEdge =
+      this.ua.indexOf('edge') >= 0 || this.ua.indexOf('edg') >= 0
+        ? true
+        : false;
   }
   /**
    * Webブラウザバージョンの取得

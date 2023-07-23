@@ -1,4 +1,4 @@
-import anime from 'animejs/lib/anime.es.js';
+import anime from 'animejs/lib/anime.min';
 /**
  * シンプルなカルーセルスライダ
  * @category 	Application of AZLINK.
@@ -229,7 +229,9 @@ export class SimpleSlider {
               'beforeend',
               `
                 <div class="ss-pager-item">
-                  <button data-index="${i}" aria-label="${i + 1}のスライドへ">${i + 1}</button>
+                  <button data-index="${i}" aria-label="${i + 1}のスライドへ">${
+                i + 1
+              }</button>
                 </div>
               `
             );
