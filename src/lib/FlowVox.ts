@@ -1,5 +1,5 @@
-import anime from 'animejs/lib/anime.es.js';
-import { Utilities } from './Utilities';
+import anime from 'animejs/lib/anime.min';
+// import { Utilities } from './Utilities';
 /**
  * 画面内に表示されることでアニメーションを実行
  * data-flow="mark" とすることでクラス付与のみとなる
