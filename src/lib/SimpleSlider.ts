@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es.js';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2023.06.25
+ * @final 		2023.08.24
  *
  * @param {*} $selector
  * @param {*} $options
@@ -15,7 +15,6 @@ interface Options {
   pause: number;
   speed: number;
   easing: string;
-  duration: number;
   ctrl: boolean;
   pager: boolean;
   wrapper: HTMLElement | ParentNode;
@@ -60,7 +59,6 @@ export class SimpleSlider {
       pause = 5000,
       speed = 500,
       easing = 'cubicBezier(0.33, 1, 0.68, 1)',
-      duration = 500,
       ctrl = false,
       pager = false,
       wrapper = document.querySelector($selector).parentNode,
@@ -94,7 +92,6 @@ export class SimpleSlider {
       pause: pause,
       speed: speed,
       easing: easing,
-      duration: duration,
       ctrl: ctrl,
       pager: pager,
       wrapper: wrapper,
@@ -114,9 +111,12 @@ export class SimpleSlider {
   init(): void {
     this.initDebug();
 
-    if (this.options.pause < this.options.speed) {
-      this.options.speed = this.options.pause - 1;
+    if (!this.options.isAuto) {
+      this.options.pause = 0;
     }
+    // if (this.options.pause < this.options.speed) {
+    //   this.options.speed = this.options.pause - 1;
+    // }
     this.itemLength = this.itemLengthOrg = this.elem.children.length;
 
     Object.assign(this.elem.style, {
@@ -341,7 +341,7 @@ export class SimpleSlider {
         }
       },
       easing: this.options.easing,
-      duration: this.options.duration,
+      duration: this.options.speed,
       complete: () => {
         if (this.options.isLoop) {
           if (this.options.rootCount <= 1) {
