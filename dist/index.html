@@ -146,12 +146,12 @@
           pause: 3000,
           isAuto: false,
           isLoop: true,
-          rootCount: 2,
-          slideCount: 2,
+          rootCount: 3,
+          slideCount: 1,
           mode: 'vertical',
+          wrapperHeight: 300,
           // cloneCount: 10,
           // isDebug: true
-          wrapper: document.querySelector('.sliderContainerVox'),
         });
         new azlib.anime({
           targets: '.animeObj01',
@@ -298,11 +298,6 @@
       .simpleSliderWrapper {
         width: 500px;
         margin: 50px 0;
-      }
-
-      .sliderContainerVox:has(#slider07) {
-        height: 100px;
-        overflow: hidden;
       }
 
       .sliderContainer:has(#slider07) .simpleSlider li {
@@ -608,46 +603,44 @@
             </ul>
           </div>
           <div class="simpleSliderWrapper sliderWrapper">
-            <div class="sliderContainerVox">
-              <ul class="simpleSlider" id="slider07">
-                <li>
-                  <img
-                    src="./assets/images/content/service/graphic_img01.jpg"
-                    alt=""
-                  />
-                </li>
-                <li>
-                  <img
-                    src="./assets/images/content/service/system_img01.jpg"
-                    alt=""
-                  />
-                </li>
-                <li>
-                  <img
-                    src="./assets/images/content/service/web_img01.jpg"
-                    alt=""
-                  />
-                </li>
-                <li>
-                  <img
-                    src="./assets/images/content/service/graphic_img01.jpg"
-                    alt=""
-                  />
-                </li>
-                <li>
-                  <img
-                    src="./assets/images/content/service/system_img01.jpg"
-                    alt=""
-                  />
-                </li>
-                <li>
-                  <img
-                    src="./assets/images/content/service/web_img01.jpg"
-                    alt=""
-                  />
-                </li>
-              </ul>
-            </div>
+            <ul class="simpleSlider" id="slider07">
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+            </ul>
           </div>
         </section>
         <section>

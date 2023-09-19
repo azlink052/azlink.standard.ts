@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.min';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2023.08.24
+ * @final 		2023.09.19
  *
  * @param {*} $selector
  * @param {*} $options
@@ -18,6 +18,7 @@ interface Options {
   ctrl: boolean;
   pager: boolean;
   wrapper: HTMLElement | ParentNode;
+  wrapperHeight: number | null;
   rootCount: number;
   slideCount: number;
   cloneCount: number;
@@ -66,6 +67,7 @@ export class SimpleSlider {
       ctrl = false,
       pager = false,
       wrapper = document.querySelector($selector).parentNode,
+      wrapperHeight = null,
       rootCount = 0, // 1ページに表示する量
       slideCount = 1, // 1度に動かす量 ※isLoopがtrueで1以外の場合rootCountと同じになる
       cloneCount = 1,
@@ -100,6 +102,7 @@ export class SimpleSlider {
       ctrl: ctrl,
       pager: pager,
       wrapper: wrapper,
+      wrapperHeight: wrapperHeight,
       rootCount: rootCount,
       slideCount: slideCount,
       cloneCount: cloneCount,
@@ -135,11 +138,17 @@ export class SimpleSlider {
       if (this.options.rootCount) {
         if (this.options.rootCount === 1) this.options.slideCount = 1;
         if (this.options.mode === 'vertical') {
+          this.elem.outerHTML = `<div class="sliderContainer">${this.elem.outerHTML}</div>`;
+          this.elem = document.querySelector(this.selector);
+          this.container = this.elem.closest('.sliderContainer');
+          Object.assign(this.container.style, {
+            overflow: 'hidden',
+            height: `${this.options.wrapperHeight}px`,
+          });
           this.itemHeight = Math.floor(
             (<HTMLElement>this.options.wrapper).clientHeight /
               Number(this.options.rootCount)
           );
-          console.log((<HTMLElement>this.options.wrapper).clientHeight);
         } else {
           this.itemWidth = Math.floor(
             (<HTMLElement>this.options.wrapper).clientWidth /
@@ -150,6 +159,10 @@ export class SimpleSlider {
         // console.log(this.options.wrapper);
         this.options.rootCount = 1 as number;
         if (this.options.mode === 'vertical') {
+          this.elem.outerHTML = `<div class="sliderContainer">${this.elem.outerHTML}</div>`;
+          this.elem = document.querySelector(this.selector);
+          this.container = this.elem.closest('.sliderContainer');
+          this.container.style.height = `${this.options.wrapperHeight}px`;
           this.itemHeight = (<HTMLElement>this.options.wrapper).clientHeight;
         } else {
           this.itemWidth = (<HTMLElement>this.options.wrapper).clientWidth;
@@ -169,21 +182,24 @@ export class SimpleSlider {
       });
       // console.log(this.options.rootCount, this.itemLength, this.itemWidth);
       if (this.itemLength > this.options.rootCount) {
-        this.elem.outerHTML = `<div class="sliderContainer">${this.elem.outerHTML}</div>`;
-        this.elem = document.querySelector(this.selector);
-        this.container = this.elem.closest('.sliderContainer');
-        // console.log(this.container);
-        Object.assign(this.container.style, {
-          overflow: 'hidden',
-        });
+        if (this.options.mode !== 'vertical') {
+          this.elem.outerHTML = `<div class="sliderContainer">${this.elem.outerHTML}</div>`;
+          this.elem = document.querySelector(this.selector);
+          this.container = this.elem.closest('.sliderContainer');
+          // console.log(this.container);
+          Object.assign(this.container.style, {
+            overflow: 'hidden',
+          });
+        }
         if (this.options.mode === 'vertical') {
           this.elem.style.height = `${this.itemHeight * this.itemLengthOrg}px`;
         } else {
           this.elem.style.width = `${this.itemWidth * this.itemLengthOrg}px`;
         }
-        this.pageLength = Math.ceil(
-          this.itemLength / Number(this.options.rootCount)
-        );
+        this.pageLength =
+          this.options.slideCount !== 1
+            ? Math.ceil(this.itemLength / Number(this.options.rootCount))
+            : this.itemLength;
         if (this.options.isLoop) {
           const copy = this.elem.innerHTML;
           for (let i = 0; i < this.options.cloneCount; i++) {
@@ -267,8 +283,8 @@ export class SimpleSlider {
               `
                 <div class="ss-pager-item">
                   <button data-index="${i}" aria-label="${i + 1}のスライドへ">${
-                i + 1
-              }</button>
+                    i + 1
+                  }</button>
                 </div>
               `
             );
@@ -535,9 +551,11 @@ export class SimpleSlider {
       .forEach((value) => {
         value.classList.remove('is-active');
       });
-    const targetIndex = Math.ceil(
-      this.current / Number(this.options.rootCount)
-    );
+    const targetIndex =
+      this.options.slideCount !== 1
+        ? Math.ceil(this.current / Number(this.options.rootCount))
+        : this.current;
+    // console.log(targetIndex, this.current, this.options.rootCount);
     this.options.wrapper
       .querySelectorAll('.ss-pager-item')
       [targetIndex]?.querySelector('button')
