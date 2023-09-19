@@ -22,6 +22,7 @@ interface Options {
   slideCount: number;
   cloneCount: number;
   threshold: number;
+  mode: string;
   onSliderLoad: any;
   onSlideBefore: any;
   onSlideAfter: any;
@@ -33,9 +34,10 @@ export class SimpleSlider {
   private selector: string;
   private elem: HTMLElement;
   private container: HTMLElement;
-  private prevBtn: HTMLAnchorElement;
-  private nextBtn: HTMLAnchorElement;
+  private prevBtn: HTMLButtonElement;
+  private nextBtn: HTMLButtonElement;
   private itemWidth: number;
+  private itemHeight: number;
   private itemLength: number;
   private itemLengthOrg: number;
   private current: number;
@@ -48,6 +50,8 @@ export class SimpleSlider {
   private pagerEvent: string[];
   private startX: number;
   private moveX: number;
+  private startY: number;
+  private moveY: number;
   private orgElement: Element | boolean;
   private debugTimer: number | boolean;
 
@@ -66,6 +70,7 @@ export class SimpleSlider {
       slideCount = 1, // 1度に動かす量 ※isLoopがtrueで1以外の場合rootCountと同じになる
       cloneCount = 1,
       threshold = 30,
+      mode = 'horizontal', // vertical を指定する場合は wrapper の高さ指定が必須
       onSliderLoad = false,
       onSlideBefore = false, // oldIndex, newIndex, this
       onSlideAfter = false, // oldIndex, newIndex
@@ -99,6 +104,7 @@ export class SimpleSlider {
       slideCount: slideCount,
       cloneCount: cloneCount,
       threshold: threshold,
+      mode: mode,
       onSliderLoad: onSliderLoad,
       onSlideBefore: onSlideBefore,
       onSlideAfter: onSlideAfter,
@@ -122,28 +128,45 @@ export class SimpleSlider {
     Object.assign(this.elem.style, {
       display: 'flex',
       flexWrap: 'wrap',
+      flexDirection: this.options.mode === 'vertical' ? 'column' : 'row',
     });
 
     if (this.itemLength > 1) {
       if (this.options.rootCount) {
         if (this.options.rootCount === 1) this.options.slideCount = 1;
-        this.itemWidth = Math.floor(
-          (<HTMLElement>this.options.wrapper).clientWidth /
-            Number(this.options.rootCount)
-        );
+        if (this.options.mode === 'vertical') {
+          this.itemHeight = Math.floor(
+            (<HTMLElement>this.options.wrapper).clientHeight /
+              Number(this.options.rootCount)
+          );
+          console.log((<HTMLElement>this.options.wrapper).clientHeight);
+        } else {
+          this.itemWidth = Math.floor(
+            (<HTMLElement>this.options.wrapper).clientWidth /
+              Number(this.options.rootCount)
+          );
+        }
       } else {
         // console.log(this.options.wrapper);
         this.options.rootCount = 1 as number;
-        this.itemWidth = (<HTMLElement>this.options.wrapper).clientWidth;
+        if (this.options.mode === 'vertical') {
+          this.itemHeight = (<HTMLElement>this.options.wrapper).clientHeight;
+        } else {
+          this.itemWidth = (<HTMLElement>this.options.wrapper).clientWidth;
+        }
       }
       if (this.options.isLoop) {
         if (this.options.slideCount !== 1) {
           this.options.slideCount = Number(this.options.rootCount);
         }
       }
-      Array.from(this.elem.children).forEach(
-        (v: HTMLElement) => (v.style.width = `${this.itemWidth}px`)
-      );
+      Array.from(this.elem.children).forEach((v: HTMLElement) => {
+        if (this.options.mode === 'vertical') {
+          v.style.height = `${this.itemHeight}px`;
+        } else {
+          v.style.width = `${this.itemWidth}px`;
+        }
+      });
       // console.log(this.options.rootCount, this.itemLength, this.itemWidth);
       if (this.itemLength > this.options.rootCount) {
         this.elem.outerHTML = `<div class="sliderContainer">${this.elem.outerHTML}</div>`;
@@ -153,7 +176,11 @@ export class SimpleSlider {
         Object.assign(this.container.style, {
           overflow: 'hidden',
         });
-        this.elem.style.width = `${this.itemWidth * this.itemLengthOrg}px`;
+        if (this.options.mode === 'vertical') {
+          this.elem.style.height = `${this.itemHeight * this.itemLengthOrg}px`;
+        } else {
+          this.elem.style.width = `${this.itemWidth * this.itemLengthOrg}px`;
+        }
         this.pageLength = Math.ceil(
           this.itemLength / Number(this.options.rootCount)
         );
@@ -164,12 +191,22 @@ export class SimpleSlider {
             this.elem.insertAdjacentHTML('afterbegin', copy);
             this.elem.insertAdjacentHTML('beforeend', copy);
             this.itemLength = this.elem.childElementCount;
-            this.elem.style.width = `${this.itemWidth * this.itemLength}px`;
+            if (this.options.mode === 'vertical') {
+              this.elem.style.height = `${this.itemHeight * this.itemLength}px`;
+            } else {
+              this.elem.style.width = `${this.itemWidth * this.itemLength}px`;
+            }
             // w = this.elem.clientWidth;
           }
-          this.elem.style.transform = `translateX(-${
-            this.itemWidth * this.itemLengthOrg
-          }px)`;
+          if (this.options.mode === 'vertical') {
+            this.elem.style.transform = `translateY(-${
+              this.itemHeight * this.itemLengthOrg
+            }px)`;
+          } else {
+            this.elem.style.transform = `translateX(-${
+              this.itemWidth * this.itemLengthOrg
+            }px)`;
+          }
           if (this.options.rootCount <= 1) {
             this.realCurrent = this.current + this.pageLength;
           } else {
@@ -191,8 +228,8 @@ export class SimpleSlider {
             .insertAdjacentHTML(
               'beforeend',
               `
-                <button class="ss-prev" aria-label="前のスライドへ">Prev</button>
-                <button class="ss-next" aria-label="次のスライドへ">Next</button>
+                <button type="button" class="ss-prev" aria-label="前のスライドへ">Prev</button>
+                <button type="button" class="ss-next" aria-label="次のスライドへ">Next</button>
               `
             );
           this.prevBtn = this.options.wrapper.querySelector('.ss-prev');
@@ -262,7 +299,7 @@ export class SimpleSlider {
                         this.getRemainder() -
                         Number(this.options.rootCount)
                       );
-                      return this.itemLengthOrg - index;
+                      // return this.itemLengthOrg - index;
                     } else {
                       return index;
                     }
@@ -271,19 +308,41 @@ export class SimpleSlider {
                 this.slide(targetIndex);
               });
             });
-          // スワイプ処理
-          this.elem.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            this.moveX = e.changedTouches[0].pageX;
-          });
-          this.elem.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            this.startX = e.touches[0].pageX;
-            this.moveX = 0;
-          });
-          this.elem.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            // console.log(`startX: ${this.startX}, moveX: ${this.moveX}`);
+        }
+        // スワイプ処理
+        this.elem.addEventListener('touchmove', (e) => {
+          e.preventDefault();
+          this.moveX = e.changedTouches[0].pageX;
+          this.moveY = e.changedTouches[0].pageY;
+        });
+        this.elem.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          this.startX = e.touches[0].pageX;
+          this.moveX = 0;
+          this.startY = e.touches[0].pageY;
+          this.moveY = 0;
+        });
+        this.elem.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          // console.log(`startX: ${this.startX}, moveX: ${this.moveX}`);
+          if (this.options.mode === 'vertical') {
+            if (this.moveY === 0) {
+              return false;
+            } else {
+              if (this.startY + this.options.threshold < this.moveY) {
+                // 右向き
+                // console.log('→');
+                if (!this.isAllowSlide) return;
+                this.slide(this.getPrevSlide());
+              }
+              if (this.startY > this.moveY + this.options.threshold) {
+                // 左向き
+                // console.log('←');
+                if (!this.isAllowSlide) return;
+                this.slide(this.getNextSlide());
+              }
+            }
+          } else {
             if (this.moveX === 0) {
               return false;
             } else {
@@ -300,8 +359,8 @@ export class SimpleSlider {
                 this.slide(this.getNextSlide());
               }
             }
-          });
-        }
+          }
+        });
       }
     }
     this.isAllowSlide = true;
@@ -333,77 +392,142 @@ export class SimpleSlider {
     if (typeof this.options.onSlideBefore === 'function') {
       this.options.onSlideBefore(this.oldIndex, this.realCurrent);
     }
-    anime({
-      targets: this.elem,
-      translateX: () => {
-        if (this.realCurrent > this.oldIndex) {
-          return `-=${this.itemWidth * (this.realCurrent - this.oldIndex)}px`;
-        } else {
-          return `+=${this.itemWidth * (this.oldIndex - this.realCurrent)}px`;
-        }
-      },
-      easing: this.options.easing,
-      duration: this.options.speed,
-      complete: () => {
-        if (this.options.isLoop) {
-          if (this.options.rootCount <= 1) {
-            if (this.current >= this.pageLength) {
-              this.elem.style.transform = `translateX(-${
-                this.itemWidth * this.itemLengthOrg
-              }px)`;
-              this.current = 0;
-            } else if (this.current < 0) {
-              this.elem.style.transform = `translateX(-${
-                this.itemWidth * (this.itemLengthOrg + (this.pageLength - 1))
-              }px)`;
-              this.current = this.pageLength - 1;
-            }
-            this.realCurrent = this.current + this.pageLength;
-          } else {
-            if (this.current > this.itemLengthOrg - 1) {
-              this.elem.style.transform = `translateX(-${
-                this.itemWidth * this.itemLengthOrg
-              }px)`;
-              this.current = 0;
-            } else if (this.current < 0) {
-              if (this.options.rootCount === 1) {
-                this.elem.style.transform = `translateX(-${
-                  this.itemWidth * (this.itemLengthOrg + this.pageLength)
-                }px)`;
-              } else {
-                this.elem.style.transform = `translateX(-${
-                  this.itemWidth *
-                  (this.itemLengthOrg +
-                    this.pageLength * Number(this.options.rootCount) -
-                    Number(this.options.rootCount))
-                }px)`;
-              }
-              this.current =
-                this.itemLengthOrg - Number(this.options.rootCount);
-            }
-            this.realCurrent = this.current + this.itemLengthOrg;
-          }
-          this.oldIndex = this.oldIndex - this.pageLength;
-        }
-        if (this.options.pager) this.togglePager();
-        if (this.options.ctrl) this.toggleCtrls();
-        Array.from(this.elem.children).forEach((v, i) => {
-          v.classList.remove('slide-old', 'slide-active');
-        });
-        this.elem.children[this.realCurrent].classList.add('slide-active');
-        this.elem.children[this.oldIndex + this.pageLength]?.classList.add(
-          'slide-old'
-        );
-        this.isAllowSlide = true;
-        if (this.options.isLoop) {
+    const completeAction = () => {
+      if (this.options.pager) this.togglePager();
+      if (this.options.ctrl) this.toggleCtrls();
+      Array.from(this.elem.children).forEach((v, i) => {
+        v.classList.remove('slide-old', 'slide-active');
+      });
+      this.elem.children[this.realCurrent].classList.add('slide-active');
+      this.elem.children[this.oldIndex + this.pageLength]?.classList.add(
+        'slide-old'
+      );
+      this.isAllowSlide = true;
+      if (this.options.isLoop) {
+        this.slideAuto();
+      } else {
+        if (this.current !== this.pageLength - 1) {
           this.slideAuto();
-        } else {
-          if (this.current !== this.pageLength - 1) {
-            this.slideAuto();
-          }
         }
-      },
-    });
+      }
+    };
+    if (this.options.mode === 'vertical') {
+      anime({
+        targets: this.elem,
+        translateY: () => {
+          if (this.realCurrent > this.oldIndex) {
+            return `-=${
+              this.itemHeight * (this.realCurrent - this.oldIndex)
+            }px`;
+          } else {
+            return `+=${
+              this.itemHeight * (this.oldIndex - this.realCurrent)
+            }px`;
+          }
+        },
+        easing: this.options.easing,
+        duration: this.options.speed,
+        complete: () => {
+          if (this.options.isLoop) {
+            if (this.options.rootCount <= 1) {
+              if (this.current >= this.pageLength) {
+                this.elem.style.transform = `translateY(-${
+                  this.itemHeight * this.itemLengthOrg
+                }px)`;
+                this.current = 0;
+              } else if (this.current < 0) {
+                this.elem.style.transform = `translateY(-${
+                  this.itemHeight * (this.itemLengthOrg + (this.pageLength - 1))
+                }px)`;
+                this.current = this.pageLength - 1;
+              }
+              this.realCurrent = this.current + this.pageLength;
+            } else {
+              if (this.current > this.itemLengthOrg - 1) {
+                this.elem.style.transform = `translateY(-${
+                  this.itemHeight * this.itemLengthOrg
+                }px)`;
+                this.current = 0;
+              } else if (this.current < 0) {
+                if (this.options.rootCount === 1) {
+                  this.elem.style.transform = `translateY(-${
+                    this.itemHeight * (this.itemLengthOrg + this.pageLength)
+                  }px)`;
+                } else {
+                  this.elem.style.transform = `translateY(-${
+                    this.itemHeight *
+                    (this.itemLengthOrg +
+                      this.pageLength * Number(this.options.rootCount) -
+                      Number(this.options.rootCount))
+                  }px)`;
+                }
+                this.current =
+                  this.itemLengthOrg - Number(this.options.rootCount);
+              }
+              this.realCurrent = this.current + this.itemLengthOrg;
+            }
+            this.oldIndex = this.oldIndex - this.pageLength;
+          }
+          completeAction();
+        },
+      });
+    } else {
+      anime({
+        targets: this.elem,
+        translateX: () => {
+          if (this.realCurrent > this.oldIndex) {
+            return `-=${this.itemWidth * (this.realCurrent - this.oldIndex)}px`;
+          } else {
+            return `+=${this.itemWidth * (this.oldIndex - this.realCurrent)}px`;
+          }
+        },
+        easing: this.options.easing,
+        duration: this.options.speed,
+        complete: () => {
+          if (this.options.isLoop) {
+            if (this.options.rootCount <= 1) {
+              if (this.current >= this.pageLength) {
+                this.elem.style.transform = `translateX(-${
+                  this.itemWidth * this.itemLengthOrg
+                }px)`;
+                this.current = 0;
+              } else if (this.current < 0) {
+                this.elem.style.transform = `translateX(-${
+                  this.itemWidth * (this.itemLengthOrg + (this.pageLength - 1))
+                }px)`;
+                this.current = this.pageLength - 1;
+              }
+              this.realCurrent = this.current + this.pageLength;
+            } else {
+              if (this.current > this.itemLengthOrg - 1) {
+                this.elem.style.transform = `translateX(-${
+                  this.itemWidth * this.itemLengthOrg
+                }px)`;
+                this.current = 0;
+              } else if (this.current < 0) {
+                if (this.options.rootCount === 1) {
+                  this.elem.style.transform = `translateX(-${
+                    this.itemWidth * (this.itemLengthOrg + this.pageLength)
+                  }px)`;
+                } else {
+                  this.elem.style.transform = `translateX(-${
+                    this.itemWidth *
+                    (this.itemLengthOrg +
+                      this.pageLength * Number(this.options.rootCount) -
+                      Number(this.options.rootCount))
+                  }px)`;
+                }
+                this.current =
+                  this.itemLengthOrg - Number(this.options.rootCount);
+              }
+              this.realCurrent = this.current + this.itemLengthOrg;
+            }
+            this.oldIndex = this.oldIndex - this.pageLength;
+          }
+          completeAction();
+        },
+      });
+    }
   }
   togglePager(): void {
     this.options.wrapper
@@ -423,9 +547,16 @@ export class SimpleSlider {
     if (this.options.isLoop || !this.options.ctrl) return;
     this.prevBtn.classList.remove('is-disabled');
     this.nextBtn.classList.remove('is-disabled');
-    if (this.current === 0) this.prevBtn.classList.add('is-disabled');
-    if (this.itemLengthOrg - this.current <= this.options.rootCount)
+    this.prevBtn.disabled = false;
+    this.nextBtn.disabled = false;
+    if (this.current === 0) {
+      this.prevBtn.classList.add('is-disabled');
+      this.prevBtn.disabled = true;
+    }
+    if (this.itemLengthOrg - this.current <= this.options.rootCount) {
       this.nextBtn.classList.add('is-disabled');
+      this.nextBtn.disabled = true;
+    }
   }
   slideAuto(): void {
     if (!this.isAllowSlide || !this.options.isAuto) return;

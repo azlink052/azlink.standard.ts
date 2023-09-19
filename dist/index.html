@@ -139,6 +139,20 @@
           // cloneCount: 10,
           // isDebug: true
         });
+        const slider07 = new azlib.SimpleSlider('#slider07', {
+          ctrl: true,
+          pager: true,
+          speed: 500,
+          pause: 3000,
+          isAuto: false,
+          isLoop: true,
+          rootCount: 2,
+          slideCount: 2,
+          mode: 'vertical',
+          // cloneCount: 10,
+          // isDebug: true
+          wrapper: document.querySelector('.sliderContainerVox'),
+        });
         new azlib.anime({
           targets: '.animeObj01',
           translateX: 250,
@@ -283,12 +297,30 @@
 
       .simpleSliderWrapper {
         width: 500px;
+        margin: 50px 0;
+      }
+
+      .sliderContainerVox:has(#slider07) {
+        height: 100px;
+        overflow: hidden;
+      }
+
+      .sliderContainer:has(#slider07) .simpleSlider li {
+        width: auto;
+        position: relative;
+        overflow: hidden;
+      }
+      .sliderContainer:has(#slider07) .simpleSlider li img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
 
       .simpleSlider {
         width: 100%;
         padding: 0;
-        margin: 50px 0;
+        margin: 0;
         list-style-type: none;
       }
 
@@ -574,6 +606,48 @@
                 />
               </li>
             </ul>
+          </div>
+          <div class="simpleSliderWrapper sliderWrapper">
+            <div class="sliderContainerVox">
+              <ul class="simpleSlider" id="slider07">
+                <li>
+                  <img
+                    src="./assets/images/content/service/graphic_img01.jpg"
+                    alt=""
+                  />
+                </li>
+                <li>
+                  <img
+                    src="./assets/images/content/service/system_img01.jpg"
+                    alt=""
+                  />
+                </li>
+                <li>
+                  <img
+                    src="./assets/images/content/service/web_img01.jpg"
+                    alt=""
+                  />
+                </li>
+                <li>
+                  <img
+                    src="./assets/images/content/service/graphic_img01.jpg"
+                    alt=""
+                  />
+                </li>
+                <li>
+                  <img
+                    src="./assets/images/content/service/system_img01.jpg"
+                    alt=""
+                  />
+                </li>
+                <li>
+                  <img
+                    src="./assets/images/content/service/web_img01.jpg"
+                    alt=""
+                  />
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
         <section>
