@@ -32,7 +32,7 @@ export class FadeSlider {
   private elem: HTMLElement;
   private current: number;
   private count: number;
-  private isAllowSlide: boolean;
+  public isAllowSlide: boolean;
   private rTimer: number | boolean;
   private pagerEvent: string[];
   private length: number;

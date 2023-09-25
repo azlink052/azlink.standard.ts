@@ -46,7 +46,7 @@ export class SimpleSlider {
   private oldIndex: number;
   private remainder: number;
   private pageLength: number;
-  private isAllowSlide: boolean;
+  public isAllowSlide: boolean;
   private rTimer: number | boolean;
   private pagerEvent: string[];
   private startX: number;
@@ -384,7 +384,11 @@ export class SimpleSlider {
                 // 左向き
                 // console.log('←');
                 if (!this.isAllowSlide) return;
-                if (!this.options.isLoop && this.remainder <= this.options.rootCount) return;
+                if (
+                  !this.options.isLoop &&
+                  this.remainder <= this.options.rootCount
+                )
+                  return;
                 this.slide(this.getNextSlide());
               }
             }
