@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.min';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2023.09.19
+ * @final 		2023.09.25
  *
  * @param {*} $selector
  * @param {*} $options
@@ -128,9 +128,15 @@ export class SimpleSlider {
     // }
     this.itemLength = this.itemLengthOrg = this.elem.children.length;
 
+    // console.log(this.options.rootCount, this.itemLength);
+    if (this.itemLength <= this.options.rootCount) {
+      this.elem.classList.add('is-noSlider');
+      return;
+    }
+
     Object.assign(this.elem.style, {
       display: 'flex',
-      flexWrap: 'wrap',
+      flexWrap: 'nowrap',
       flexDirection: this.options.mode === 'vertical' ? 'column' : 'row',
     });
 
@@ -146,8 +152,7 @@ export class SimpleSlider {
             height: `${this.options.wrapperHeight}px`,
           });
           this.itemHeight = Math.floor(
-            (<HTMLElement>this.options.wrapper).clientHeight /
-              Number(this.options.rootCount)
+            this.container.clientHeight / Number(this.options.rootCount)
           );
         } else {
           this.itemWidth = Math.floor(
@@ -283,8 +288,8 @@ export class SimpleSlider {
               `
                 <div class="ss-pager-item">
                   <button data-index="${i}" aria-label="${i + 1}のスライドへ">${
-                    i + 1
-                  }</button>
+                i + 1
+              }</button>
                 </div>
               `
             );
@@ -343,35 +348,43 @@ export class SimpleSlider {
           // console.log(`startX: ${this.startX}, moveX: ${this.moveX}`);
           if (this.options.mode === 'vertical') {
             if (this.moveY === 0) {
-              return false;
+              (<HTMLAnchorElement>e.target)?.click();
             } else {
               if (this.startY + this.options.threshold < this.moveY) {
                 // 右向き
                 // console.log('→');
                 if (!this.isAllowSlide) return;
+                if (!this.options.isLoop && this.current <= 0) return;
                 this.slide(this.getPrevSlide());
               }
               if (this.startY > this.moveY + this.options.threshold) {
                 // 左向き
                 // console.log('←');
                 if (!this.isAllowSlide) return;
+                if (
+                  !this.options.isLoop &&
+                  this.remainder <= this.options.rootCount
+                )
+                  return;
                 this.slide(this.getNextSlide());
               }
             }
           } else {
             if (this.moveX === 0) {
-              return false;
+              (<HTMLAnchorElement>e.target)?.click();
             } else {
               if (this.startX + this.options.threshold < this.moveX) {
                 // 右向き
                 // console.log('→');
                 if (!this.isAllowSlide) return;
+                if (!this.options.isLoop && this.current <= 0) return;
                 this.slide(this.getPrevSlide());
               }
               if (this.startX > this.moveX + this.options.threshold) {
                 // 左向き
                 // console.log('←');
                 if (!this.isAllowSlide) return;
+                if (!this.options.isLoop && this.remainder <= this.options.rootCount) return;
                 this.slide(this.getNextSlide());
               }
             }
