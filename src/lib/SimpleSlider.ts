@@ -46,7 +46,7 @@ export class SimpleSlider {
   private oldIndex: number;
   private remainder: number;
   private pageLength: number;
-  public isAllowSlide: boolean;
+  private isAllowSlide: boolean;
   private rTimer: number | boolean;
   private pagerEvent: string[];
   private startX: number;
