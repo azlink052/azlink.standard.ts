@@ -1,4 +1,4 @@
-import anime from 'animejs/lib/anime.min';
+import anime from 'animejs/lib/anime.es';
 /**
  * シンプルなカルーセルスライダ
  * @category 	Application of AZLINK.

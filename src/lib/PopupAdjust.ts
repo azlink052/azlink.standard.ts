@@ -1,4 +1,4 @@
-import anime from 'animejs/lib/anime.min';
+import anime from 'animejs/lib/anime.es';
 /**
  * シンプルなポップアップ処理
  * @category 	Application of AZLINK.
@@ -256,7 +256,10 @@ export class PopupAdjust {
             this.options.wrapper
           ).children;
           Array.from(children).forEach((v) => {
-            if (v !== document.querySelector<HTMLElement>(id) && v !== (<HTMLElement>document.querySelector(this.options.bg))) {
+            if (
+              v !== document.querySelector<HTMLElement>(id) &&
+              v !== <HTMLElement>document.querySelector(this.options.bg)
+            ) {
               v.setAttribute('aria-hidden', 'true');
               v.setAttribute('inert', 'true');
             }
@@ -264,9 +267,7 @@ export class PopupAdjust {
           document
             .querySelector<HTMLElement>(id)
             .setAttribute('aria-hidden', 'false');
-          document
-            .querySelector<HTMLElement>(id)
-            .removeAttribute('inert');
+          document.querySelector<HTMLElement>(id).removeAttribute('inert');
           document
             .querySelector(`.popupWrapper, ${this.options.bg}`)
             .classList.add('is-animating');

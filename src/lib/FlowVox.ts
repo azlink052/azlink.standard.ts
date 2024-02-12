@@ -1,4 +1,4 @@
-import anime from 'animejs/lib/anime.min';
+import anime from 'animejs/lib/anime.es';
 // import { Utilities } from './Utilities';
 /**
  * 画面内に表示されることでアニメーションを実行

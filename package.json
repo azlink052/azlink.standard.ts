@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "animejs": "^3.2.1",
+    "animejs": "^3.2.2",
     "axios": "^0.21.1",
     "axios-jsonp": "^1.0.4",
     "browserslist": "^4.16.6",
