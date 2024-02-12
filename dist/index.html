@@ -83,8 +83,16 @@
           ctrl: true,
           pager: true,
           speed: 1000,
-          pause: 1500,
+          pause: 5000,
+          isAuto: false,
           isChangeOpacity: false,
+          onSliderLoad: () => {
+            setTimeout(() => {
+              // slider03.options.isAuto = true;
+              // slider03.options.pause = 3000;
+              slider01.startSlideAuto();
+            }, 10);
+          },
         });
         const slider02 = new azlib.FadeSlider('#slider02', {
           ctrl: true,
@@ -103,6 +111,13 @@
           slideCount: 2,
           // cloneCount: 10,
           // isDebug: true
+          onSliderLoad: () => {
+            setTimeout(() => {
+              // slider03.options.isAuto = true;
+              // slider03.options.pause = 3000;
+              slider03.startSlideAuto();
+            }, 10);
+          },
         });
         const slider04 = new azlib.SimpleSlider('#slider04', {
           ctrl: true,
@@ -150,6 +165,20 @@
           slideCount: 1,
           mode: 'vertical',
           wrapperHeight: 300,
+          // cloneCount: 10,
+          // isDebug: true
+        });
+        const slider08 = new azlib.SimpleSlider('#slider08', {
+          ctrl: true,
+          pager: true,
+          speed: 500,
+          pause: 3000,
+          isAuto: false,
+          isLoop: true,
+          rootCount: 1,
+          slideCount: 1,
+          mode: 'vertical',
+          wrapperHeight: 100,
           // cloneCount: 10,
           // isDebug: true
         });
@@ -622,6 +651,28 @@
                   alt=""
                 />
               </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/graphic_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/system_img01.jpg"
+                  alt=""
+                />
+              </li>
+              <li>
+                <img
+                  src="./assets/images/content/service/web_img01.jpg"
+                  alt=""
+                />
+              </li>
+            </ul>
+          </div>
+          <div class="simpleSliderWrapper sliderWrapper">
+            <ul class="simpleSlider" id="slider08">
               <li>
                 <img
                   src="./assets/images/content/service/graphic_img01.jpg"

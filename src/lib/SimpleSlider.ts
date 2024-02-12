@@ -120,9 +120,9 @@ export class SimpleSlider {
   init(): void {
     this.initDebug();
 
-    if (!this.options.isAuto) {
-      this.options.pause = 0;
-    }
+    // if (!this.options.isAuto) {
+    //   this.options.pause = 0;
+    // }
     // if (this.options.pause < this.options.speed) {
     //   this.options.speed = this.options.pause - 1;
     // }
