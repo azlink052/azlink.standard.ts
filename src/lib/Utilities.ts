@@ -500,6 +500,8 @@ export class Utilities {
                   easing: easing,
                 });
               }
+              target.setAttribute('tabindex', '-1');
+              target.focus();
             },
           });
           return false;
