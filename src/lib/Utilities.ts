@@ -418,12 +418,14 @@ export class Utilities {
    * @param スピード
    * @param イージング
    * @param 発火要素
+   * @param アニメーション完了後のフォーカス　初期値 true
    */
   sScroll(
     $offset?: number,
     $duration?: number,
     $easing?: string,
-    $target: string = 'a[href*="#"].scroll, area[href*="#"].scroll'
+    $target: string = 'a[href*="#"].scroll, area[href*="#"].scroll',
+    $isFocus?: boolean
   ): void {
     document.querySelectorAll<HTMLAnchorElement>($target).forEach((v, i) => {
       v.addEventListener('click', (e) => {
@@ -464,6 +466,7 @@ export class Utilities {
               ? $easing
               : 'cubicBezier(0.11, 0, 0.5, 0)';
           const target = document.getElementById(params.target);
+          const isFocus = $isFocus !== false ? true : false;
           const targetPos =
             target.getBoundingClientRect().top + window.pageYOffset + offset;
           anime.remove('html, body');
@@ -487,21 +490,23 @@ export class Utilities {
               }
             },
             complete: () => {
-              const newTargetPos =
-                target.getBoundingClientRect().top +
-                window.pageYOffset +
-                offset;
-              // console.log(targetPos, newTargetPos)
-              if (targetPos !== newTargetPos) {
-                anime({
-                  targets: 'html, body',
-                  scrollTop: newTargetPos,
-                  duration: 10,
-                  easing: easing,
-                });
+              if (isFocus) {
+                const newTargetPos =
+                  target.getBoundingClientRect().top +
+                  window.pageYOffset +
+                  offset;
+                // console.log(targetPos, newTargetPos)
+                if (targetPos !== newTargetPos) {
+                  anime({
+                    targets: 'html, body',
+                    scrollTop: newTargetPos,
+                    duration: 10,
+                    easing: easing,
+                  });
+                }
+                target.setAttribute('tabindex', '-1');
+                target.focus();
               }
-              target.setAttribute('tabindex', '-1');
-              target.focus();
             },
           });
           return false;
