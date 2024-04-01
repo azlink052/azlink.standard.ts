@@ -38,6 +38,7 @@
           durationClose: 0,
           durationBgChange: 500,
           durationBgClose: 0,
+          // isA11y: false,
           onComplete: () => {
             console.log('loaded');
           },
@@ -1077,13 +1078,16 @@
       </div>
       <div id="popupContents">
         <div class="content">
-          <p style="min-height: 50vh; color: #fff">
+          <p style="min-height: 50vh; max-height: 90vh; color: #fff">
             One morning, when Gregor Samsa woke from troubled dreams, he found
             himself transformed in his bed into a horrible vermin.<br />
             One morning, when Gregor Samsa woke from troubled dreams, he found
             himself transformed in his bed into a horrible vermin.<br />
             One morning, when Gregor Samsa woke from troubled dreams, he found
             himself transformed in his bed into a horrible vermin.
+          </p>
+          <p class="alignCenter">
+            <button onclick="alert('yes')">CLICK ME</button>
           </p>
         </div>
         <div class="content" data-group="movie"></div>

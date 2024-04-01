@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2023.07.20
+ * @final 		2024.04.02
  *
  * @param {*} $selector
  * @param {*} $options
@@ -17,6 +17,7 @@ interface Options {
   isSpFixed: boolean;
   isAdjust: boolean;
   isA11y: boolean;
+  focusLoopElems: string[];
   bgOpacity: number;
   durationChange: number;
   durationClose: number;
@@ -30,6 +31,7 @@ export class PopupAdjust {
   private scrTopTemp: number;
   private isOpen: boolean;
   private isAllowClose: boolean;
+  private currentTrigger: Element;
   private popupTarget: string;
   private popupContent: string;
   private spBreakPoint: number;
@@ -51,6 +53,7 @@ export class PopupAdjust {
       isSpFixed = true, // SP時はbodyのスクロールを禁止する
       isAdjust = true, // popupの位置調整を行う
       isA11y = true, // アクセシビリティ対応
+      focusLoopElems = ['a', 'button'], // focusLoopさせる際の要素名
       bgOpacity = 0.8, // レイヤの透明度
       durationChange = 200, // ポップアップが開く際の表示速度
       durationClose = 150, // ポップアップが閉じる際の表示速度
@@ -82,6 +85,7 @@ export class PopupAdjust {
       isSpFixed: isSpFixed,
       isAdjust: isAdjust,
       isA11y: isA11y,
+      focusLoopElems: focusLoopElems,
       bgOpacity: bgOpacity,
       durationChange: durationChange,
       durationClose: durationClose,
@@ -200,6 +204,7 @@ export class PopupAdjust {
 
     document.querySelectorAll(this.options.btn).forEach((v, i) => {
       v.addEventListener('click', () => {
+        this.currentTrigger = v;
         document
           .querySelectorAll(`.popupWrapper, ${this.options.bg}`)
           .forEach((vv) => {
@@ -233,6 +238,33 @@ export class PopupAdjust {
       this.setScrPos();
     });
 
+    // focusLoop
+    if (this.options.isA11y) {
+      document.addEventListener('keydown', (e) => {
+        if (!this.isOpen) return;
+        if (!this.options.focusLoopElems.length) return;
+        const elements = (() => {
+          return document
+            .querySelector(this.popupTarget)
+            .querySelectorAll(this.options.focusLoopElems.join(','));
+        })();
+        // console.log(elements);
+        const activeElem = document.activeElement;
+        const firstElem = elements[0] as HTMLElement;
+        const lastElem = elements[elements.length - 1] as HTMLElement;
+        const isTabKey = 9 === e.keyCode;
+        const isShiftKey = e.shiftKey;
+        if (!isShiftKey && isTabKey && lastElem === activeElem) {
+          e.preventDefault();
+          firstElem.focus();
+        }
+        if (isShiftKey && isTabKey && firstElem === activeElem) {
+          e.preventDefault();
+          lastElem.focus();
+        }
+      });
+    }
+
     if (typeof this.options.onComplete === 'function') {
       this.options.onComplete();
     }
@@ -261,13 +293,14 @@ export class PopupAdjust {
               v !== <HTMLElement>document.querySelector(this.options.bg)
             ) {
               v.setAttribute('aria-hidden', 'true');
-              v.setAttribute('inert', 'true');
+              if (this.options.isA11y) v.setAttribute('inert', 'true');
             }
           });
           document
             .querySelector<HTMLElement>(id)
             .setAttribute('aria-hidden', 'false');
-          document.querySelector<HTMLElement>(id).removeAttribute('inert');
+          if (this.options.isA11y)
+            document.querySelector<HTMLElement>(id).removeAttribute('inert');
           document
             .querySelector(`.popupWrapper, ${this.options.bg}`)
             .classList.add('is-animating');
@@ -308,7 +341,8 @@ export class PopupAdjust {
         complete: () => {
           (<HTMLElement>v).style.display = 'none';
           (<HTMLElement>v).setAttribute('aria-hidden', 'true');
-          (<HTMLElement>v).setAttribute('inert', 'true');
+          if (this.options.isA11y)
+            (<HTMLElement>v).setAttribute('inert', 'true');
           // document.body.setAttribute('aria-hidden', 'false');
           const children: HTMLCollection = document.querySelector(
             this.options.wrapper
@@ -317,7 +351,8 @@ export class PopupAdjust {
             // console.log(vv !== v);
             if (vv !== v) {
               (<HTMLElement>vv).removeAttribute('aria-hidden');
-              (<HTMLElement>vv).removeAttribute('inert');
+              if (this.options.isA11y)
+                (<HTMLElement>vv).removeAttribute('inert');
             }
           });
           anime({
@@ -333,6 +368,8 @@ export class PopupAdjust {
                 .querySelectorAll('.popupWrapper')
                 .forEach((vv) => ((<HTMLElement>vv).style.display = 'none'));
               this.isOpen = false;
+
+              (<HTMLElement>this.currentTrigger).focus();
 
               if (typeof this.options.onClose === 'function') {
                 this.options.onClose(this.popupTarget);
