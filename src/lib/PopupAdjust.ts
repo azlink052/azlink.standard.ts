@@ -1,10 +1,11 @@
 import anime from 'animejs/lib/anime.es';
+import { FocusLoop } from './FocusLoop';
 /**
  * シンプルなポップアップ処理
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2024.04.02
+ * @final 		2024.04.04
  *
  * @param {*} $selector
  * @param {*} $options
@@ -43,17 +44,27 @@ export class PopupAdjust {
   private wIHeight: number;
   private isRespMode: boolean;
   private options: Options;
+  private focusLoop: FocusLoop[];
 
   constructor(
     $selector: string, // popupの発火となる要素
     {
-      wrapper = '#wrapper', // ドキュメントのラッパ要素の指定(レイヤ差し込み用)
+      wrapper = 'body', // ドキュメントのラッパ要素の指定(レイヤ差し込み用)
       bg = '#alphaBg', // レイヤ
       isUnlock = true, // bodyのスクロール禁止を「しない」
       isSpFixed = true, // SP時はbodyのスクロールを禁止する
       isAdjust = true, // popupの位置調整を行う
       isA11y = true, // アクセシビリティ対応
-      focusLoopElems = ['a', 'button'], // focusLoopさせる際の要素名
+      focusLoopElems = [
+        'a',
+        'area',
+        'button',
+        'iframe',
+        'input',
+        'object',
+        'select',
+        'textarea',
+      ], // focusLoopさせる際の要素名
       bgOpacity = 0.8, // レイヤの透明度
       durationChange = 200, // ポップアップが開く際の表示速度
       durationClose = 150, // ポップアップが閉じる際の表示速度
@@ -76,6 +87,7 @@ export class PopupAdjust {
     this.wIWidth = 0;
     this.wIHeight = 0;
     this.isRespMode = false;
+    this.focusLoop = [];
 
     this.options = {
       btn: $selector,
@@ -166,11 +178,18 @@ export class PopupAdjust {
         document.querySelector(this.options.wrapper).appendChild(popupSrc);
         popupSrc.id = popupIDs[i];
         if (group) popupSrc.classList.add(group);
+        if (this.options.isA11y) {
+          popupSrc.setAttribute('aria-hidden', 'true');
+          popupSrc.setAttribute('inert', 'true');
+        }
         document
           .querySelector(`#${popupIDs[i]}`)
           .querySelector('.content')
           .insertAdjacentHTML('beforeend', src);
         v.remove();
+
+        if (this.options.isA11y)
+          this.focusLoop[i] = new FocusLoop(`#${popupIDs[i]}`);
         // v.parentNode.removeChild(v);
       });
 
@@ -224,11 +243,7 @@ export class PopupAdjust {
         );
 
         this.change(`#${id}`);
-
-        // document.querySelector<HTMLElement>(this.popupTarget).style.display =
-        //   'none';
-        // document.querySelector<HTMLElement>(this.popupTarget).style.opacity =
-        //   '1';
+        if (this.options.isA11y) this.focusLoop[i].isRun = true;
 
         document.body.classList.add('is-pOpen');
       });
@@ -237,33 +252,6 @@ export class PopupAdjust {
     window.addEventListener('scroll', () => {
       this.setScrPos();
     });
-
-    // focusLoop
-    if (this.options.isA11y) {
-      document.addEventListener('keydown', (e) => {
-        if (!this.isOpen) return;
-        if (!this.options.focusLoopElems.length) return;
-        const elements = (() => {
-          return document
-            .querySelector(this.popupTarget)
-            .querySelectorAll(this.options.focusLoopElems.join(','));
-        })();
-        // console.log(elements);
-        const activeElem = document.activeElement;
-        const firstElem = elements[0] as HTMLElement;
-        const lastElem = elements[elements.length - 1] as HTMLElement;
-        const isTabKey = 9 === e.keyCode;
-        const isShiftKey = e.shiftKey;
-        if (!isShiftKey && isTabKey && lastElem === activeElem) {
-          e.preventDefault();
-          firstElem.focus();
-        }
-        if (isShiftKey && isTabKey && firstElem === activeElem) {
-          e.preventDefault();
-          lastElem.focus();
-        }
-      });
-    }
 
     if (typeof this.options.onComplete === 'function') {
       this.options.onComplete();
@@ -287,20 +275,22 @@ export class PopupAdjust {
           const children: HTMLCollection = document.querySelector(
             this.options.wrapper
           ).children;
-          Array.from(children).forEach((v) => {
-            if (
-              v !== document.querySelector<HTMLElement>(id) &&
-              v !== <HTMLElement>document.querySelector(this.options.bg)
-            ) {
-              v.setAttribute('aria-hidden', 'true');
-              if (this.options.isA11y) v.setAttribute('inert', 'true');
-            }
-          });
-          document
-            .querySelector<HTMLElement>(id)
-            .setAttribute('aria-hidden', 'false');
-          if (this.options.isA11y)
+          if (this.options.isA11y) {
+            Array.from(children).forEach((v) => {
+              if (
+                v !== document.querySelector<HTMLElement>(id) &&
+                v !== <HTMLElement>document.querySelector(this.options.bg)
+              ) {
+                v.setAttribute('data-popup-invalid-elements', 'true');
+                v.setAttribute('aria-hidden', 'true');
+                v.setAttribute('inert', 'true');
+              }
+            });
+            document
+              .querySelector<HTMLElement>(id)
+              .setAttribute('aria-hidden', 'false');
             document.querySelector<HTMLElement>(id).removeAttribute('inert');
+          }
           document
             .querySelector(`.popupWrapper, ${this.options.bg}`)
             .classList.add('is-animating');
@@ -334,27 +324,27 @@ export class PopupAdjust {
         document.body.style.removeProperty('top');
         window.scrollTo(0, this.scrTopTemp);
       }
+      if (this.options.isA11y) this.focusLoop[i].isRun = false;
       anime({
         targets: v,
         opacity: [1, 0],
         duration: this.options.durationClose,
         complete: () => {
           (<HTMLElement>v).style.display = 'none';
-          (<HTMLElement>v).setAttribute('aria-hidden', 'true');
-          if (this.options.isA11y)
+          if (this.options.isA11y) {
+            (<HTMLElement>v).setAttribute('aria-hidden', 'true');
             (<HTMLElement>v).setAttribute('inert', 'true');
-          // document.body.setAttribute('aria-hidden', 'false');
-          const children: HTMLCollection = document.querySelector(
-            this.options.wrapper
-          ).children;
-          Array.from(children).forEach((vv) => {
-            // console.log(vv !== v);
-            if (vv !== v) {
-              (<HTMLElement>vv).removeAttribute('aria-hidden');
-              if (this.options.isA11y)
+            // document.body.setAttribute('aria-hidden', 'false');
+            document
+              .querySelectorAll('[data-popup-invalid-elements="true"]')
+              .forEach((vv) => {
+                (<HTMLElement>vv).removeAttribute(
+                  'data-popup-invalid-elements'
+                );
+                (<HTMLElement>vv).removeAttribute('aria-hidden');
                 (<HTMLElement>vv).removeAttribute('inert');
-            }
-          });
+              });
+          }
           anime({
             targets: this.options.bg,
             opacity: [1, 0],

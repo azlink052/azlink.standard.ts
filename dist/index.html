@@ -215,6 +215,9 @@
         // }, 1000)
         // console.log(cookie.get('test'))
         // GNAV
+        const focusLoop = new azlib.FocusLoop('#js-gNav');
+        // console.log(focusLoop);
+
         if (document.getElementById('gNavOpener')) {
           document
             .getElementById('gNavOpener')
@@ -235,8 +238,10 @@
                 //   window.scrollTo(0, this.scrTopCache);
                 // }
                 util.isNavOpen = false;
+                focusLoop.isRun = false;
               } else {
                 util.isNavOpen = true;
+                focusLoop.isRun = true;
                 // if (util.isRespMode) {
                 //   this.scrTopCache = util.scrTop;
                 //   this.adjust();
@@ -1053,7 +1058,7 @@
             />
             <figcaption>コアラ</figcaption>
           </figure>
-          <div class="mT50">
+          <div class="mT50" id="js-gNav">
             <button
               id="gNavOpener"
               aria-label="メニューを開く"
