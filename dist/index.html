@@ -266,6 +266,79 @@
             if (util.isNavOpen) document.getElementById('gNavOpener').click();
           });
         });
+
+        // Tab
+        if (document.querySelector('.tabVoxWrapper')) {
+          document.querySelectorAll('.tabVoxWrapper').forEach((v, i) => {
+            const content = v.querySelectorAll('.tabContents');
+            const list = v.querySelectorAll('.tabs button');
+            const tabList = v.querySelector('[role="tablist"]');
+            let current = 0;
+            const length = v.querySelectorAll('.tabs button').length;
+
+            window.addEventListener('load', () => {
+              content[current].classList.add('is-show');
+              list[current].parentElement.classList.add('is-active');
+            });
+            list.forEach((v, i) => {
+              if (current !== i) {
+                list[i].setAttribute('aria-selected', false);
+                list[i].setAttribute('tabindex', -1);
+                content[i].setAttribute('aria-hidden', true);
+              } else {
+                list[i].setAttribute('aria-selected', true);
+                list[i].setAttribute('tabindex', 0);
+                content[i].setAttribute('aria-hidden', false);
+              }
+              v.addEventListener('click', (e) => {
+                current = i;
+                Array.from(list).map((item) => {
+                  item.parentElement.classList.remove('is-active');
+                  item.setAttribute('aria-selected', false);
+                  item.setAttribute('tabindex', -1);
+                });
+                Array.from(content).map((item) => {
+                  item.setAttribute('aria-hidden', true);
+                  item.setAttribute('tabindex', 0);
+                  item.classList.remove('is-show');
+                });
+
+                e.currentTarget.parentElement.classList.add('is-active');
+                list[current].setAttribute('aria-selected', true);
+                list[current].setAttribute('tabindex', 0);
+                content[current].setAttribute('aria-hidden', false);
+                content[i].classList.add('is-show');
+                // content[num].style.display = 'block';
+              });
+            });
+            tabList?.addEventListener('keydown', (e) => {
+              // console.log(e.code);
+              if (
+                e.code === 'ArrowRight' ||
+                e.code === 'ArrowLeft' ||
+                e.code === 'ArrowDown' ||
+                e.code === 'ArrowUp'
+              ) {
+                e.preventDefault();
+                current = (() => {
+                  switch (e.code) {
+                    case 'ArrowRight':
+                    case 'ArrowDown':
+                      return current !== length - 1 ? current + 1 : 0;
+                      break;
+                    case 'ArrowLeft':
+                    case 'ArrowUp':
+                      return current !== 0 ? current - 1 : length - 1;
+                      break;
+                  }
+                })();
+                // console.log(a);
+                list[current].focus();
+                // list[a].click();
+              }
+            });
+          });
+        }
       });
       let rTimer;
       window.addEventListener('resize', () => {
@@ -430,6 +503,49 @@
         font-size: 2rem;
         font-weight: bold;
         margin-bottom: 30px;
+      }
+      .tabVoxWrapper {
+      }
+      .tabVoxWrapper .tabs {
+        list-style-type: none;
+        margin: 2em 0;
+        padding: 0;
+        display: flex;
+        gap: 10px;
+      }
+      .tabVoxWrapper .tabs li button {
+        padding: 1em;
+      }
+      .tabVoxWrapper .tabs li.is-active button {
+        background-color: #000;
+        color: #fff;
+      }
+      .tabVoxWrapper .tabContents {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+      }
+      .tabVoxWrapper .tabContents.is-show {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        0% {
+          display: none;
+          opacity: 0;
+          visibility: hidden;
+        }
+        1% {
+          display: block;
+          opacity: 0;
+          visibility: hidden;
+        }
+        100% {
+          visibility: visible;
+          opacity: 1;
+        }
       }
     </style>
   </head>
@@ -699,6 +815,167 @@
                 />
               </li>
             </ul>
+          </div>
+        </section>
+        <section>
+          <h2>Tab Sample</h2>
+          <p>
+            タブボックスにfocusがあるとき、カーソルキーでタブのフォーカスがループするサンプル
+          </p>
+          <div class="tabVoxWrapper">
+            <ul class="tabs" role="tablist">
+              <li>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-controls="tabContents1"
+                  aria-selected="true"
+                >
+                  Subject 1
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-controls="tabContents2"
+                  aria-selected="false"
+                >
+                  Subject 2
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-controls="tabContents3"
+                  aria-selected="false"
+                >
+                  Subject 3
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-controls="tabContents4"
+                  aria-selected="false"
+                >
+                  Subject 4
+                </button>
+              </li>
+            </ul>
+            <div class="body">
+              <div
+                class="tabContents"
+                id="tabContents1"
+                role="tabpanel"
+                tabindex="0"
+              >
+                <h3>Tab Subject 1</h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </p>
+              </div>
+              <!-- /tabContents -->
+
+              <div
+                class="tabContents"
+                id="tabContents2"
+                role="tabpanel"
+                tabindex="0"
+              >
+                <h3>Tab Subject 2</h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </p>
+              </div>
+              <!-- /tabContents -->
+
+              <div
+                class="tabContents"
+                id="tabContents3"
+                role="tabpanel"
+                tabindex="0"
+              >
+                <h3>Tab Subject 3</h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </p>
+              </div>
+              <!-- /tabContents -->
+
+              <div
+                class="tabContents"
+                id="tabContents4"
+                role="tabpanel"
+                tabindex="0"
+              >
+                <h3>Tab Subject 4</h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </p>
+              </div>
+              <!-- /tabContents -->
+            </div>
           </div>
         </section>
         <section>
