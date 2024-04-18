@@ -271,7 +271,7 @@
         if (document.querySelector('.tabVoxWrapper')) {
           document.querySelectorAll('.tabVoxWrapper').forEach((v, i) => {
             const content = v.querySelectorAll('.tabContents');
-            const list = v.querySelectorAll('.tabs button');
+            const list = v.querySelectorAll('.tabs [role="tab"]');
             const tabList = v.querySelector('[role="tablist"]');
             let current = 0;
             const length = v.querySelectorAll('.tabs button').length;
@@ -292,12 +292,12 @@
               }
               v.addEventListener('click', (e) => {
                 current = i;
-                Array.from(list).map((item) => {
+                list.forEach((item) => {
                   item.parentElement.classList.remove('is-active');
                   item.setAttribute('aria-selected', false);
                   item.setAttribute('tabindex', -1);
                 });
-                Array.from(content).map((item) => {
+                content.forEach((item) => {
                   item.setAttribute('aria-hidden', true);
                   item.setAttribute('tabindex', 0);
                   item.classList.remove('is-show');
