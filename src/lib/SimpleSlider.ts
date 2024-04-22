@@ -73,9 +73,9 @@ export class SimpleSlider {
       cloneCount = 1,
       threshold = 30,
       mode = 'horizontal', // vertical を指定する場合は wrapper の高さ指定が必須
-      onSliderLoad = false,
-      onSlideBefore = false, // oldIndex, newIndex, this
-      onSlideAfter = false, // oldIndex, newIndex
+      onSliderLoad = false, // this
+      onSlideBefore = false, // this.current this.realCurrent
+      onSlideAfter = false, // this.current this.realCurrent
       isDebug = false,
     }: Partial<Options> = {}
   ) {
@@ -400,7 +400,7 @@ export class SimpleSlider {
     this.slide(this.current);
     this.slideAuto();
     if (typeof this.options.onSliderLoad === 'function') {
-      this.options.onSliderLoad();
+      this.options.onSliderLoad(this);
     }
   }
   slide(target?: number | boolean): void {
@@ -409,6 +409,9 @@ export class SimpleSlider {
     if (!this.isAllowSlide) return;
     if (target === false) return;
     this.isAllowSlide = false;
+    if (typeof this.options.onSlideBefore === 'function') {
+      this.options.onSlideBefore(this.current, this.realCurrent);
+    }
     this.oldIndex = target !== this.realCurrent ? this.realCurrent : null;
     this.current = Number(target);
     if (this.options.isLoop) {
@@ -422,9 +425,6 @@ export class SimpleSlider {
     }
     this.remainder = this.getRemainder();
     // console.log(this.current, this.realCurrent);
-    if (typeof this.options.onSlideBefore === 'function') {
-      this.options.onSlideBefore(this.oldIndex, this.realCurrent);
-    }
     const completeAction = () => {
       if (this.options.pager) this.togglePager();
       if (this.options.ctrl) this.toggleCtrls();
@@ -501,6 +501,10 @@ export class SimpleSlider {
             }
             this.oldIndex = this.oldIndex - this.pageLength;
           }
+          // console.log(this.current, this.realCurrent);
+          if (typeof this.options.onSlideAfter === 'function') {
+            this.options.onSlideAfter(this.current, this.realCurrent);
+          }
           completeAction();
         },
       });
@@ -556,6 +560,10 @@ export class SimpleSlider {
               this.realCurrent = this.current + this.itemLengthOrg;
             }
             this.oldIndex = this.oldIndex - this.pageLength;
+          }
+          // console.log(this.current, this.realCurrent);
+          if (typeof this.options.onSlideAfter === 'function') {
+            this.options.onSlideAfter(this.current, this.realCurrent);
           }
           completeAction();
         },
