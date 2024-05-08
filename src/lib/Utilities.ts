@@ -476,34 +476,47 @@ export class Utilities {
             duration: duration,
             easing: easing,
             update: () => {
-              if (this.isEdge) return;
+              // if (this.isEdge) return;
+              // const newTargetPos =
+              //   target.getBoundingClientRect().top +
+              //   window.pageYOffset +
+              //   offset;
+              // if (targetPos !== newTargetPos) {
+              //   anime.set('html, body', {
+              //     scrollTop: () => {
+              //       return newTargetPos;
+              //     },
+              //   });
+              // }
+            },
+            complete: () => {
               const newTargetPos =
                 target.getBoundingClientRect().top +
                 window.pageYOffset +
                 offset;
+              // console.log(targetPos, newTargetPos)
               if (targetPos !== newTargetPos) {
-                anime.set('html, body', {
-                  scrollTop: () => {
-                    return newTargetPos;
-                  },
+                anime({
+                  targets: 'html, body',
+                  scrollTop: newTargetPos,
+                  duration: 10,
+                  easing: 'linear',
                 });
               }
-            },
-            complete: () => {
               if (isFocus) {
-                const newTargetPos =
-                  target.getBoundingClientRect().top +
-                  window.pageYOffset +
-                  offset;
-                // console.log(targetPos, newTargetPos)
-                if (targetPos !== newTargetPos) {
-                  anime({
-                    targets: 'html, body',
-                    scrollTop: newTargetPos,
-                    duration: 10,
-                    easing: easing,
-                  });
-                }
+                // const newTargetPos =
+                //   target.getBoundingClientRect().top +
+                //   window.pageYOffset +
+                //   offset;
+                // // console.log(targetPos, newTargetPos)
+                // if (targetPos !== newTargetPos) {
+                //   anime({
+                //     targets: 'html, body',
+                //     scrollTop: newTargetPos,
+                //     duration: 10,
+                //     easing: easing,
+                //   });
+                // }
                 target.setAttribute('tabindex', '-1');
                 target.focus();
               }
