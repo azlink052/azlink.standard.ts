@@ -281,6 +281,20 @@ export class Utilities {
     }
   }
   /**
+   * 画像の先読みv2.0
+   * @param array 画像のパスの配列
+   * @return array 画像のパスの配列
+   */
+  loadImages(list: string[]) {
+    async function load(src: string) {
+      const img = new Image();
+      img.src = src;
+      await img.decode();
+      return img;
+    }
+    return Promise.all(list.map((src) => load(src)));
+  }
+  /**
    * GET値の取得
    * @return GET値をセットしたオブジェクト
    */
@@ -673,51 +687,5 @@ export class Utilities {
   }
   static printType(x: any): void {
     console.log(`${typeof x} ${Object.prototype.toString.call(x)}`);
-  }
-  /**
-   * 指定要素内でfocusをloopさせる
-   * @param flag focus loopを発生させる条件(指定変数がtrueのとき)
-   * @param wrapper focus loopを発生させる親要素
-   * @param elemens focus loopを発生させる要素
-   */
-  initFocusRoop(
-    flag: any,
-    wrapper: string,
-    elems: string[] = [
-      'a',
-      'area',
-      'button',
-      'iframe',
-      'input',
-      'object',
-      'select',
-      'textarea',
-    ]
-  ) {
-    document.addEventListener('keydown', (e) => {
-      console.log(flag);
-      return;
-      if (!flag) return;
-      if (!elems.length) return;
-      // const elements = (() => {
-      //   return document
-      //     .querySelector(this.popupTarget)
-      //     .querySelectorAll(this.options.focusLoopElems.join(','));
-      // })();
-      // // console.log(elements);
-      // const activeElem = document.activeElement;
-      // const firstElem = elements[0];
-      // const lastElem = elements[elements.length - 1];
-      // const isTabKey = 9 === e.keyCode;
-      // const isShiftKey = e.shiftKey;
-      // if (!isShiftKey && isTabKey && lastElem === activeElem) {
-      //   e.preventDefault();
-      //   (<HTMLElement>firstElem).focus();
-      // }
-      // if (isShiftKey && isTabKey && firstElem === activeElem) {
-      //   e.preventDefault();
-      //   (<HTMLElement>lastElem).focus();
-      // }
-    });
   }
 }

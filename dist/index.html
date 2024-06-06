@@ -385,6 +385,13 @@
       //     console.log(response)
       //   }
       // });
+      (async () => {
+        const images = await util.loadImages([
+          '/assets/images/content/service/graphic_img01.jpg',
+          '/assets/images/content/service/PC_Koala.jpg'
+        ]);
+        console.log(images);
+      })();
     </script>
     <style>
       *:focus {
