@@ -280,7 +280,7 @@
         if (document.querySelector('.tabVoxWrapper')) {
           document.querySelectorAll('.tabVoxWrapper').forEach((v, i) => {
             const content = v.querySelectorAll('.tabContents');
-            const list = v.querySelectorAll('.tabs [role="tab"]');
+            const list = v.querySelectorAll('.tabs [role="tab"] button');
             const tabList = v.querySelector('[role="tablist"]');
             let current = 0;
             const length = v.querySelectorAll('.tabs button').length;
@@ -291,30 +291,30 @@
             });
             list.forEach((v, i) => {
               if (current !== i) {
-                list[i].setAttribute('aria-selected', false);
-                list[i].setAttribute('tabindex', -1);
+                list[i].parentElement.setAttribute('aria-selected', false);
+                list[i].parentElement.setAttribute('tabindex', -1);
                 content[i].setAttribute('aria-hidden', true);
               } else {
-                list[i].setAttribute('aria-selected', true);
-                list[i].setAttribute('tabindex', 0);
+                list[i].parentElement.setAttribute('aria-selected', true);
+                list[i].parentElement.setAttribute('tabindex', 0);
                 content[i].setAttribute('aria-hidden', false);
               }
               v.addEventListener('click', (e) => {
                 current = i;
                 list.forEach((item) => {
                   item.parentElement.classList.remove('is-active');
-                  item.setAttribute('aria-selected', false);
-                  item.setAttribute('tabindex', -1);
+                  item.parentElement.setAttribute('aria-selected', false);
+                  item.parentElement.setAttribute('tabindex', -1);
                 });
                 content.forEach((item) => {
-                  item.setAttribute('aria-hidden', true);
-                  item.setAttribute('tabindex', 0);
+                  item.parentElement.setAttribute('aria-hidden', true);
+                  item.parentElement.setAttribute('tabindex', 0);
                   item.classList.remove('is-show');
                 });
 
                 e.currentTarget.parentElement.classList.add('is-active');
-                list[current].setAttribute('aria-selected', true);
-                list[current].setAttribute('tabindex', 0);
+                list[current].parentElement.setAttribute('aria-selected', true);
+                list[current].parentElement.setAttribute('tabindex', 0);
                 content[current].setAttribute('aria-hidden', false);
                 content[i].classList.add('is-show');
                 // content[num].style.display = 'block';
@@ -388,7 +388,7 @@
       (async () => {
         const images = await util.loadImages([
           '/assets/images/content/service/graphic_img01.jpg',
-          '/assets/images/content/service/PC_Koala.jpg'
+          '/assets/images/content/service/PC_Koala.jpg',
         ]);
         console.log(images);
       })();
@@ -580,9 +580,9 @@
           <h2>Simple Accordion Sample</h2>
           <div id="accContainer">
             <article class="accVox">
-              <h4 class="title opener">
+              <h3 class="title opener">
                 <button>他店で購入した品でも修復いただけますか？</button>
-              </h4>
+              </h3>
               <div class="txt accContent">
                 <p>
                   この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
@@ -599,9 +599,9 @@
               </div>
             </article>
             <article class="accVox">
-              <h4 class="title opener">
+              <h3 class="title opener">
                 <button>輸送中の破損が気になります。</button>
-              </h4>
+              </h3>
               <div class="txt accContent">
                 <p>
                   この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
@@ -609,9 +609,9 @@
               </div>
             </article>
             <article class="accVox">
-              <h4 class="title opener">
+              <h3 class="title opener">
                 <button>どのようなお支払い方法がありますか？</button>
-              </h4>
+              </h3>
               <div class="txt accContent">
                 <p>
                   この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。
@@ -840,45 +840,17 @@
           </p>
           <div class="tabVoxWrapper">
             <ul class="tabs" role="tablist">
-              <li>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-controls="tabContents1"
-                  aria-selected="true"
-                >
-                  Subject 1
-                </button>
+              <li role="tab" aria-controls="tabContents1" aria-selected="true">
+                <button type="button">Subject 1</button>
               </li>
-              <li>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-controls="tabContents2"
-                  aria-selected="false"
-                >
-                  Subject 2
-                </button>
+              <li role="tab" aria-controls="tabContents2" aria-selected="false">
+                <button type="button">Subject 2</button>
               </li>
-              <li>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-controls="tabContents3"
-                  aria-selected="false"
-                >
-                  Subject 3
-                </button>
+              <li role="tab" aria-controls="tabContents3" aria-selected="false">
+                <button type="button">Subject 3</button>
               </li>
-              <li>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-controls="tabContents4"
-                  aria-selected="false"
-                >
-                  Subject 4
-                </button>
+              <li role="tab" aria-controls="tabContents4" aria-selected="false">
+                <button type="button">Subject 4</button>
               </li>
             </ul>
             <div class="body">

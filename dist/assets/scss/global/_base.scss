@@ -214,6 +214,7 @@ body {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   // font-feature-settings: 'palt';
+  font-display: swap;
   &.fix {
     #siteHeader {
       padding: 15px 40px;
@@ -368,9 +369,9 @@ p {
   // position: absolute;
   // top: 0;
   // left: 0;
-	&[aria-hidden="true"] {
-		display: none;
-	}
+  &[aria-hidden='true'] {
+    display: none;
+  }
 }
 // topicPathVox
 #topicPathVox {
