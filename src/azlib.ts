@@ -8,6 +8,7 @@ export { FadeSlider } from './lib/FadeSlider';
 export { FocusLoop } from './lib/FocusLoop';
 export { SimpleSlider } from './lib/SimpleSlider';
 export { SimpleAccordion } from './lib/SimpleAccordion';
+export { SimpleTab } from './lib/SimpleTab';
 export { SimpleCookie } from './lib/SimpleCookie';
 export { ReplaceImageSP } from './lib/ReplaceImageSP';
 export { LazyLoadBg } from './lib/LazyLoadBg';
