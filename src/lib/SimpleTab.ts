@@ -9,6 +9,7 @@
  * @param {*} $options
  */
 interface Options {
+  isAddAriaLabel: boolean;
   activeClassName: string;
   current: number;
   isAdjustHeight: boolean;
@@ -35,6 +36,7 @@ export class SimpleTab {
   constructor(
     $selector: string = '.tabVoxWrapper',
     {
+      isAddAriaLabel = false,
       activeClassName = 'is-active',
       current = 0,
       isAdjustHeight = true,
@@ -44,6 +46,7 @@ export class SimpleTab {
   ) {
     this.collection = document.querySelectorAll($selector);
     this.options = {
+      isAddAriaLabel: isAddAriaLabel,
       activeClassName: activeClassName,
       current: current,
       isAdjustHeight: isAdjustHeight,
@@ -82,7 +85,8 @@ export class SimpleTab {
       Array.from(tabParam.tabItems).forEach((vv: HTMLElement, ii: number) => {
         vv.setAttribute('role', 'tab');
         vv.setAttribute('aria-controls', `tabContents${tabParam.id}${ii}`);
-        vv.setAttribute('aria-label', vv.textContent);
+        if (this.options.isAddAriaLabel)
+          vv.setAttribute('aria-label', vv.textContent);
         vv.setAttribute('aria-selected', 'true');
         vv.id = `tab_${tabParam.id}${ii}`;
       });
@@ -107,6 +111,7 @@ export class SimpleTab {
       });
 
       tabParam.wrap.classList.add('is-initTab');
+      tabParam.isAllowChange = true;
       this.tabParams[tabParam.id] = tabParam;
 
       if (i + 1 >= this.collection.length) {
@@ -134,6 +139,7 @@ export class SimpleTab {
           thisTab.tabContents[i].setAttribute('aria-hidden', 'false');
         }
         v.addEventListener('click', (e) => {
+          if (!thisTab.isAllowChange) return false;
           thisTab.current = i;
           Array.from(thisTab.tabItems).forEach((item: HTMLElement) => {
             item.classList.remove('is-active');
