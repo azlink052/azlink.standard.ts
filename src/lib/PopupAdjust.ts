@@ -243,7 +243,9 @@ export class PopupAdjust {
         );
 
         this.change(`#${id}`);
-        if (this.options.isA11y) this.focusLoop[i].isRun = true;
+        if (this.options.isA11y && this.focusLoop[i] !== undefined) {
+          this.focusLoop[i].isRun = true;
+        }
 
         document.body.classList.add('is-pOpen');
       });
@@ -324,7 +326,9 @@ export class PopupAdjust {
         document.body.style.removeProperty('top');
         window.scrollTo(0, this.scrTopTemp);
       }
-      if (this.options.isA11y) this.focusLoop[i].isRun = false;
+      if (this.options.isA11y && this.focusLoop[i] !== undefined) {
+        this.focusLoop[i].isRun = false;
+      }
       anime({
         targets: v,
         opacity: [1, 0],
