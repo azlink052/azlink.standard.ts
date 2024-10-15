@@ -48,30 +48,30 @@ export class InstaFeed {
     this.run();
   }
   async run(): Promise<void> {
-    await axios.get(this.app_url).then((response) => {
-      if (response.data.media.data.length <= 0) return;
+    const response = await fetch(this.app_url);
+    const res = await response.json();
+    console.log(res);
+    if (res.media.data.length <= 0) return;
 
-      if (this.options.elem) {
-        let src = '';
-        const insta = response.data.media.data;
-        for (const item of insta) {
-          const thumb =
-            item.media_type !== 'VIDEO' ? item.media_url : item.thumbnail_url;
-          src += `<div class="instaItem"><a href="${item.permalink}" target="_blank"><img src="${thumb}"></a></div>`;
-        }
-        document
-          .querySelector(this.options.elem)
-          .insertAdjacentHTML('beforeend', src);
+    if (this.options.elem) {
+      let src = '';
+      const insta = res.media.data;
+      for (const item of insta) {
+        const thumb =
+          item.media_type !== 'VIDEO' ? item.media_url : item.thumbnail_url;
+        src += `<div class="instaItem"><a href="${item.permalink}" target="_blank"><img src="${thumb}"></a></div>`;
       }
+      document
+        .querySelector(this.options.elem)
+        .insertAdjacentHTML('beforeend', src);
+    }
 
-      if (
-        this.options.onComplete &&
-        typeof this.options.onComplete === 'function'
-      ) {
-        this.options.onComplete(response);
-      }
-    });
-
+    if (
+      this.options.onComplete &&
+      typeof this.options.onComplete === 'function'
+    ) {
+      this.options.onComplete(response);
+    }
     // console.log('resolve');
     // return 'resolve';
   }
