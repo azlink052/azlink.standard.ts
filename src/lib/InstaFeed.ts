@@ -50,7 +50,7 @@ export class InstaFeed {
   async run(): Promise<void> {
     const response = await fetch(this.app_url);
     const res = await response.json();
-    console.log(res);
+    // console.log(res);
     if (res.media.data.length <= 0) return;
 
     if (this.options.elem) {
