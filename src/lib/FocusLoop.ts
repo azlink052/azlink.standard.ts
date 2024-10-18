@@ -47,9 +47,9 @@ export class FocusLoop {
     document.addEventListener('keydown', (e) => {
       if (!this.isRun) return;
       const elements = (() => {
-        return this.wrapper.querySelectorAll(
-          this.options.focusLoopElems.join(',')
-        );
+        return Array.from(
+          this.wrapper.querySelectorAll(this.options.focusLoopElems.join(','))
+        ).filter((item) => item.checkVisibility());
       })();
 
       const activeElem = document.activeElement;
