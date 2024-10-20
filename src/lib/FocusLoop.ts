@@ -1,3 +1,5 @@
+import { Utilities } from './Utilities';
+
 /**
  * 指定要素内でfocusをloopさせる
  * @category 	Application of AZLINK.
@@ -49,7 +51,10 @@ export class FocusLoop {
       const elements = (() => {
         return Array.from(
           this.wrapper.querySelectorAll(this.options.focusLoopElems.join(','))
-        ).filter((item) => item.checkVisibility());
+        ).filter((item) => {
+          // TODO itemのtype確認
+          (<any>item).checkVisibility();
+        });
       })();
 
       const activeElem = document.activeElement;

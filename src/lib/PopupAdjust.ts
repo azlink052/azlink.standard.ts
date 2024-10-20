@@ -363,7 +363,7 @@ export class PopupAdjust {
                 .forEach((vv) => ((<HTMLElement>vv).style.display = 'none'));
               this.isOpen = false;
 
-              (<HTMLElement>this.currentTrigger).focus();
+              (<HTMLElement>this.currentTrigger)?.focus();
 
               if (typeof this.options.onClose === 'function') {
                 this.options.onClose(this.popupTarget);
