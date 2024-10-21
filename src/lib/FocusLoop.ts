@@ -51,10 +51,7 @@ export class FocusLoop {
       const elements = (() => {
         return Array.from(
           this.wrapper.querySelectorAll(this.options.focusLoopElems.join(','))
-        ).filter((item) => {
-          // TODO itemのtype確認
-          (<any>item).checkVisibility();
-        });
+        ).filter((item: any) => item.checkVisibility());
       })();
 
       const activeElem = document.activeElement;
