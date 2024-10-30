@@ -96,7 +96,7 @@ export class SimpleTab {
           vv.classList.add('tabContents');
           vv.id = `tabContents${tabParam.id}${ii}`;
           vv.setAttribute('role', 'tabpanel');
-          vv.setAttribute('tabindex', '0');
+          // vv.setAttribute('tabindex', '0');
           vv.setAttribute('aria-labelledby', `tab_${tabParam.id}${ii}`);
         }
       );
@@ -132,11 +132,11 @@ export class SimpleTab {
         if (thisTab.current !== i) {
           v.setAttribute('aria-selected', 'false');
           v.setAttribute('tabindex', '-1');
-          thisTab.tabContents[i].setAttribute('aria-hidden', 'true');
+          // thisTab.tabContents[i].setAttribute('aria-hidden', 'true');
         } else {
           v.setAttribute('aria-selected', 'true');
           v.setAttribute('tabindex', '0');
-          thisTab.tabContents[i].setAttribute('aria-hidden', 'false');
+          thisTab.tabContents[i].setAttribute('tabindex', '0');
         }
         v.addEventListener('click', (e) => {
           if (!thisTab.isAllowChange) return false;
@@ -147,8 +147,9 @@ export class SimpleTab {
             item.setAttribute('tabindex', '-1');
           });
           Array.from(thisTab.tabContents).forEach((item: HTMLElement) => {
-            item.setAttribute('aria-hidden', 'true');
-            item.setAttribute('tabindex', '0');
+            // item.setAttribute('aria-hidden', 'true');
+            // item.setAttribute('tabindex', '0');
+            item.removeAttribute('tabindex');
             item.classList.remove(this.options.activeClassName);
           });
 
@@ -160,10 +161,7 @@ export class SimpleTab {
             'true'
           );
           thisTab.tabItems[thisTab.current].setAttribute('tabindex', '0');
-          thisTab.tabContents[thisTab.current].setAttribute(
-            'aria-hidden',
-            'false'
-          );
+          thisTab.tabContents[thisTab.current].setAttribute('tabindex', '0');
           thisTab.tabContents[thisTab.current].classList.add(
             this.options.activeClassName
           );
