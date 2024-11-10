@@ -17,6 +17,8 @@ interface Options {
   easing: string;
   ctrl: boolean;
   pager: boolean;
+  nextEl: string;
+  prevEl: string;
   wrapper: HTMLElement | ParentNode;
   wrapperHeight: number | null;
   rootCount: number;
@@ -55,6 +57,7 @@ export class SimpleSlider {
   private moveY: number;
   private orgElement: Element | boolean;
   private debugTimer: number | boolean;
+  private isHover: boolean;
 
   constructor(
     $selector: string,
@@ -66,6 +69,8 @@ export class SimpleSlider {
       easing = 'cubicBezier(0.33, 1, 0.68, 1)',
       ctrl = false,
       pager = false,
+      nextEl = '',
+      prevEl = '',
       wrapper = document.querySelector($selector).parentNode,
       wrapperHeight = null,
       rootCount = 0, // 1ページに表示する量
@@ -101,6 +106,8 @@ export class SimpleSlider {
       easing: easing,
       ctrl: ctrl,
       pager: pager,
+      nextEl: nextEl,
+      prevEl: prevEl,
       wrapper: wrapper,
       wrapperHeight: wrapperHeight,
       rootCount: rootCount,
@@ -113,6 +120,7 @@ export class SimpleSlider {
       onSlideAfter: onSlideAfter,
       isDebug: isDebug,
     };
+    this.isHover = false;
     // console.log(this.options, this.options.rootCount);
 
     this.init();
@@ -275,6 +283,33 @@ export class SimpleSlider {
             },
             false
           );
+        } else {
+          if (document.querySelector(this.options.nextEl)) {
+            this.nextBtn = document.querySelector(this.options.nextEl);
+            this.pagerEvent['next'] = this.nextBtn.addEventListener(
+              'click',
+              (e) => {
+                if (!this.isAllowSlide) return;
+                if ((<HTMLElement>e.target).classList.contains('is-disabled'))
+                  return;
+                this.slide(this.getNextSlide());
+              },
+              false
+            );
+          }
+          if (document.querySelector(this.options.prevEl)) {
+            this.prevBtn = document.querySelector(this.options.prevEl);
+            this.pagerEvent['prev'] = this.prevBtn.addEventListener(
+              'click',
+              (e) => {
+                if (!this.isAllowSlide) return;
+                if ((<HTMLElement>e.target).classList.contains('is-disabled'))
+                  return;
+                this.slide(this.getPrevSlide());
+              },
+              false
+            );
+          }
         }
         if (this.options.pager) {
           (<HTMLElement>this.options.wrapper).insertAdjacentHTML(
@@ -396,6 +431,14 @@ export class SimpleSlider {
         });
       }
     }
+    this.options.wrapper.addEventListener(
+      'mouseover',
+      (e) => (this.isHover = true)
+    );
+    this.options.wrapper.addEventListener(
+      'mouseout',
+      (e) => (this.isHover = false)
+    );
     this.isAllowSlide = true;
     this.slide(this.current);
     this.slideAuto();
@@ -609,7 +652,7 @@ export class SimpleSlider {
     this.isAllowSlide = this.options.isAuto = true;
     // console.log('slideAuto');
     this.rTimer = window.setTimeout(() => {
-      this.slide(this.getNextSlide());
+      if (!this.isHover) this.slide(this.getNextSlide());
     }, this.options.pause);
   }
   stopAuto(): void {

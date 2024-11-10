@@ -102,7 +102,7 @@
           pause: 3000,
         });
         const slider03 = new azlib.SimpleSlider('#slider03', {
-          ctrl: true,
+          // ctrl: true,
           pager: true,
           speed: 500,
           pause: 3000,
@@ -110,6 +110,8 @@
           isLoop: true,
           rootCount: 2,
           slideCount: 2,
+          prevEl: '#js-prev01',
+          nextEl: '#js-next01',
           // cloneCount: 10,
           // isDebug: true
           onSliderLoad: () => {
@@ -407,6 +409,7 @@
 
       .js-lazyBg,
       .js-lazyBg * {
+        transition: background-image 1s linear;
         background-image: none !important;
       }
 
@@ -601,6 +604,10 @@
                 />
               </li>
             </ul>
+            <div class="ctrls">
+              <button type="button" id="js-prev01">PREV</button>
+              <button type="button" id="js-next01">NEXT</button>
+            </div>
           </div>
           <div class="simpleSliderWrapper sliderWrapper">
             <ul class="simpleSlider" id="slider04">
