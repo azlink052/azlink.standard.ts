@@ -10,9 +10,9 @@
  * @returns
  */
 interface Options {
-  root: HTMLElement | null;
+  root: Element | null | Document;
   rootMargin: string;
-  threshold: number;
+  thresholds: number;
   hideTag: string;
   showTag: string;
   onComplete: any;
@@ -28,7 +28,7 @@ export class LazyLoadBg {
     {
       root = null, // ビューポートとして使用される要素
       rootMargin = '0px', // root の周りのマージン
-      threshold = 1.0, // ターゲットがどのくらいの割合で見えている場合にオブザーバーのコールバックを実行するか
+      thresholds = 1.0, // ターゲットがどのくらいの割合で見えている場合にオブザーバーのコールバックを実行するか
       hideTag = 'js-lazyBg', // hide時のクラス名
       showTag = 'is-completeLazyBg', // complete時要素に追加するクラス名
       onComplete = false, // complete時に実行したい処理
@@ -42,7 +42,7 @@ export class LazyLoadBg {
     this.options = {
       root: root,
       rootMargin: rootMargin,
-      threshold: threshold,
+      thresholds: thresholds,
       hideTag: hideTag,
       showTag: showTag,
       onComplete: onComplete,
@@ -54,15 +54,21 @@ export class LazyLoadBg {
     this.run();
   }
   run(): void {
-    this.observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        // console.log(entry.isIntersecting);
-        if (entry.isIntersecting) {
-          entry.target.classList.remove(this.options.hideTag);
-          entry.target.classList.add(this.options.showTag);
-        }
-      });
-    }, this.options);
+    this.observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove(this.options.hideTag);
+            entry.target.classList.add(this.options.showTag);
+          }
+        });
+      },
+      {
+        root: this.options.root,
+        rootMargin: this.options.rootMargin,
+        threshold: this.options.thresholds,
+      }
+    );
     this.collection.forEach((v: Element) => {
       this.observer.observe(v);
     });
