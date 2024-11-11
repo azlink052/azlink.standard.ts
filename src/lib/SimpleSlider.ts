@@ -529,16 +529,14 @@ export class SimpleSlider {
                   this.elem.style.transform = `translateY(-${
                     this.itemHeight * (this.itemLengthOrg + this.pageLength)
                   }px)`;
+                  this.current =
+                    this.itemLengthOrg - Number(this.options.rootCount);
                 } else {
                   this.elem.style.transform = `translateY(-${
-                    this.itemHeight *
-                    (this.itemLengthOrg +
-                      this.pageLength * Number(this.options.rootCount) -
-                      Number(this.options.rootCount))
+                    this.itemHeight * (this.itemLengthOrg + this.pageLength - 1)
                   }px)`;
+                  this.current = this.itemLengthOrg - 1;
                 }
-                this.current =
-                  this.itemLengthOrg - Number(this.options.rootCount);
               }
               this.realCurrent = this.current + this.itemLengthOrg;
             }
