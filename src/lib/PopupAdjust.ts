@@ -179,7 +179,7 @@ export class PopupAdjust {
         popupSrc.id = popupIDs[i];
         if (group) popupSrc.classList.add(group);
         if (this.options.isA11y) {
-          popupSrc.setAttribute('aria-hidden', 'true');
+          // popupSrc.setAttribute('aria-hidden', 'true');
           popupSrc.setAttribute('inert', 'true');
         }
         document
@@ -284,7 +284,7 @@ export class PopupAdjust {
                 v !== <HTMLElement>document.querySelector(this.options.bg)
               ) {
                 v.setAttribute('data-popup-invalid-elements', 'true');
-                v.setAttribute('aria-hidden', 'true');
+                // v.setAttribute('aria-hidden', 'true');
                 v.setAttribute('inert', 'true');
               }
             });
@@ -336,7 +336,7 @@ export class PopupAdjust {
         complete: () => {
           (<HTMLElement>v).style.display = 'none';
           if (this.options.isA11y) {
-            (<HTMLElement>v).setAttribute('aria-hidden', 'true');
+            // (<HTMLElement>v).setAttribute('aria-hidden', 'true');
             (<HTMLElement>v).setAttribute('inert', 'true');
             // document.body.setAttribute('aria-hidden', 'false');
             document
@@ -345,7 +345,7 @@ export class PopupAdjust {
                 (<HTMLElement>vv).removeAttribute(
                   'data-popup-invalid-elements'
                 );
-                (<HTMLElement>vv).removeAttribute('aria-hidden');
+                // (<HTMLElement>vv).removeAttribute('aria-hidden');
                 (<HTMLElement>vv).removeAttribute('inert');
               });
           }
