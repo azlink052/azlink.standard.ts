@@ -288,9 +288,9 @@ export class PopupAdjust {
                 v.setAttribute('inert', 'true');
               }
             });
-            document
-              .querySelector<HTMLElement>(id)
-              .setAttribute('aria-hidden', 'false');
+            // document
+            //   .querySelector<HTMLElement>(id)
+            //   .setAttribute('aria-hidden', 'false');
             document.querySelector<HTMLElement>(id).removeAttribute('inert');
           }
           document
