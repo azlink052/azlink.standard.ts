@@ -113,13 +113,17 @@
           prevEl: '#js-prev01',
           nextEl: '#js-next01',
           // cloneCount: 10,
-          // isDebug: true
+          isDebug: true,
+          isResizeAuto: true,
           onSliderLoad: () => {
             setTimeout(() => {
               // slider03.options.isAuto = true;
               // slider03.options.pause = 3000;
               slider03.startSlideAuto();
             }, 10);
+          },
+          onSlideAfter: () => {
+            // slider03.destroy();
           },
         });
         const slider04 = new azlib.SimpleSlider('#slider04', {
@@ -178,7 +182,7 @@
           mode: 'vertical',
           wrapperHeight: 300,
           // cloneCount: 10,
-          isDebug: true,
+          // isDebug: true,
         });
         const slider08 = new azlib.SimpleSlider('#slider08', {
           ctrl: true,

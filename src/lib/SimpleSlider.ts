@@ -25,6 +25,7 @@ interface Options {
   slideCount: number;
   cloneCount: number;
   threshold: number;
+  isResizeAuto: boolean;
   mode: string;
   onSliderLoad: any;
   onSlideBefore: any;
@@ -50,7 +51,6 @@ export class SimpleSlider {
   private pageLength: number;
   private isAllowSlide: boolean;
   private rTimer: number | boolean;
-  private pagerEvent: string[];
   private startX: number;
   private moveX: number;
   private startY: number;
@@ -58,6 +58,7 @@ export class SimpleSlider {
   private orgElement: Element | boolean;
   private debugTimer: number | boolean;
   private isHover: boolean;
+  private rsTimer: number | boolean;
 
   constructor(
     $selector: string,
@@ -77,6 +78,7 @@ export class SimpleSlider {
       slideCount = 1, // 1度に動かす量 ※isLoopがtrueで1以外の場合rootCountと同じになる
       cloneCount = 1,
       threshold = 30,
+      isResizeAuto = false,
       mode = 'horizontal', // vertical を指定する場合は wrapper の高さ指定が必須
       onSliderLoad = false, // this
       onSlideBefore = false, // this.current this.realCurrent
@@ -96,8 +98,9 @@ export class SimpleSlider {
     this.remainder = 0;
     this.isAllowSlide = false;
     this.rTimer = false;
-    this.pagerEvent = [];
     this.orgElement = document.querySelector($selector);
+    this.isHover = false;
+    this.rsTimer = false;
     this.options = {
       isAuto: isAuto,
       isLoop: isLoop,
@@ -114,14 +117,18 @@ export class SimpleSlider {
       slideCount: slideCount,
       cloneCount: cloneCount,
       threshold: threshold,
+      isResizeAuto: isResizeAuto,
       mode: mode,
       onSliderLoad: onSliderLoad,
       onSlideBefore: onSlideBefore,
       onSlideAfter: onSlideAfter,
       isDebug: isDebug,
     };
-    this.isHover = false;
     // console.log(this.options, this.options.rootCount);
+    this.gotoNext = this.gotoNext.bind(this);
+    this.gotoPrev = this.gotoPrev.bind(this);
+    this.gotoPage = this.gotoPage.bind(this);
+    this.stopAuto = this.stopAuto.bind(this);
 
     this.init();
   }
@@ -192,6 +199,7 @@ export class SimpleSlider {
         } else {
           v.style.width = `${this.itemWidth}px`;
         }
+        v.classList.add('slide-item');
       });
       // console.log(this.options.rootCount, this.itemLength, this.itemWidth);
       if (this.itemLength > this.options.rootCount) {
@@ -214,11 +222,18 @@ export class SimpleSlider {
             ? Math.ceil(this.itemLength / Number(this.options.rootCount))
             : this.itemLength;
         if (this.options.isLoop) {
-          const copy = this.elem.innerHTML;
+          const items = Array.from(
+            this.elem.querySelectorAll('.slide-item')
+          ).map((v) => v.cloneNode(true) as HTMLElement);
+          items.forEach((v: HTMLElement) => v.classList.add('slide-clone'));
+          // console.log(items);
           for (let i = 0; i < this.options.cloneCount; i++) {
-            // this.elem.append(copy);
-            this.elem.insertAdjacentHTML('afterbegin', copy);
-            this.elem.insertAdjacentHTML('beforeend', copy);
+            const fragment1 = document.createDocumentFragment();
+            items.forEach((v) => fragment1.prepend(v.cloneNode(true))); // クローンを Fragment に追加
+            this.elem.prepend(fragment1);
+            const fragment2 = document.createDocumentFragment();
+            items.forEach((v) => fragment2.append(v.cloneNode(true))); // 再びクローンを Fragment に追加
+            this.elem.append(fragment2);
             this.itemLength = this.elem.childElementCount;
             if (this.options.mode === 'vertical') {
               this.elem.style.height = `${this.itemHeight * this.itemLength}px`;
@@ -227,6 +242,7 @@ export class SimpleSlider {
             }
             // w = this.elem.clientWidth;
           }
+          // console.log(this.elem.children.length);
           if (this.options.mode === 'vertical') {
             this.elem.style.transform = `translateY(-${
               this.itemHeight * this.itemLengthOrg
@@ -263,52 +279,16 @@ export class SimpleSlider {
             );
           this.prevBtn = this.options.wrapper.querySelector('.ss-prev');
           this.nextBtn = this.options.wrapper.querySelector('.ss-next');
-          this.pagerEvent['prev'] = this.prevBtn.addEventListener(
-            'click',
-            (e) => {
-              if (!this.isAllowSlide) return;
-              if ((<HTMLElement>e.target).classList.contains('is-disabled'))
-                return;
-              this.slide(this.getPrevSlide());
-            },
-            false
-          );
-          this.pagerEvent['next'] = this.nextBtn.addEventListener(
-            'click',
-            (e) => {
-              if (!this.isAllowSlide) return;
-              if ((<HTMLElement>e.target).classList.contains('is-disabled'))
-                return;
-              this.slide(this.getNextSlide());
-            },
-            false
-          );
+          this.prevBtn.addEventListener('click', this.gotoPrev, false);
+          this.nextBtn.addEventListener('click', this.gotoNext, false);
         } else {
           if (document.querySelector(this.options.nextEl)) {
             this.nextBtn = document.querySelector(this.options.nextEl);
-            this.pagerEvent['next'] = this.nextBtn.addEventListener(
-              'click',
-              (e) => {
-                if (!this.isAllowSlide) return;
-                if ((<HTMLElement>e.target).classList.contains('is-disabled'))
-                  return;
-                this.slide(this.getNextSlide());
-              },
-              false
-            );
+            this.nextBtn.addEventListener('click', this.gotoNext, false);
           }
           if (document.querySelector(this.options.prevEl)) {
             this.prevBtn = document.querySelector(this.options.prevEl);
-            this.pagerEvent['prev'] = this.prevBtn.addEventListener(
-              'click',
-              (e) => {
-                if (!this.isAllowSlide) return;
-                if ((<HTMLElement>e.target).classList.contains('is-disabled'))
-                  return;
-                this.slide(this.getPrevSlide());
-              },
-              false
-            );
+            this.prevBtn.addEventListener('click', this.gotoPrev, false);
           }
         }
         if (this.options.pager) {
@@ -321,48 +301,19 @@ export class SimpleSlider {
             this.options.wrapper.querySelector('.ss-pager').insertAdjacentHTML(
               'beforeend',
               `
-                <div class="ss-pager-item">
-                  <button data-index="${i}" aria-label="${i + 1}のスライドへ">${
+              <div class="ss-pager-item"><button data-index="${i}" aria-label="${
                 i + 1
-              }</button>
-                </div>
-              `
+              }のスライドへ">${i + 1}</button></div>`
             );
           }
           this.options.wrapper
             .querySelectorAll('.ss-pager-item')
             [this.current]?.querySelector('button')
             .classList.add('is-active');
-          this.pagerEvent['pager'] = this.options.wrapper
+          this.options.wrapper
             .querySelectorAll('.ss-pager-item button')
             .forEach((v, i) => {
-              v.addEventListener('click', (e) => {
-                if (!this.isAllowSlide) return;
-                if ((<HTMLElement>e.target).classList.contains('is-active'))
-                  return;
-                const i = (<HTMLElement>e.target).getAttribute('data-index');
-                const targetIndex = (() => {
-                  const index = Number(i) * this.options.slideCount;
-                  if (this.options.isLoop) {
-                    return index;
-                  } else {
-                    if (
-                      index + Number(this.options.rootCount) >
-                      this.itemLengthOrg
-                    ) {
-                      return (
-                        this.current +
-                        this.getRemainder() -
-                        Number(this.options.rootCount)
-                      );
-                      // return this.itemLengthOrg - index;
-                    } else {
-                      return index;
-                    }
-                  }
-                })();
-                this.slide(targetIndex);
-              });
+              v.addEventListener('click', this.gotoPage, false);
             });
         }
         // スワイプ処理
@@ -445,6 +396,19 @@ export class SimpleSlider {
     if (typeof this.options.onSliderLoad === 'function') {
       this.options.onSliderLoad(this);
     }
+
+    if (this.options.isResizeAuto) {
+      window.addEventListener('resize', () => {
+        this.destroy();
+        if (this.rsTimer !== false) {
+          clearTimeout(Number(this.rsTimer));
+          this.rsTimer = false;
+        }
+        this.rsTimer = window.setTimeout(() => {
+          this.init();
+        }, 500);
+      });
+    }
   }
   slide(target?: number | boolean): void {
     // console.log(target);
@@ -474,7 +438,7 @@ export class SimpleSlider {
       Array.from(this.elem.children).forEach((v, i) => {
         v.classList.remove('slide-old', 'slide-active');
       });
-      this.elem.children[this.realCurrent].classList.add('slide-active');
+      this.elem.children[this.realCurrent]?.classList.add('slide-active');
       this.elem.children[this.oldIndex + this.pageLength]?.classList.add(
         'slide-old'
       );
@@ -652,10 +616,11 @@ export class SimpleSlider {
     this.rTimer = window.setTimeout(() => {
       if (!this.isHover) this.slide(this.getNextSlide());
     }, this.options.pause);
+    // console.log(this.rTimer);
   }
   stopAuto(): void {
     clearTimeout(Number(this.rTimer));
-    this.options.isAuto = false;
+    this.options.isAuto = this.rTimer = false;
   }
   getNextSlide(): number | boolean {
     if (this.options.isLoop) {
@@ -720,6 +685,37 @@ export class SimpleSlider {
     const remainder = this.itemLengthOrg - this.current;
     return remainder < 0 ? this.itemLengthOrg : remainder;
   }
+  gotoPrev(e: Event): void {
+    if (!this.isAllowSlide) return;
+    if ((<HTMLElement>e.target).classList.contains('is-disabled')) return;
+    this.slide(this.getPrevSlide());
+  }
+  gotoNext(e: Event): void {
+    if (!this.isAllowSlide) return;
+    if ((<HTMLElement>e.target).classList.contains('is-disabled')) return;
+    this.slide(this.getNextSlide());
+  }
+  gotoPage(e: Event): void {
+    if (!this.isAllowSlide) return;
+    if ((<HTMLElement>e.target).classList.contains('is-active')) return;
+    const i = (<HTMLElement>e.target).getAttribute('data-index');
+    const targetIndex = (() => {
+      const index = Number(i) * this.options.slideCount;
+      if (this.options.isLoop) {
+        return index;
+      } else {
+        if (index + Number(this.options.rootCount) > this.itemLengthOrg) {
+          return (
+            this.current + this.getRemainder() - Number(this.options.rootCount)
+          );
+          // return this.itemLengthOrg - index;
+        } else {
+          return index;
+        }
+      }
+    })();
+    this.slide(targetIndex);
+  }
   updateParams(object: Options): void {
     for (let key in object) {
       this.options[key] = object[key];
@@ -733,12 +729,27 @@ export class SimpleSlider {
     this.slide(0);
   }
   destroy(): void {
-    clearTimeout(Number(this.rTimer));
-    for (const event of this.pagerEvent) {
-      document.removeEventListener('click', this.pagerEvent[event]);
+    this.stopAuto();
+    this.options.wrapper.querySelector('.ss-ctrls')?.remove();
+    this.options.wrapper.querySelector('.ss-pager')?.remove();
+    this.prevBtn.removeEventListener('click', this.gotoPrev);
+    this.nextBtn.removeEventListener('click', this.gotoNext);
+    this.options.wrapper
+      .querySelectorAll('.ss-pager-item button')
+      .forEach((v, i) => v.removeEventListener('click', this.gotoPage));
+    this.elem.querySelectorAll('.slide-clone').forEach((v) => v.remove());
+    this.elem.removeAttribute('style');
+    Array.from(this.elem.children).forEach((v: HTMLElement) => {
+      v.removeAttribute('style');
+      v.classList.remove('slide-item');
+    });
+    if (this.container) {
+      const parent = this.container.parentNode;
+      while (this.container.firstChild) {
+        parent.insertBefore(this.container.firstChild, this.container);
+      }
+      this.container.remove();
     }
-    this.options.wrapper.querySelector('.ss-ctrls').remove();
-    this.options.wrapper.querySelector('.ss-pager').remove();
   }
   /**
    * デバッグの準備
