@@ -229,7 +229,7 @@ export class SimpleSlider {
           // console.log(items);
           for (let i = 0; i < this.options.cloneCount; i++) {
             const fragment1 = document.createDocumentFragment();
-            items.forEach((v) => fragment1.prepend(v.cloneNode(true))); // クローンを Fragment に追加
+            items.forEach((v) => fragment1.append(v.cloneNode(true))); // クローンを Fragment に追加
             this.elem.prepend(fragment1);
             const fragment2 = document.createDocumentFragment();
             items.forEach((v) => fragment2.append(v.cloneNode(true))); // 再びクローンを Fragment に追加
@@ -399,12 +399,12 @@ export class SimpleSlider {
 
     if (this.options.isResizeAuto) {
       window.addEventListener('resize', () => {
-        this.destroy();
         if (this.rsTimer !== false) {
           clearTimeout(Number(this.rsTimer));
           this.rsTimer = false;
         }
         this.rsTimer = window.setTimeout(() => {
+          this.destroy();
           this.init();
         }, 500);
       });
@@ -756,8 +756,10 @@ export class SimpleSlider {
    */
   initDebug(): void {
     if (!this.options.isDebug) return;
+    if (document.querySelector('.azlib_ssDebug')) return;
     const ssDebug = document.createElement('div');
     ssDebug.id = `ssDebug_${Date.now()}`;
+    ssDebug.classList.add('azlib_ssDebug');
     Object.assign(ssDebug.style, {
       position: 'fixed',
       zIndex: 99999,
