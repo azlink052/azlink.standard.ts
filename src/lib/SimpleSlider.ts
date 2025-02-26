@@ -730,6 +730,7 @@ export class SimpleSlider {
   }
   destroy(): void {
     this.stopAuto();
+    this.slide(0);
     this.options.wrapper.querySelector('.ss-ctrls')?.remove();
     this.options.wrapper.querySelector('.ss-pager')?.remove();
     this.prevBtn.removeEventListener('click', this.gotoPrev);
@@ -741,7 +742,7 @@ export class SimpleSlider {
     this.elem.removeAttribute('style');
     Array.from(this.elem.children).forEach((v: HTMLElement) => {
       v.removeAttribute('style');
-      v.classList.remove('slide-item');
+      v.classList.remove('slide-item', 'slide-old', 'slide-active');
     });
     if (this.container) {
       const parent = this.container.parentNode;
