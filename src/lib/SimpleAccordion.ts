@@ -129,7 +129,7 @@ export class SimpleAccordion {
       });
       if (i + 1 >= this.collection.length) {
         if (typeof this.options.onComplete === 'function') {
-          this.options.onComplete();
+          this.options.onComplete(accParam.id);
         }
       }
     });

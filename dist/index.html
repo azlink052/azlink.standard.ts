@@ -26,7 +26,8 @@
         // azlib.adjustSize('.vox01, .vox02');
         const acc01 = new azlib.SimpleAccordion('.accVox', {
           isAutoClose: true,
-          onComplete: () => {
+          onComplete: (id) => {
+            // console.log(id);
             console.log('accordion loaded');
           },
         });
@@ -103,7 +104,7 @@
         });
         const slider03 = new azlib.SimpleSlider('#slider03', {
           // ctrl: true,
-          pager: true,
+          // pager: true,
           speed: 500,
           pause: 3000,
           isAuto: false,
@@ -112,6 +113,7 @@
           slideCount: 2,
           prevEl: '#js-prev01',
           nextEl: '#js-next01',
+          pagerEl: '#js-pager01',
           // cloneCount: 10,
           isDebug: true,
           isResizeAuto: true,
@@ -612,6 +614,7 @@
               <button type="button" id="js-prev01">PREV</button>
               <button type="button" id="js-next01">NEXT</button>
             </div>
+            <div class="ss-pager" id="js-pager01"></div>
           </div>
           <div class="simpleSliderWrapper sliderWrapper">
             <ul class="simpleSlider" id="slider04">
