@@ -286,11 +286,17 @@ export class SimpleSlider {
           this.prevBtn.addEventListener('click', this.gotoPrev, false);
           this.nextBtn.addEventListener('click', this.gotoNext, false);
         } else {
-          if (document.querySelector(this.options.nextEl)) {
+          if (
+            this.options.nextEl &&
+            document.querySelector(this.options.nextEl)
+          ) {
             this.nextBtn = document.querySelector(this.options.nextEl);
             this.nextBtn.addEventListener('click', this.gotoNext, false);
           }
-          if (document.querySelector(this.options.prevEl)) {
+          if (
+            this.options.prevEl &&
+            document.querySelector(this.options.prevEl)
+          ) {
             this.prevBtn = document.querySelector(this.options.prevEl);
             this.prevBtn.addEventListener('click', this.gotoPrev, false);
           }
