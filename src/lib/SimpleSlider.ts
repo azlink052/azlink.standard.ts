@@ -19,6 +19,7 @@ interface Options {
   pager: boolean;
   nextEl: string;
   prevEl: string;
+  pagerEl: string;
   wrapper: HTMLElement | ParentNode;
   wrapperHeight: number | null;
   rootCount: number;
@@ -40,6 +41,7 @@ export class SimpleSlider {
   private container: HTMLElement;
   private prevBtn: HTMLButtonElement;
   private nextBtn: HTMLButtonElement;
+  private pager: HTMLElement;
   private itemWidth: number;
   private itemHeight: number;
   private itemLength: number;
@@ -72,6 +74,7 @@ export class SimpleSlider {
       pager = false,
       nextEl = '',
       prevEl = '',
+      pagerEl = '',
       wrapper = document.querySelector($selector).parentNode,
       wrapperHeight = null,
       rootCount = 0, // 1ページに表示する量
@@ -111,6 +114,7 @@ export class SimpleSlider {
       pager: pager,
       nextEl: nextEl,
       prevEl: prevEl,
+      pagerEl: pagerEl,
       wrapper: wrapper,
       wrapperHeight: wrapperHeight,
       rootCount: rootCount,
@@ -296,21 +300,29 @@ export class SimpleSlider {
             'beforeend',
             '<div class="ss-pager" />'
           );
+          this.pager = this.options.wrapper.querySelector('.ss-pager');
           // console.log(this.pageLength);
+        } else {
+          if (document.querySelector(this.options.pagerEl)) {
+            // console.log(this.pageLength);
+            this.pager = document.querySelector(this.options.pagerEl);
+          }
+        }
+        if (this.pager) {
           for (let i = 0; i < this.pageLength; i++) {
-            this.options.wrapper.querySelector('.ss-pager').insertAdjacentHTML(
+            this.pager.insertAdjacentHTML(
               'beforeend',
               `
-              <div class="ss-pager-item"><button data-index="${i}" aria-label="${
+                <div class="ss-pager-item"><button data-index="${i}" aria-label="${
                 i + 1
               }のスライドへ">${i + 1}</button></div>`
             );
           }
-          this.options.wrapper
+          this.pager
             .querySelectorAll('.ss-pager-item')
             [this.current]?.querySelector('button')
             .classList.add('is-active');
-          this.options.wrapper
+          this.pager
             .querySelectorAll('.ss-pager-item button')
             .forEach((v, i) => {
               v.addEventListener('click', this.gotoPage, false);
@@ -433,8 +445,8 @@ export class SimpleSlider {
     this.remainder = this.getRemainder();
     // console.log(this.current, this.realCurrent);
     const completeAction = () => {
-      if (this.options.pager) this.togglePager();
-      if (this.options.ctrl) this.toggleCtrls();
+      if (this.pager) this.togglePager();
+      if (this.prevBtn && this.nextBtn) this.toggleCtrls();
       Array.from(this.elem.children).forEach((v, i) => {
         v.classList.remove('slide-old', 'slide-active');
       });
@@ -576,23 +588,22 @@ export class SimpleSlider {
     }
   }
   togglePager(): void {
-    this.options.wrapper
-      .querySelectorAll('.ss-pager-item button')
-      .forEach((value) => {
-        value.classList.remove('is-active');
-      });
+    // console.log(this.pager);
+    this.pager.querySelectorAll('.ss-pager-item button').forEach((value) => {
+      value.classList.remove('is-active');
+    });
     const targetIndex =
       this.options.slideCount !== 1
         ? Math.ceil(this.current / Number(this.options.rootCount))
         : this.current;
     // console.log(targetIndex, this.current, this.options.rootCount);
-    this.options.wrapper
+    this.pager
       .querySelectorAll('.ss-pager-item')
       [targetIndex]?.querySelector('button')
       .classList.add('is-active');
   }
   toggleCtrls(): void {
-    if (this.options.isLoop || !this.options.ctrl) return;
+    if (this.options.isLoop) return;
     this.prevBtn.classList.remove('is-disabled');
     this.nextBtn.classList.remove('is-disabled');
     this.prevBtn.disabled = false;
@@ -738,6 +749,7 @@ export class SimpleSlider {
     this.options.wrapper
       .querySelectorAll('.ss-pager-item button')
       .forEach((v, i) => v.removeEventListener('click', this.gotoPage));
+    this.pager.querySelectorAll('.ss-pager-item').forEach((v) => v.remove());
     this.elem.querySelectorAll('.slide-clone').forEach((v) => v.remove());
     this.elem.removeAttribute('style');
     Array.from(this.elem.children).forEach((v: HTMLElement) => {
