@@ -15,6 +15,7 @@ interface Options {
   pause: number;
   speed: number;
   easing: string;
+  spaceBetween: number;
   ctrl: boolean;
   pager: boolean;
   nextEl: string;
@@ -70,6 +71,7 @@ export class SimpleSlider {
       pause = 5000,
       speed = 500,
       easing = 'cubicBezier(0.33, 1, 0.68, 1)',
+      spaceBetween = 0,
       ctrl = false,
       pager = false,
       nextEl = '',
@@ -110,6 +112,7 @@ export class SimpleSlider {
       pause: pause,
       speed: speed,
       easing: easing,
+      spaceBetween: spaceBetween,
       ctrl: ctrl,
       pager: pager,
       nextEl: nextEl,
@@ -174,10 +177,11 @@ export class SimpleSlider {
             this.container.clientHeight / Number(this.options.rootCount)
           );
         } else {
-          this.itemWidth = Math.floor(
-            (<HTMLElement>this.options.wrapper).clientWidth /
-              Number(this.options.rootCount)
-          );
+          this.itemWidth =
+            Math.floor(
+              (<HTMLElement>this.options.wrapper).clientWidth /
+                Number(this.options.rootCount)
+            ) + this.options.spaceBetween;
         }
       } else {
         // console.log(this.options.wrapper);
@@ -189,7 +193,9 @@ export class SimpleSlider {
           this.container.style.height = `${this.options.wrapperHeight}px`;
           this.itemHeight = (<HTMLElement>this.options.wrapper).clientHeight;
         } else {
-          this.itemWidth = (<HTMLElement>this.options.wrapper).clientWidth;
+          this.itemWidth =
+            (<HTMLElement>this.options.wrapper).clientWidth +
+            this.options.spaceBetween;
         }
       }
       if (this.options.isLoop) {
@@ -204,6 +210,7 @@ export class SimpleSlider {
           v.style.width = `${this.itemWidth}px`;
         }
         v.classList.add('slide-item');
+        v.style.marginRight = `${this.options.spaceBetween}px`;
       });
       // console.log(this.options.rootCount, this.itemLength, this.itemWidth);
       if (this.itemLength > this.options.rootCount) {

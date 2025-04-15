@@ -115,13 +115,13 @@
           nextEl: '#js-next01',
           pagerEl: '#js-pager01',
           // cloneCount: 10,
-          isDebug: true,
+          // isDebug: true,
           isResizeAuto: true,
           onSliderLoad: () => {
             setTimeout(() => {
               // slider03.options.isAuto = true;
               // slider03.options.pause = 3000;
-              slider03.startSlideAuto();
+              // slider03.startSlideAuto();
             }, 10);
           },
           onSlideAfter: () => {
@@ -134,6 +134,10 @@
           speed: 500,
           pause: 3000,
           isAuto: false,
+          // rootCount: 1,
+          // slideCount: 1,
+          spaceBetween: 40,
+          isDebug: true,
           // onSliderLoad: (slider) => {
           //   console.log(slider);
           // },
@@ -368,6 +372,13 @@
       .simpleSliderWrapper {
         width: 500px;
         margin: 50px 0;
+      }
+
+      #js-slider04 {
+        margin: 50px auto;
+      }
+      #js-slider04 .sliderContainer {
+        overflow: visible !important;
       }
 
       .sliderContainer:has(#slider07) .simpleSlider li {
@@ -616,7 +627,7 @@
             </div>
           </div>
           <div class="my-ss-pager" id="js-pager01"></div>
-          <div class="simpleSliderWrapper sliderWrapper">
+          <div class="simpleSliderWrapper sliderWrapper" id="js-slider04">
             <ul class="simpleSlider" id="slider04">
               <li>
                 <img
