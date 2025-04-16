@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2023.09.25
+ * @final 		2025.04.16
  *
  * @param {*} $selector
  * @param {*} $options
