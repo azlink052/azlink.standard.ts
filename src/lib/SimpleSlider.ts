@@ -84,7 +84,7 @@ export class SimpleSlider {
       cloneCount = 1,
       threshold = 30,
       isResizeAuto = false,
-      mode = 'horizontal', // vertical を指定する場合は wrapper の高さ指定が必須
+      mode = 'horizontal', // !vertical を指定する場合は wrapper の高さ指定が必須
       onSliderLoad = false, // this
       onSlideBefore = false, // this.current this.realCurrent
       onSlideAfter = false, // this.current this.realCurrent
@@ -176,6 +176,9 @@ export class SimpleSlider {
           this.itemHeight = Math.floor(
             this.container.clientHeight / Number(this.options.rootCount)
           );
+          if (this.options.spaceBetween)
+            this.itemHeight +=
+              this.options.spaceBetween / Number(this.options.rootCount);
         } else {
           this.itemWidth =
             Math.floor(
@@ -206,11 +209,12 @@ export class SimpleSlider {
       Array.from(this.elem.children).forEach((v: HTMLElement) => {
         if (this.options.mode === 'vertical') {
           v.style.height = `${this.itemHeight}px`;
+          v.style.marginBottom = `${this.options.spaceBetween}px`;
         } else {
           v.style.width = `${this.itemWidth}px`;
+          v.style.marginRight = `${this.options.spaceBetween}px`;
         }
         v.classList.add('slide-item');
-        v.style.marginRight = `${this.options.spaceBetween}px`;
       });
       // console.log(this.options.rootCount, this.itemLength, this.itemWidth);
       if (this.itemLength > this.options.rootCount) {
