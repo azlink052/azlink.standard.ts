@@ -1,0 +1,143 @@
+// main: ../global/import.scss
+@charset "utf-8";
+@use '../extension/' as ext;
+/*
+ * =====================================================
+ *
+ * [message]
+ *
+ * =====================================================
+ */
+
+body.message {
+
+
+  .mainArtS01 {
+    .mainArtHead {
+      .mvVox {
+        background: url(../../images/content/message/bg_mainArtHead.jpg) no-repeat center / cover;
+      }
+    }
+  }
+
+  &.index {
+
+    .messageVox {
+
+      .imgVox {
+        margin-bottom: 8rem;
+      }
+
+      .nameTxt {
+        margin-top: 6rem;
+        font-size: 1.5rem;
+        font-weight: 500;
+        text-align: right;
+        .name {
+          font-size: 2.5rem;
+          font-weight: 700;
+          display: inline-block;
+          margin-left: 2rem;
+        }
+      }
+
+    }
+
+  }
+
+
+
+} /* END body */
+
+
+
+
+
+/**
+ ****************************************************
+ *
+ * hover
+ *
+ ****************************************************
+ */
+@media (hover: hover) and (pointer: fine) {
+
+  @media only screen and (min-width: ext.$bp) {
+
+
+    body.message {
+
+    }
+
+    } /* END body */
+}
+
+
+/**
+ ****************************************************
+ *
+ * screens larger than {$bp}
+ *
+ ****************************************************
+ */
+ @media only screen and (min-width: ext.$bp) {
+
+  body.message {
+
+
+    }
+
+ }
+
+/**
+ ****************************************************
+ *
+ * screens smaller than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+  body.message {
+
+    &.index {
+
+      .messageVox {
+
+        .imgVox {
+          margin-bottom: 6rem;
+        }
+
+        .nameTxt {
+          margin-top: 4rem;
+          font-size: 1.4rem;
+          .name {
+            font-size: 2rem;
+            margin-left: 1.5rem;
+          }
+        }
+
+      }
+    }
+
+
+
+  }
+
+} /* END body */
+
+/**
+ ****************************************************
+ *
+ * アニメーションon
+ *
+ ****************************************************
+ */
+ body.message {
+
+  &:not(.is-offAnime) {
+
+
+}
+
+
+}  /* END @media smaller than $bp */

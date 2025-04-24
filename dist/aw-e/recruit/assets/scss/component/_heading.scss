@@ -1,0 +1,92 @@
+// main: ../global/import.scss
+@charset "UTF-8";
+@use '../extension/' as ext;
+/*
+ * ================================================
+ *
+ * [heading]
+ *
+ * ================================================
+ */
+ .hS01 {
+  font-size: 4.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0;
+ }
+ .headStyle01 {
+  text-align: center;
+  position: relative;
+  margin: 0 auto 6.5rem;
+
+  &:not(.bgNone) {
+    width: 68rem;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    background: #fff;
+    padding: 3rem;
+    &.large {
+      width: 82rem;
+    }
+
+  }
+  .hS01 {
+    position: relative;
+    z-index: 1;
+   }
+   .en {
+    position: relative;
+    z-index: 1;
+    font-size: 2rem;
+    @include ext.txtEn(700);
+    text-transform: uppercase;
+   }
+ }
+.hS02 {
+  color: ext.$baseColor;
+  border: .6rem solid;
+  width: 114rem;
+  padding: 3rem;
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+  margin: 0 auto 6rem;
+  letter-spacing: 0;
+ }
+
+
+/**
+ ****************************************************
+ *
+ * screens smaller than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+
+  .hS01 {
+    font-size: 3.2rem;
+    line-height: 1.4;
+   }
+   .headStyle01 {
+    margin: 0 auto 3.5rem;
+    &:not(.bgNone) {
+      width: 100%;
+      padding: 1.7rem;
+      &.large {
+        width: 100%;
+      }
+    }
+    .en {
+      font-size: 1.3rem;
+    }
+   }
+  .hS02 {
+    border: .4rem solid;
+    width: 100%;
+    padding: 2.8rem 1.5rem;
+    font-size: 1.7rem;
+    margin: 0 auto 4rem;
+  }
+}//sp

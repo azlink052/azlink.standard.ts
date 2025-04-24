@@ -1,0 +1,102 @@
+// main: ../global/import.scss
+@charset "utf-8";
+@use '../extension/' as ext;
+/*
+ * =====================================================
+ *
+ * [common]
+ *
+ * =====================================================
+ */
+
+body.common {
+
+  &.notfound {
+
+    .mainArtCnt {
+      padding-bottom: 20rem;
+    }
+
+  }
+
+
+} /* END body */
+
+
+
+
+
+/**
+ ****************************************************
+ *
+ * hover
+ *
+ ****************************************************
+ */
+@media (hover: hover) and (pointer: fine) {
+
+  @media only screen and (min-width: ext.$bp) {
+
+
+    body.common {
+
+    }
+
+    } /* END body */
+}
+
+
+/**
+ ****************************************************
+ *
+ * screens larger than {$bp}
+ *
+ ****************************************************
+ */
+ @media only screen and (min-width: ext.$bp) {
+
+  body.common {
+
+
+    }
+
+ }
+
+/**
+ ****************************************************
+ *
+ * screens smaller than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+  body.common {
+
+
+    &.notfound {
+
+      .mainArtCnt {
+        padding-bottom: 2rem;
+      }
+    }
+
+  }
+
+} /* END body */
+
+/**
+ ****************************************************
+ *
+ * アニメーションon
+ *
+ ****************************************************
+ */
+ body.common {
+
+  &:not(.is-offAnime) {
+
+
+}
+
+
+}  /* END @media smaller than $bp */

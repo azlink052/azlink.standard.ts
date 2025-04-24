@@ -1,0 +1,30 @@
+// main: ../global/import.scss
+@charset "utf-8";
+/*
+ * =====================================================
+ *
+ * [variable]
+ *
+ * =====================================================
+ */
+// ブレークポイント
+$bp: 768px;
+
+$contentWidth: 162rem;
+$minWidth: 1220px;
+
+//
+$sideVoxMinHeight: 560px;
+
+//デザインの横幅
+$designWidth: 1920;
+
+// 色設定
+$baseColor: #0A2270;
+$subColor: #000000;
+$textColor: #333333;
+$linkColor: $textColor;
+
+$entryColor: #E51919;
+
+$bgColor: #F1F4F6;

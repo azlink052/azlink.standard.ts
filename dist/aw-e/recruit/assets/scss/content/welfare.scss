@@ -1,0 +1,196 @@
+// main: ../global/import.scss
+@charset "utf-8";
+@use '../extension/' as ext;
+/*
+ * =====================================================
+ *
+ * [welfare]
+ *
+ * =====================================================
+ */
+
+body.welfare {
+
+
+  .mainArtS01 {
+    .mainArtHead {
+      .mvVox {
+        background: url(../../images/content/welfare/bg_mainArtHead.jpg) no-repeat center / cover;
+      }
+    }
+  }
+
+  &.index {
+
+    .welfareVox {
+      .itemList {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 3.6rem 4rem;
+        .item {
+          position: relative;
+          width: 50rem;
+          padding: 6rem;
+          border: 1px solid ext.$baseColor;
+          border-radius: 1.2rem;
+          background: #fff;
+          overflow: hidden;
+          &::before {
+            @include ext.afterItem;
+            background: ext.$baseColor;
+            width: 7.8rem;
+            height: 38.6rem;
+            position: absolute;
+            top: -4.7rem;
+            left: -9.4rem;
+            transform: rotate(25deg);
+          }
+          .imgVox {
+            width: 15rem;
+            margin: 0 auto 4rem;
+          }
+          .title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+          }
+          .ulListS01 {
+            display: flex;
+            flex-wrap: wrap;
+            gap:  4%;
+            li {
+              width: 48%;
+              &.full {
+                width: 100%;
+              }
+              &.auto {
+                width: auto;
+                margin: 0 auto;
+              }
+            }
+          }
+        }
+      }
+      .btnVox {
+        margin-top: 8rem;
+      }
+    }
+
+  }
+
+
+
+} /* END body */
+
+
+
+
+
+/**
+ ****************************************************
+ *
+ * hover
+ *
+ ****************************************************
+ */
+@media (hover: hover) and (pointer: fine) {
+
+  @media only screen and (min-width: ext.$bp) {
+
+
+    body.welfare {
+
+    }
+
+    } /* END body */
+}
+
+
+/**
+ ****************************************************
+ *
+ * screens larger than {$bp}
+ *
+ ****************************************************
+ */
+ @media only screen and (min-width: ext.$bp) {
+
+  body.welfare {
+
+
+    }
+
+ }
+
+/**
+ ****************************************************
+ *
+ * screens smaller than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+  body.welfare {
+
+
+    &.index {
+
+
+      .welfareVox {
+        .itemList {
+          flex-direction: column;
+          .item {
+            position: relative;
+            width: 100%;
+            padding: 4rem;
+            border: 1px solid ext.$baseColor;
+            border-radius: 1.2rem;
+            background: #fff;
+            overflow: hidden;
+            .imgVox {
+              width: 12rem;
+              margin: 0 auto 3.5rem;
+            }
+            .title {
+              font-size: 2.3rem;
+              margin-bottom: 2.5rem;
+            }
+            .ulListS01 {
+              flex-direction: column;
+              gap: 1rem 0;
+              li {
+                width: 100%;
+              }
+            }
+          }
+        }
+        .btnVox {
+          margin-top: 8rem;
+        }
+      }
+
+    }
+
+
+  }
+
+} /* END body */
+
+/**
+ ****************************************************
+ *
+ * アニメーションon
+ *
+ ****************************************************
+ */
+ body.welfare {
+
+  &:not(.is-offAnime) {
+
+
+}
+
+
+}  /* END @media smaller than $bp */

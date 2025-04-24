@@ -1,0 +1,117 @@
+// main: ../global/import.scss
+@charset "UTF-8";
+@use '../extension/' as ext;
+/*
+ * ================================================
+ *
+ * [リスト]
+ *
+ * ================================================
+ */
+
+.ulListS01 {
+  >li {
+    position: relative;
+    padding-left: 1.6rem;
+    text-indent: 0;
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+    &:before {
+      @include ext.afterItem;
+      width: .7rem;
+      height: .7rem;
+      background: ext.$textColor;
+      border-radius: 50%;
+      top: 0.75em;
+      left: 0;
+    }
+  }
+
+}
+
+
+//olListS01
+.olListS01 {
+  counter-reset: li;
+  >li {
+    padding-left: .8em;
+    text-indent: -.8em;
+    margin-left: 1em;
+    position: relative;
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+    &::before {
+      counter-increment: li;
+      content: counter(li) ". ";
+      color: ext.$baseColor;
+      @include ext.txtEn02(400);
+      width: .8em;
+      display: inline-block;
+    }
+  }
+}
+
+.listS01 {
+  >li {
+    font-size: 1.8rem;
+    font-weight: 700;
+    min-height: 4rem;
+    padding-left: 5rem;
+    position: relative;
+    padding-top: .17em;
+    &::before {
+      @include ext.afterItem;
+      top: 0;
+      left: 0;
+      width: 4rem;
+      height: 4rem;
+      background: url(../../images/content/content/ico_flag.svg) no-repeat center / contain;
+    }
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+/**
+ ****************************************************
+ *
+ * screens smaller than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+
+  .ulListS01 {
+    >li {
+      &:not(:last-child) {
+        margin-bottom: .6rem;
+      }
+      &:before {
+        width: .6rem;
+        height: .6rem;
+        top: 0.6em;
+      }
+    }
+
+  }
+
+  .listS01 {
+    >li {
+      font-size: 1.6rem;
+      min-height: 3.5rem;
+      padding-left: 4.5rem;
+      padding-top: .22em;
+      &::before {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+      &:not(:last-child) {
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+
+}  /* END @media smaller than $bp */

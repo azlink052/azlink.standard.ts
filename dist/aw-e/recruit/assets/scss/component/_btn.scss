@@ -1,0 +1,194 @@
+// main: ../global/import.scss
+@charset "UTF-8";
+@use '../extension/' as ext;
+/*
+ * ================================================
+ *
+ * [btn]
+ *
+ * ================================================
+ */
+.btnS01 {
+  display: block;
+  background: ext.$baseColor;
+  color: #fff;
+  width: 36rem;
+  @include ext.flexCenter($justify: flex-start);
+  // padding: 2.3rem 6.5rem 2.3rem 3rem;
+  padding: 2.3rem 6rem 2.3rem 2.5rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+  position: relative;
+  border: 1px solid #000;
+  overflow: hidden;
+  span {
+    position: relative;
+    z-index: 1;
+  }
+  &::after {
+    @include ext.afterItem;
+    top: 50%;
+    right: 2.9rem;
+    transform: translateY(-50%);
+    width: 3.3rem;
+    height: 1.4rem;
+    background: url(../../images/content/content/ico_arrow01white.svg) no-repeat center / contain;
+  }
+  &::before {
+    @include ext.lineSmall($width:0,$spWidth: 0);
+    z-index: 0;
+    background: #fff;
+  }
+  &--red {
+    background: ext.$entryColor;
+    border-color: #fff;
+  }
+  &--blank {
+    &::after {
+      background: url(../../images/content/content/ico_blankwhite.svg) no-repeat center / contain;
+      width: 3rem;
+      height: 2.2rem;
+      right: 2.4rem;
+    }
+  }
+  &--back {
+    padding: 2.3rem 3rem 2.3rem 7rem;
+    justify-content: flex-end;
+    &::after {
+      right: auto;
+      left: 3rem;
+      transform: scale(-1, 1) translateY(-50%);
+    }
+  }
+  &--mail {
+    padding: 2.3rem 3rem 2.3rem 10rem;
+    text-decoration: underline;
+    width: 51.6rem;
+    font-weight: 700;
+    min-height: 10rem;
+    word-break: break-all;
+    letter-spacing: .05em;
+    &::after {
+      right: auto;
+      left: 4rem;
+      transform: scale(-1, 1) translateY(-50%);
+      background: url(../../images/content/content/ico_mailwhite.svg) no-repeat center / contain;
+      width: 4.2rem;
+      height: 3.3rem;
+    }
+  }
+  &--noLink {
+    background: #666;
+    opacity: .4;
+    &::after {
+      content: none;
+    }
+  }
+}
+
+/**
+ ****************************************************
+ *
+ * hover
+ *
+ ****************************************************
+ */
+@media (hover: hover) and (pointer: fine) {
+
+  @media only screen and (min-width: ext.$bp) {
+
+  .btnS01 {
+    transition: .2s;
+      &:not(.btnS01--noLink) {
+        &:hover {
+          color: ext.$baseColor;
+          &::after {
+            background-image: url(../../images/content/content/ico_arrow01.svg);
+          }
+          &::before {
+            @include ext.lineSmalActive;
+          }
+        }
+      }
+      &--red {
+        &:not(.btnS01--noLink) {
+          &:hover {
+            color: #000;
+            &::after {
+              background-image: url(../../images/content/content/ico_arrow01black.svg);
+            }
+          }
+        }
+      }
+      &--blank {
+        &:not(.btnS01--noLink) {
+          &:hover {
+            &::after {
+              background-image: url(../../images/content/content/ico_blankblue.svg);
+            }
+          }
+        }
+      }
+      &--mail {
+        &:not(.btnS01--noLink) {
+          &:hover {
+            &::after {
+              background-image: url(../../images/content/content/ico_mail.svg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/**
+ ****************************************************
+ *
+ * screens smaller than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+
+  .btnS01 {
+    width: 100%;
+    padding: 1.4rem 6.5rem 1.4rem 2.4rem;
+    font-size: 2rem;
+    &::before {
+      right: 2.2rem;
+    }
+    &--mail {
+      padding: 1.4rem 1rem 1.4rem 6rem;
+      text-decoration: underline;
+      width: 100%;
+      // font-weight: 700;
+      min-height: auto;
+      font-size: 1.6rem;
+      letter-spacing: 0;
+      &::after {
+        right: auto;
+        left: 2rem;
+        transform: scale(-1, 1) translateY(-50%);
+        background: url(../../images/content/content/ico_mailwhite.svg) no-repeat center / contain;
+        width: calc(4.2rem * .6);
+        height: calc(3.3rem * .6);
+      }
+    }
+    &--blank {
+      padding: 1.4rem 6rem 1.4rem 2rem;
+      &::after {
+        width: 2.8rem;
+        height: 2rem;
+        right: 2rem;
+      }
+    }
+    &--back {
+      padding: 1.4rem 2.4rem 1.4rem 6.5rem;
+      &::after {
+        left: 2.2rem;
+      }
+    }
+  }
+
+
+}//sp

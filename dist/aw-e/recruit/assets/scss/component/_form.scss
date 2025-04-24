@@ -1,0 +1,158 @@
+// main: ../global/import.scss
+@charset "UTF-8";
+@use '../extension/' as ext;
+/*
+ * =====================================================
+ *
+ * [form]
+ *
+ * =====================================================
+ */
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+button,
+input[type=submit] {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  // outline: none;
+  padding: 0;
+  appearance: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+input,
+textarea,
+select {
+  line-height: 1.6;
+  margin: 0;
+  font-family: inherit;
+  background: #fff;
+  color: currentColor;
+  &:focus-visible{
+    // outline: none;
+    outline: 1px solid ext.$baseColor;
+    background: #fff;
+  }
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input.formText[type=text],
+input.formText[type=tel],
+input.formText[type=password],
+input.formText[type=number],
+input.formText[type=email],
+textarea.formText,
+select.formSelect {
+  padding: 0.8em;
+  font-size: 1.6rem;
+  &::placeholder {
+    color: #bbb;
+    font-weight: 400;
+  }
+}
+.formErrVox {
+  display: none;
+  border: 10px solid #ffdada;
+  padding: 10px;
+  color: #c00000 !important;
+  background: #fff;
+}
+#entryForm {
+}
+.formText {
+  &.long {width: 100%;}
+}
+select.formSelect {
+  &.middle {width: 250px;}
+}
+//formItemWrap
+.formItemWrap {}
+.formItem {
+  display: flex;
+  font-size: 1.6rem;
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  >dt {
+    width: 275px;
+    min-width: 275px;
+    padding: 0.8em 0;
+    .rItem {
+      font-size: 1.4rem;
+      color: #D65151;
+    }
+  }
+  >dd {
+    width: 680px;
+    .subTxt {
+    }
+  }
+  dt {
+  }
+}
+form {
+  //privacyVox
+  .privacyVox {
+    .checkWrap {
+      text-align: center;
+    }
+  }
+}
+
+/*
+ * ================================================
+ *
+ * [error]
+ *
+ * ================================================
+ */
+body.error {
+  .formErrVox {
+    display: block;
+    margin-bottom: 15px;
+  }
+  .caution {
+    margin-top: 5px;
+    color: #c00000;
+    font-size: 1.5rem;
+  }
+  .formItem {
+    >dd {
+      padding: 1em;
+    }
+  }
+}
+/*
+ * ================================================
+ *
+ * [finish]
+ *
+ * ================================================
+ */
+body.finish {
+  .desc {
+    + .desc {
+      margin-top: 1em;
+    }
+  }
+}
+/**
+ ****************************************************
+ *
+ * screens smaller than $bp
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+}//sp
