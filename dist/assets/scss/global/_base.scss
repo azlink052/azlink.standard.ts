@@ -10,51 +10,51 @@
 // @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Noto+Serif+JP&display=swap');
 @font-face {
   font-family: 'Noto Sans JP';
-  src: url(../../fonts/NotoSansCJKjp-Regular.woff2) format('woff2'),
-    url(../../fonts/NotoSansCJKjp-Regular.woff) format('woff');
   font-display: swap;
   font-weight: 400;
   font-style: normal;
+  src: url(/assets/fonts/NotoSansCJKjp-Regular.woff2) format('woff2'),
+    local('Noto Sans JP'), local('NotoSansCJKjp-Regular');
 }
 @font-face {
   font-family: 'Noto Sans JP';
-  src: url(../../fonts/NotoSansCJKjp-Medium.woff2) format('woff2'),
-    url(../../fonts/NotoSansCJKjp-Medium.woff) format('woff');
   font-display: swap;
   font-weight: 500;
   font-style: normal;
+  src: url(/assets/fonts/NotoSansCJKjp-Medium.woff2) format('woff2'),
+    local('Noto Sans JP'), local('NotoSansCJKjp-Medium');
 }
 @font-face {
   font-family: 'Noto Sans JP';
-  src: url(../../fonts/NotoSansCJKjp-Bold.woff2) format('woff2'),
-    url(../../fonts/NotoSansCJKjp-Bold.woff) format('woff');
   font-display: swap;
   font-weight: 700;
   font-style: normal;
+  src: url(/assets/fonts/NotoSansCJKjp-Bold.woff2) format('woff2'),
+    local('Noto Sans JP'), local('NotoSansCJKjp-Bold');
 }
 @font-face {
   font-family: 'Noto Serif JP';
-  src: url(../../fonts/NotoSerifCJKjp-Regular.woff2) format('woff2'),
-    url(../../fonts/NotoSerifCJKjp-Regular.woff) format('woff');
   font-display: swap;
   font-weight: 400;
   font-style: normal;
+  src: url(/assets/fonts/NotoSerifCJKjp-Regular.woff2) format('woff2'),
+    local('Noto Serif JP'), local('NotoSerifCJKjp-Regular');
 }
 @font-face {
   font-family: 'Noto Serif JP';
-  src: url(../../fonts/NotoSerifCJKjp-Medium.woff2) format('woff2'),
-    url(../../fonts/NotoSerifCJKjp-Medium.woff) format('woff');
   font-display: swap;
   font-weight: 500;
   font-style: normal;
+  src: url(/assets/fonts/NotoSerifCJKjp-Medium.woff2) format('woff2'),
+    local('Noto Serif JP'), local('NotoSerifCJKjp-Medium');
 }
 @font-face {
   font-family: 'Noto Serif JP';
-  src: url(../../fonts/NotoSerifCJKjp-Bold.woff2) format('woff2'),
-    url(../../fonts/NotoSerifCJKjp-Bold.woff) format('woff');
   font-display: swap;
   font-weight: 700;
   font-style: normal;
+  src: url(/assets/fonts/NotoSerifCJKjp-Bold.woff2) format('woff2'),
+    local('Noto Serif JP'), local('NotoSerifCJKjp-Bold');
 }
 @font-face {
   font-family: 'QuicksandReg';

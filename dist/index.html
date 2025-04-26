@@ -6,6 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/NotoSansCJKjp-Regular.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/NotoSansCJKjp-Medium.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/NotoSansCJKjp-Bold.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/NotoSerifCJKjp-Regular.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/NotoSerifCJKjp-Medium.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/NotoSerifCJKjp-Bold.woff2"
+      crossorigin
+    />
+    <link
       rel="stylesheet"
       type="text/css"
       media="all"
@@ -41,7 +83,13 @@
           durationBgClose: 0,
           // isA11y: false,
           onComplete: () => {
-            console.log('loaded');
+            console.log('popup loaded');
+          },
+        });
+        const popup2 = new azlib.PopupAdjust('.popupBtItem2', {
+          popupContent: '#popupContents2',
+          onComplete: () => {
+            console.log('popup2 loaded');
           },
         });
         document.querySelectorAll('.popupBtItem.movie').forEach((v, i) => {
@@ -927,6 +975,11 @@
               popup
             </button>
           </p>
+          <p class="mB50">
+            <button class="popupBtItem2" data-popup="popupWrapper02">
+              popup2
+            </button>
+          </p>
         </section>
         <section>
           <h2>roImg Sample</h2>
@@ -1281,6 +1334,11 @@
           </p>
         </div>
         <div class="content" data-group="movie"></div>
+      </div>
+      <div id="popupContents2">
+        <div class="content">
+          <p style="background-color: #fff">別ポップアップ2</p>
+        </div>
       </div>
       <footer id="siteFooter">
         <div id="js-pageTopVox">
