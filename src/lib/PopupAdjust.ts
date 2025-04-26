@@ -5,7 +5,7 @@ import { FocusLoop } from './FocusLoop';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2024.04.04
+ * @final 		2025.04.26
  *
  * @param {*} $selector
  * @param {*} $options
@@ -14,6 +14,7 @@ interface Options {
   btn: string;
   wrapper: string;
   bg: string;
+  popupContent: string;
   isUnlock: boolean;
   isSpFixed: boolean;
   isAdjust: boolean;
@@ -51,6 +52,7 @@ export class PopupAdjust {
     {
       wrapper = 'body', // ドキュメントのラッパ要素の指定(レイヤ差し込み用)
       bg = '#alphaBg', // レイヤ
+      popupContent = '#popupContents', // ポップアップの内容を指定する要素
       isUnlock = true, // bodyのスクロール禁止を「しない」
       isSpFixed = true, // SP時はbodyのスクロールを禁止する
       isAdjust = true, // popupの位置調整を行う
@@ -78,7 +80,7 @@ export class PopupAdjust {
     this.scrTopTemp = 0;
     this.isOpen = false;
     this.isAllowClose = false;
-    this.popupContent = '#popupContents';
+    this.popupContent = popupContent;
     this.spBreakPoint = 768;
     this.scrTop = 0;
     this.scrLeft = 0;
@@ -93,6 +95,7 @@ export class PopupAdjust {
       btn: $selector,
       wrapper: wrapper,
       bg: bg,
+      popupContent: popupContent,
       isUnlock: isUnlock,
       isSpFixed: isSpFixed,
       isAdjust: isAdjust,
@@ -174,7 +177,7 @@ export class PopupAdjust {
           opacity: '0',
           display: 'none',
         });
-
+        // console.log(popupIDs);
         document.querySelector(this.options.wrapper).appendChild(popupSrc);
         popupSrc.id = popupIDs[i];
         if (group) popupSrc.classList.add(group);
