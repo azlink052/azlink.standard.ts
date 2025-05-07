@@ -11,23 +11,27 @@ import { FocusLoop } from './FocusLoop';
  * @param {*} $options
  */
 interface Options {
-  btn: string;
-  wrapper: string;
   bg: string;
-  popupContent: string;
-  isUnlock: boolean;
-  isSpFixed: boolean;
-  isAdjust: boolean;
-  isA11y: boolean;
-  focusLoopElems: string[];
   bgOpacity: number;
-  durationChange: number;
-  durationClose: number;
+  btn: string;
+  closeEl: string;
+  wrapper: string;
+  popupContent: string;
+  label: string;
+  iframeMovieSrc: string;
+  focusLoopElems: string[];
   durationBgChange: number;
   durationBgClose: number;
+  durationChange: number;
+  durationClose: number;
+  isA11y: boolean;
+  isAdjust: boolean;
+  isCloseBtn: boolean;
+  isSpFixed: boolean;
+  isUnlock: boolean;
+  onClose: any;
   onComplete: any;
   onOpen: any;
-  onClose: any;
 }
 export class PopupAdjust {
   private scrTopTemp: number;
@@ -50,13 +54,13 @@ export class PopupAdjust {
   constructor(
     $selector: string, // popupの発火となる要素
     {
-      wrapper = 'body', // ドキュメントのラッパ要素の指定(レイヤ差し込み用)
       bg = '#alphaBg', // レイヤ
+      bgOpacity = 0.8, // レイヤの透明度
+      closeEl = '.popupCloseBt', // 閉じるボタンの要素名
+      wrapper = 'body', // ドキュメントのラッパ要素の指定(レイヤ差し込み用)
       popupContent = '#popupContents', // ポップアップの内容を指定する要素
-      isUnlock = true, // bodyのスクロール禁止を「しない」
-      isSpFixed = true, // SP時はbodyのスクロールを禁止する
-      isAdjust = true, // popupの位置調整を行う
-      isA11y = true, // アクセシビリティ対応
+      label = '', // ポップアップの名前(label属性に設定)
+      iframeMovieSrc = '', // ポップアップ内にiframeで埋め込む動画のsrc
       focusLoopElems = [
         'a',
         'area',
@@ -67,14 +71,18 @@ export class PopupAdjust {
         'select',
         'textarea',
       ], // focusLoopさせる際の要素名
-      bgOpacity = 0.8, // レイヤの透明度
-      durationChange = 200, // ポップアップが開く際の表示速度
-      durationClose = 150, // ポップアップが閉じる際の表示速度
       durationBgChange = 50, // レイヤが開く際の表示速度
       durationBgClose = 50, // レイヤが閉じる際の表示速度
+      durationChange = 200, // ポップアップが開く際の表示速度
+      durationClose = 150, // ポップアップが閉じる際の表示速度
+      isA11y = true, // アクセシビリティ対応
+      isAdjust = true, // popupの位置調整を行う
+      isCloseBtn = true, // 閉じるボタンを表示する
+      isSpFixed = true, // SP時はbodyのスクロールを禁止する
+      isUnlock = true, // bodyのスクロール禁止を「しない」
+      onClose = false, // popupを閉じた際のコールバック @return クリックされたpopupのid
       onComplete = false, // popupAdjustの準備完了コールバック
       onOpen = false, // popupが開いた際のコールバック @return クリックされたpopupのid
-      onClose = false, // popupを閉じた際のコールバック @return クリックされたpopupのid
     }: Partial<Options> = {}
   ) {
     this.scrTopTemp = 0;
@@ -92,23 +100,27 @@ export class PopupAdjust {
     this.focusLoop = [];
 
     this.options = {
-      btn: $selector,
-      wrapper: wrapper,
       bg: bg,
-      popupContent: popupContent,
-      isUnlock: isUnlock,
-      isSpFixed: isSpFixed,
-      isAdjust: isAdjust,
-      isA11y: isA11y,
-      focusLoopElems: focusLoopElems,
       bgOpacity: bgOpacity,
-      durationChange: durationChange,
-      durationClose: durationClose,
+      btn: $selector,
+      closeEl: closeEl,
+      wrapper: wrapper,
+      popupContent: popupContent,
+      label: label,
+      iframeMovieSrc: iframeMovieSrc,
+      focusLoopElems: focusLoopElems,
       durationBgChange: durationBgChange,
       durationBgClose: durationBgClose,
+      durationChange: durationChange,
+      durationClose: durationClose,
+      isA11y: isA11y,
+      isAdjust: isAdjust,
+      isCloseBtn: isCloseBtn,
+      isSpFixed: isSpFixed,
+      isUnlock: isUnlock,
+      onClose: onClose,
       onComplete: onComplete,
       onOpen: onOpen,
-      onClose: onClose,
     };
 
     const css = document.createElement('style');
@@ -162,13 +174,23 @@ export class PopupAdjust {
 
         const popupSrc = document.createElement('div');
         popupSrc.className = 'popupWrapper vertical';
-        popupSrc.innerHTML = `
+        popupSrc.setAttribute('role', 'dialog');
+        popupSrc.setAttribute('aria-modai', 'true');
+        if (this.options.label) {
+          popupSrc.setAttribute('aria-label', this.options.label);
+        }
+
+        if (this.options.isCloseBtn) {
+          popupSrc.innerHTML += `
           <div class="closeVox">
             <button aria-label="ポップアップを閉じる" class="popupCloseBt">
               <span><!-- --></span>
               <span><!-- --></span>
             </button>
           </div>
+          `;
+        }
+        popupSrc.innerHTML += `
           <div class="contentWrapper">
             <div class="content"><!-- --></div>
           </div>
@@ -196,8 +218,11 @@ export class PopupAdjust {
         // v.parentNode.removeChild(v);
       });
 
+    const bg = this.options.bg ? `, ${this.options.bg}` : '';
+    const closeEl = this.options.closeEl ? `, ${this.options.closeEl}` : '';
+
     document
-      .querySelectorAll(`.popupCloseBt, ${this.options.bg}`)
+      .querySelectorAll(`.popupCloseBt${bg}${closeEl}`)
       .forEach((v, i) => {
         v.addEventListener('click', () => {
           if (
@@ -227,6 +252,7 @@ export class PopupAdjust {
     document.querySelectorAll(this.options.btn).forEach((v, i) => {
       v.addEventListener('click', () => {
         this.currentTrigger = v;
+        // console.log(v);
         document
           .querySelectorAll(`.popupWrapper, ${this.options.bg}`)
           .forEach((vv) => {
@@ -236,6 +262,23 @@ export class PopupAdjust {
         const id = v.getAttribute('data-popup');
         this.popupTarget = `#${id}`;
         // console.log(this.popupTarget);
+
+        if (v.classList.contains('movie')) {
+          const movie = v.getAttribute('data-movie');
+          const src = ((iframeMovieSrc) => {
+            if (!iframeMovieSrc) {
+              return `<iframe src="https://www.youtube.com/embed/${movie}?autoplay=1&rel=0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+              return iframeMovieSrc;
+            }
+          })(this.options.iframeMovieSrc);
+
+          document
+            .querySelector<HTMLElement>(this.popupTarget)
+            .querySelector('.movieContent')
+            .insertAdjacentHTML('beforeend', src);
+        }
 
         Object.assign(
           document.querySelector<HTMLElement>(this.popupTarget).style,
@@ -311,7 +354,7 @@ export class PopupAdjust {
               document
                 .querySelector<HTMLElement>(id)
                 .querySelector<HTMLElement>('.popupCloseBt')
-                .focus();
+                ?.focus();
               if (typeof this.options.onOpen === 'function') {
                 this.options.onOpen(this.popupTarget);
               }
@@ -376,7 +419,7 @@ export class PopupAdjust {
         },
       });
       document
-        .querySelectorAll('.popupWrapper.movie .content')
+        .querySelectorAll('.popupWrapper.movie .movieContent')
         .forEach((vv, i) => {
           if (vv) vv.innerHTML = '';
         });
