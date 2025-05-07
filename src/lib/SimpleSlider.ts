@@ -61,6 +61,7 @@ export class SimpleSlider {
   private orgElement: Element | boolean;
   private debugTimer: number | boolean;
   private isHover: boolean;
+  private isTouchDevice: boolean;
   private rsTimer: number | boolean;
 
   constructor(
@@ -84,7 +85,7 @@ export class SimpleSlider {
       cloneCount = 1,
       threshold = 30,
       isResizeAuto = false,
-      mode = 'horizontal', // !vertical を指定する場合は wrapper の高さ指定が必須
+      mode = 'horizontal', // ! vertical を指定する場合は wrapper の高さ指定が必須
       onSliderLoad = false, // this
       onSlideBefore = false, // this.current this.realCurrent
       onSlideAfter = false, // this.current this.realCurrent
@@ -105,6 +106,8 @@ export class SimpleSlider {
     this.rTimer = false;
     this.orgElement = document.querySelector($selector);
     this.isHover = false;
+    this.isTouchDevice =
+      'ontouchstart' in window || navigator.maxTouchPoints > 0;
     this.rsTimer = false;
     this.options = {
       isAuto: isAuto,
@@ -136,6 +139,8 @@ export class SimpleSlider {
     this.gotoPrev = this.gotoPrev.bind(this);
     this.gotoPage = this.gotoPage.bind(this);
     this.stopAuto = this.stopAuto.bind(this);
+
+    // console.log(this.isTouchDevice);
 
     this.init();
   }
@@ -320,7 +325,10 @@ export class SimpleSlider {
           this.pager = this.options.wrapper.querySelector('.ss-pager');
           // console.log(this.pageLength);
         } else {
-          if (document.querySelector(this.options.pagerEl)) {
+          if (
+            this.options.pagerEl &&
+            document.querySelector(this.options.pagerEl)
+          ) {
             // console.log(this.pageLength);
             this.pager = document.querySelector(this.options.pagerEl);
           }
@@ -346,68 +354,110 @@ export class SimpleSlider {
             });
         }
         // スワイプ処理
-        this.elem.addEventListener('touchmove', (e) => {
-          e.preventDefault();
-          this.moveX = e.changedTouches[0].pageX;
-          this.moveY = e.changedTouches[0].pageY;
-        });
-        this.elem.addEventListener('touchstart', (e) => {
-          e.preventDefault();
-          this.startX = e.touches[0].pageX;
-          this.moveX = 0;
-          this.startY = e.touches[0].pageY;
-          this.moveY = 0;
-        });
-        this.elem.addEventListener('touchend', (e) => {
-          e.preventDefault();
-          // console.log(`startX: ${this.startX}, moveX: ${this.moveX}`);
-          if (this.options.mode === 'vertical') {
-            if (this.moveY === 0) {
-              (<HTMLAnchorElement>e.target)?.click();
+        let isDragging = false;
+        ['touchstart', 'mousedown'].forEach((v) => {
+          this.elem.addEventListener(v, (e) => {
+            // e.preventDefault();
+            if (v === 'touchstart') {
+              this.startX = (e as TouchEvent).touches[0].pageX;
+              this.moveX = 0;
+              this.startY = (e as TouchEvent).touches[0].pageY;
+              this.moveY = 0;
             } else {
-              if (this.startY + this.options.threshold < this.moveY) {
-                // 右向き
-                // console.log('→');
-                if (!this.isAllowSlide) return;
-                if (!this.options.isLoop && this.current <= 0) return;
-                this.slide(this.getPrevSlide());
+              this.startX = (e as MouseEvent).pageX;
+              this.moveX = 0;
+              this.startY = (e as MouseEvent).pageY;
+              this.moveY = 0;
+              isDragging = true;
+            }
+          });
+        });
+        ['touchmove', 'mousemove'].forEach((v) => {
+          this.elem.addEventListener(
+            v,
+            (e) => {
+              // e.preventDefault();
+              if (!isDragging && !this.isTouchDevice) return;
+              if (v === 'touchmove') {
+                this.moveX = (e as TouchEvent).touches[0].pageX;
+                this.moveY = (e as TouchEvent).touches[0].pageY;
+              } else {
+                this.moveX = (e as MouseEvent).pageX;
+                this.moveY = (e as MouseEvent).pageY;
               }
-              if (this.startY > this.moveY + this.options.threshold) {
-                // 左向き
-                // console.log('←');
-                if (!this.isAllowSlide) return;
-                if (
-                  !this.options.isLoop &&
-                  this.remainder <= this.options.rootCount
-                )
-                  return;
-                this.slide(this.getNextSlide());
+              if (
+                Math.abs(this.moveX - this.startX) >
+                Math.abs(this.moveY - this.startY)
+              ) {
+                // console.log('横移動');
+                if (this.options.mode === 'horizontal') {
+                  e.preventDefault();
+                }
+              } else {
+                // console.log('縦移動');
+                if (this.options.mode === 'vertical') {
+                  e.preventDefault();
+                }
+              }
+            },
+            {
+              passive: false,
+            }
+          );
+        });
+        ['touchend', 'mouseup'].forEach((v) => {
+          this.elem.addEventListener(v, (e) => {
+            // e.preventDefault();
+            // console.log(`startX: ${this.startX}, moveX: ${this.moveX}`);
+            if (this.options.mode === 'vertical') {
+              if (this.moveY === 0) {
+                (<HTMLAnchorElement>e.target)?.click();
+              } else {
+                if (this.startY + this.options.threshold < this.moveY) {
+                  // 右向き
+                  // console.log('→');
+                  if (!this.isAllowSlide) return;
+                  if (!this.options.isLoop && this.current <= 0) return;
+                  this.slide(this.getPrevSlide());
+                }
+                if (this.startY > this.moveY + this.options.threshold) {
+                  // 左向き
+                  // console.log('←');
+                  if (!this.isAllowSlide) return;
+                  if (
+                    !this.options.isLoop &&
+                    this.remainder <= this.options.rootCount
+                  )
+                    return;
+                  this.slide(this.getNextSlide());
+                }
+              }
+            } else {
+              if (this.moveX === 0) {
+                (<HTMLAnchorElement>e.target)?.click();
+              } else {
+                if (this.startX + this.options.threshold < this.moveX) {
+                  // 右向き
+                  // console.log('→');
+                  if (!this.isAllowSlide) return;
+                  if (!this.options.isLoop && this.current <= 0) return;
+                  this.slide(this.getPrevSlide());
+                }
+                if (this.startX > this.moveX + this.options.threshold) {
+                  // 左向き
+                  // console.log('←');
+                  if (!this.isAllowSlide) return;
+                  if (
+                    !this.options.isLoop &&
+                    this.remainder <= this.options.rootCount
+                  )
+                    return;
+                  this.slide(this.getNextSlide());
+                }
               }
             }
-          } else {
-            if (this.moveX === 0) {
-              (<HTMLAnchorElement>e.target)?.click();
-            } else {
-              if (this.startX + this.options.threshold < this.moveX) {
-                // 右向き
-                // console.log('→');
-                if (!this.isAllowSlide) return;
-                if (!this.options.isLoop && this.current <= 0) return;
-                this.slide(this.getPrevSlide());
-              }
-              if (this.startX > this.moveX + this.options.threshold) {
-                // 左向き
-                // console.log('←');
-                if (!this.isAllowSlide) return;
-                if (
-                  !this.options.isLoop &&
-                  this.remainder <= this.options.rootCount
-                )
-                  return;
-                this.slide(this.getNextSlide());
-              }
-            }
-          }
+          });
+          isDragging = false;
         });
       }
     }
@@ -438,6 +488,20 @@ export class SimpleSlider {
         }, 500);
       });
     }
+    // css
+    // console.log(this.selector);
+    const css = document.createElement('style');
+    css.textContent = `
+      ${this.selector} {
+        user-select: none;
+      }
+    `;
+    document.head.appendChild(css);
+    // ドラッグ禁止
+    document
+      .querySelector(this.selector)
+      ?.querySelectorAll('img')
+      .forEach((v) => v.setAttribute('draggable', 'false'));
   }
   slide(target?: number | boolean): void {
     // console.log(target);

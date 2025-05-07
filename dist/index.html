@@ -81,27 +81,41 @@
           durationClose: 0,
           durationBgChange: 500,
           durationBgClose: 0,
+          label: 'テストポップアップ',
           // isA11y: false,
           onComplete: () => {
             console.log('popup loaded');
           },
         });
         const popup2 = new azlib.PopupAdjust('.popupBtItem2', {
+          isCloseBtn: false,
+          closeEl: '.popupCloseBt2',
           popupContent: '#popupContents2',
           onComplete: () => {
             console.log('popup2 loaded');
           },
         });
-        document.querySelectorAll('.popupBtItem.movie').forEach((v, i) => {
-          v.addEventListener('click', (e) => {
-            const movie = v.getAttribute('data-movie');
-            const src = `<iframe src="https://www.youtube.com/embed/${movie}?autoplay=1&rel=0" frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-            document
-              .querySelector('#popupWrapperMovie .content')
-              .insertAdjacentHTML('beforeend', src);
-          });
+        const popup3 = new azlib.PopupAdjust('.popupBtItem3', {
+          isCloseBtn: false,
+          closeEl: '.popupCloseBt2',
+          popupContent: '#popupContents3',
+          // iframeMovieSrc:
+          //   '<iframe src="https://www.youtube.com/embed/30O9JgRXil4?autoplay=1&rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" data-test="test"></iframe>',
+          onComplete: () => {
+            console.log('popup3 loaded');
+          },
         });
+
+        // document.querySelectorAll('.popupBtItem.movie').forEach((v, i) => {
+        //   v.addEventListener('click', (e) => {
+        //     const movie = v.getAttribute('data-movie');
+        //     const src = `<iframe src="https://www.youtube.com/embed/${movie}?autoplay=1&rel=0"
+        //     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        //     document
+        //       .querySelector('#popupWrapperMovie .movieContent')
+        //       .insertAdjacentHTML('beforeend', src);
+        //   });
+        // });
         const rplSPImg = new azlib.ReplaceImageSP();
         // setTimeout(() => {
         //   rplSPImg.destroy();
@@ -968,7 +982,7 @@
           <h3>Youtube</h3>
           <p>
             <button
-              class="popupBtItem movie"
+              class="popupBtItem3 movie"
               data-popup="popupWrapperMovie"
               data-movie="30O9JgRXil4"
             >
@@ -1333,11 +1347,21 @@
             <button onclick="alert('yes')">CLICK ME</button>
           </p>
         </div>
-        <div class="content" data-group="movie"></div>
       </div>
       <div id="popupContents2">
         <div class="content">
           <p style="background-color: #fff">別ポップアップ2</p>
+          <p class="alignCenter">
+            <button type="button" class="popupCloseBt2">CLOSE</button>
+          </p>
+        </div>
+      </div>
+      <div id="popupContents3">
+        <div class="content" data-group="movie">
+          <div class="movieContent"></div>
+          <p class="alignCenter">
+            <button type="button" class="popupCloseBt2">CLOSE</button>
+          </p>
         </div>
       </div>
       <footer id="siteFooter">
