@@ -298,43 +298,42 @@ class ContentJS {
       isLoop: true,
       speed: 500,
       pause: 5000,
-      isResizeAuto: true,
+      // isResizeAuto: true,
       onSliderLoad: (slider) => {
-        const slideItem = document.querySelectorAll(
-          '.slide-item:not(.slide-clone)'
-        );
-        const slideCount = slideItem.length;
+        // const slideItem = document.querySelectorAll(
+        //   '.slide-item:not(.slide-clone)'
+        // );
+        // const slideCount = slideItem.length;
         document.querySelectorAll('.slide-item').forEach((v, index) => {
-          const number = (index % slideCount) + 1;
+          // const number = (index % slideCount) + 1;
           // v.setAttribute('role','group');
-          v.setAttribute(
-            'aria-label',
-            number + '枚目のスライダー' + '（' + slideCount + '枚中）'
-          );
-
-          v.querySelector('a').setAttribute('tabindex', '0');
+          // v.setAttribute(
+          //   'aria-label',
+          //   number + '枚目のスライダー' + '（' + slideCount + '枚中）'
+          // );
+          // v.querySelector('a').setAttribute('tabindex', '0');
         });
         //初期でクローンされているスライドをフォーカス対象外に
         document.querySelectorAll('.slide-clone').forEach((v) => {
-          v.setAttribute('aria-hidden', true);
-          v.setAttribute('inert', true);
-          v.querySelector('a').setAttribute('tabindex', '-1');
+          // v.setAttribute('aria-hidden', true);
+          // v.setAttribute('inert', true);
+          // v.querySelector('a').setAttribute('tabindex', '-1');
         });
         //tabキー移動時の為にクローンされていないスライダーの合計横幅指定
         if (!util.isRespMode) {
-          const slideWidth = [];
-          slideItem.forEach((element) => {
-            slideWidth.push(element.clientWidth);
-          });
-          const total = slideWidth.reduce(function (sum, element) {
-            return sum + element;
-          }, 0);
-          document.querySelector('.sliderCnt').style.width = total + 'px';
+          // const slideWidth = [];
+          // slideItem.forEach((element) => {
+          //   slideWidth.push(element.clientWidth);
+          // });
+          // const total = slideWidth.reduce(function (sum, element) {
+          //   return sum + element;
+          // }, 0);
+          // document.querySelector('.sliderCnt').style.width = total + 'px';
         }
         //ボタンにaria-controls付与
-        document
-          .querySelector('.ss-prev,.ss-next')
-          .setAttribute('aria-controls', 'js-interviewSlider');
+        // document
+        //   .querySelector('.ss-prev,.ss-next')
+        //   .setAttribute('aria-controls', 'js-interviewSlider');
       },
       onSlideAfter: (index) => {
         // console.log(index)
@@ -347,28 +346,28 @@ class ContentJS {
           let slideActive = document.querySelector('.slide-active');
           if (slideActive) {
             document.querySelectorAll('.slide-item').forEach((v) => {
-              v.setAttribute('aria-hidden', true);
-              v.setAttribute('inert', true);
-              v.querySelector('a').setAttribute('tabindex', '-1');
+              // v.setAttribute('aria-hidden', true);
+              // v.setAttribute('inert', true);
+              // v.querySelector('a').setAttribute('tabindex', '-1');
             });
             for (let i = 0; i < slideCount; i++) {
               if (slideActive && slideActive.nextElementSibling) {
-                slideActive = slideActive.nextElementSibling;
-                slideActive.setAttribute('aria-hidden', false);
-                slideActive.removeAttribute('inert');
-                slideActive.setAttribute('tabindex', '0');
+                // slideActive = slideActive.nextElementSibling;
+                // slideActive.setAttribute('aria-hidden', false);
+                // slideActive.removeAttribute('inert');
+                // slideActive.setAttribute('tabindex', '0');
               }
             }
           }
         } else {
           document.querySelectorAll('.slide-item').forEach((v) => {
-            v.setAttribute('aria-hidden', false);
-            v.removeAttribute('inert');
-            v.setAttribute('tabindex', '0');
+            // v.setAttribute('aria-hidden', false);
+            // v.removeAttribute('inert');
+            // v.setAttribute('tabindex', '0');
             if (v.classList.contains('slide-clone')) {
-              v.setAttribute('aria-hidden', true);
-              v.setAttribute('inert', true);
-              v.querySelector('a').setAttribute('tabindex', '-1');
+              // v.setAttribute('aria-hidden', true);
+              // v.setAttribute('inert', true);
+              // v.querySelector('a').setAttribute('tabindex', '-1');
             }
           });
         }
