@@ -63,7 +63,7 @@ export class SimpleSlider {
   private isHover: boolean;
   private isTouchDevice: boolean;
   private rsTimer: number | boolean;
-
+  private tscTimer: number | boolean;
   constructor(
     $selector: string,
     {
@@ -194,6 +194,7 @@ export class SimpleSlider {
       } else {
         // console.log(this.options.wrapper);
         this.options.rootCount = 1 as number;
+        // console.log(this.options.rootCount);
         if (this.options.mode === 'vertical') {
           this.elem.outerHTML = `<div class="sliderContainer">${this.elem.outerHTML}</div>`;
           this.elem = document.querySelector(this.selector);
@@ -211,7 +212,7 @@ export class SimpleSlider {
           this.options.slideCount = Number(this.options.rootCount);
         }
       }
-      Array.from(this.elem.children).forEach((v: HTMLElement) => {
+      Array.from(this.elem.children).forEach((v: HTMLElement, i: number) => {
         if (this.options.mode === 'vertical') {
           v.style.height = `${this.itemHeight}px`;
           v.style.marginBottom = `${this.options.spaceBetween}px`;
@@ -220,6 +221,10 @@ export class SimpleSlider {
           v.style.marginRight = `${this.options.spaceBetween}px`;
         }
         v.classList.add('slide-item');
+        v.setAttribute(
+          'aria-label',
+          `${i + 1}枚目のスライド (${this.itemLength}枚中)`
+        );
       });
       // console.log(this.options.rootCount, this.itemLength, this.itemWidth);
       if (this.itemLength > this.options.rootCount) {
@@ -355,108 +360,116 @@ export class SimpleSlider {
         }
         // スワイプ処理
         let isDragging = false;
-        ['touchstart', 'mousedown'].forEach((v) => {
-          this.elem.addEventListener(v, (e) => {
-            // e.preventDefault();
-            if (v === 'touchstart') {
-              this.startX = (e as TouchEvent).touches[0].pageX;
-              this.moveX = 0;
-              this.startY = (e as TouchEvent).touches[0].pageY;
-              this.moveY = 0;
-            } else {
-              this.startX = (e as MouseEvent).pageX;
-              this.moveX = 0;
-              this.startY = (e as MouseEvent).pageY;
-              this.moveY = 0;
-              isDragging = true;
-            }
-          });
+        this.elem.addEventListener('touchstart', (e) => {
+          this.startX = (e as TouchEvent).touches[0].pageX;
+          this.moveX = 0;
+          this.startY = (e as TouchEvent).touches[0].pageY;
+          this.moveY = 0;
         });
-        ['touchmove', 'mousemove'].forEach((v) => {
-          this.elem.addEventListener(
-            v,
-            (e) => {
-              // e.preventDefault();
-              if (!isDragging && !this.isTouchDevice) return;
-              if (v === 'touchmove') {
-                this.moveX = (e as TouchEvent).touches[0].pageX;
-                this.moveY = (e as TouchEvent).touches[0].pageY;
-              } else {
-                this.moveX = (e as MouseEvent).pageX;
-                this.moveY = (e as MouseEvent).pageY;
-              }
-              if (
-                Math.abs(this.moveX - this.startX) >
-                Math.abs(this.moveY - this.startY)
-              ) {
-                // console.log('横移動');
-                if (this.options.mode === 'horizontal') {
-                  e.preventDefault();
-                }
-              } else {
-                // console.log('縦移動');
-                if (this.options.mode === 'vertical') {
-                  e.preventDefault();
-                }
-              }
-            },
-            {
-              passive: false,
-            }
-          );
+        document.addEventListener('mousedown', (e) => {
+          this.startX = (e as MouseEvent).pageX;
+          this.moveX = 0;
+          this.startY = (e as MouseEvent).pageY;
+          this.moveY = 0;
+          isDragging = true;
         });
-        ['touchend', 'mouseup'].forEach((v) => {
-          this.elem.addEventListener(v, (e) => {
-            // e.preventDefault();
-            // console.log(`startX: ${this.startX}, moveX: ${this.moveX}`);
+        const move = (e: Event) => {
+          if (
+            Math.abs(this.moveX - this.startX) >
+            Math.abs(this.moveY - this.startY)
+          ) {
+            // console.log('横移動');
+            if (this.options.mode === 'horizontal') {
+              e.preventDefault();
+            }
+          } else {
+            // console.log('縦移動');
             if (this.options.mode === 'vertical') {
-              if (this.moveY === 0) {
-                (<HTMLAnchorElement>e.target)?.click();
-              } else {
-                if (this.startY + this.options.threshold < this.moveY) {
-                  // 右向き
-                  // console.log('→');
-                  if (!this.isAllowSlide) return;
-                  if (!this.options.isLoop && this.current <= 0) return;
-                  this.slide(this.getPrevSlide());
-                }
-                if (this.startY > this.moveY + this.options.threshold) {
-                  // 左向き
-                  // console.log('←');
-                  if (!this.isAllowSlide) return;
-                  if (
-                    !this.options.isLoop &&
-                    this.remainder <= this.options.rootCount
-                  )
-                    return;
-                  this.slide(this.getNextSlide());
-                }
-              }
+              e.preventDefault();
+            }
+          }
+        };
+        this.elem.addEventListener(
+          'touchmove',
+          (e) => {
+            this.moveX = (e as TouchEvent).touches[0].pageX;
+            this.moveY = (e as TouchEvent).touches[0].pageY;
+
+            move(e);
+          },
+          {
+            passive: false,
+          }
+        );
+        this.elem.addEventListener(
+          'mousemove',
+          (e) => {
+            if (!isDragging) return;
+
+            this.moveX = (e as MouseEvent).pageX;
+            this.moveY = (e as MouseEvent).pageY;
+
+            move(e);
+          },
+          {
+            passive: false,
+          }
+        );
+        const end = (e: Event) => {
+          if (this.options.mode === 'vertical') {
+            if (this.moveY === 0) {
+              (<HTMLAnchorElement>e.target)?.click();
             } else {
-              if (this.moveX === 0) {
-                (<HTMLAnchorElement>e.target)?.click();
-              } else {
-                if (this.startX + this.options.threshold < this.moveX) {
-                  // 右向き
-                  // console.log('→');
-                  if (!this.isAllowSlide) return;
-                  if (!this.options.isLoop && this.current <= 0) return;
-                  this.slide(this.getPrevSlide());
-                }
-                if (this.startX > this.moveX + this.options.threshold) {
-                  // 左向き
-                  // console.log('←');
-                  if (!this.isAllowSlide) return;
-                  if (
-                    !this.options.isLoop &&
-                    this.remainder <= this.options.rootCount
-                  )
-                    return;
-                  this.slide(this.getNextSlide());
-                }
+              if (this.startY + this.options.threshold < this.moveY) {
+                // 右向き
+                // console.log('→');
+                if (!this.isAllowSlide) return;
+                if (!this.options.isLoop && this.current <= 0) return;
+                this.slide(this.getPrevSlide());
+              }
+              if (this.startY > this.moveY + this.options.threshold) {
+                // 左向き
+                // console.log('←');
+                if (!this.isAllowSlide) return;
+                if (
+                  !this.options.isLoop &&
+                  this.remainder <= this.options.rootCount
+                )
+                  return;
+                this.slide(this.getNextSlide());
               }
             }
-          });
+          } else {
+            if (this.moveX === 0) {
+              (<HTMLAnchorElement>e.target)?.click();
+            } else {
+              if (this.startX + this.options.threshold < this.moveX) {
+                // 右向き
+                // console.log('→');
+                if (!this.isAllowSlide) return;
+                if (!this.options.isLoop && this.current <= 0) return;
+                this.slide(this.getPrevSlide());
+              }
+              if (this.startX > this.moveX + this.options.threshold) {
+                // 左向き
+                // console.log('←');
+                if (!this.isAllowSlide) return;
+                if (
+                  !this.options.isLoop &&
+                  this.remainder <= this.options.rootCount
+                )
+                  return;
+                this.slide(this.getNextSlide());
+              }
+            }
+          }
+        };
+        this.elem.addEventListener('touchend', (e) => {
+          end(e);
+        });
+        this.elem.addEventListener('mouseup', (e) => {
+          end(e);
+          // console.log(isDragging);
           isDragging = false;
         });
       }
@@ -469,12 +482,6 @@ export class SimpleSlider {
       'mouseout',
       (e) => (this.isHover = false)
     );
-    this.isAllowSlide = true;
-    this.slide(this.current);
-    this.slideAuto();
-    if (typeof this.options.onSliderLoad === 'function') {
-      this.options.onSliderLoad(this);
-    }
 
     if (this.options.isResizeAuto) {
       window.addEventListener('resize', () => {
@@ -488,6 +495,15 @@ export class SimpleSlider {
         }, 500);
       });
     }
+    window.addEventListener('resize', () => {
+      if (this.tscTimer !== false) {
+        clearTimeout(Number(this.tscTimer));
+        this.tscTimer = false;
+      }
+      this.tscTimer = window.setTimeout(() => {
+        this.toggleSlideFocus();
+      }, 500);
+    });
     // css
     // console.log(this.selector);
     const css = document.createElement('style');
@@ -501,7 +517,19 @@ export class SimpleSlider {
     document
       .querySelector(this.selector)
       ?.querySelectorAll('img')
-      .forEach((v) => v.setAttribute('draggable', 'false'));
+      .forEach((v) => {
+        v.draggable = false;
+        v.addEventListener('dragstart', (e) => {
+          e.preventDefault();
+        });
+      });
+    this.isAllowSlide = true;
+    this.slide(this.current);
+    this.slideAuto();
+    this.toggleSlideFocus();
+    if (typeof this.options.onSliderLoad === 'function') {
+      this.options.onSliderLoad(this);
+    }
   }
   slide(target?: number | boolean): void {
     // console.log(target);
@@ -536,6 +564,7 @@ export class SimpleSlider {
         'slide-old'
       );
       this.isAllowSlide = true;
+      this.toggleSlideFocus();
       if (this.options.isLoop) {
         this.slideAuto();
       } else {
@@ -820,6 +849,33 @@ export class SimpleSlider {
     this.current = this.itemLength - 1;
     this.slide(0);
   }
+  toggleSlideFocus(): void {
+    this.elem
+      ?.querySelectorAll('.slide-item')
+      ?.forEach((v: HTMLElement, i: number) => {
+        // 要素が半分以上画面内に表示されているか確認
+        const rect = v.getBoundingClientRect();
+        const elementHeight = rect.height;
+        const elementWidth = rect.width;
+        const visibleHeight =
+          Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+        const visibleWidth =
+          Math.min(rect.right, window.innerWidth) - Math.max(rect.left, 0);
+        const visibleRatio =
+          (visibleHeight * visibleWidth) / (elementHeight * elementWidth);
+        const isVisible = visibleRatio >= 0.5;
+        // console.log(`Slide ${i + 1} is visible: ${isVisible}`);
+        if (isVisible) {
+          // v.setAttribute('tabindex', '0');
+          v.setAttribute('aria-hidden', 'false');
+          v.querySelector('a')?.setAttribute('tabindex', '0');
+        } else {
+          // v.setAttribute('tabindex', '-1');
+          v.setAttribute('aria-hidden', 'true');
+          v.querySelector('a')?.setAttribute('tabindex', '-1');
+        }
+      });
+  }
   destroy(): void {
     this.stopAuto();
     this.slide(0);
@@ -830,9 +886,9 @@ export class SimpleSlider {
     this.options.wrapper
       .querySelectorAll('.ss-pager-item button')
       .forEach((v, i) => v.removeEventListener('click', this.gotoPage));
-    this.pager.querySelectorAll('.ss-pager-item').forEach((v) => v.remove());
-    this.elem.querySelectorAll('.slide-clone').forEach((v) => v.remove());
-    this.elem.removeAttribute('style');
+    this.pager?.querySelectorAll('.ss-pager-item')?.forEach((v) => v.remove());
+    this.elem?.querySelectorAll('.slide-clone')?.forEach((v) => v.remove());
+    this.elem?.removeAttribute('style');
     Array.from(this.elem.children).forEach((v: HTMLElement) => {
       v.removeAttribute('style');
       v.classList.remove('slide-item', 'slide-old', 'slide-active');
