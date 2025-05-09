@@ -29,6 +29,7 @@ interface Options {
   threshold: number;
   isResizeAuto: boolean;
   mode: string;
+  tabindexElems: string[];
   onSliderLoad: any;
   onSlideBefore: any;
   onSlideAfter: any;
@@ -86,6 +87,16 @@ export class SimpleSlider {
       threshold = 30,
       isResizeAuto = false,
       mode = 'horizontal', // ! vertical を指定する場合は wrapper の高さ指定が必須
+      tabindexElems = [
+        'a',
+        'area',
+        'button',
+        'iframe',
+        'input',
+        'object',
+        'select',
+        'textarea',
+      ], // tabindex="-1" させる要素
       onSliderLoad = false, // this
       onSlideBefore = false, // this.current this.realCurrent
       onSlideAfter = false, // this.current this.realCurrent
@@ -129,6 +140,7 @@ export class SimpleSlider {
       threshold: threshold,
       isResizeAuto: isResizeAuto,
       mode: mode,
+      tabindexElems: tabindexElems,
       onSliderLoad: onSliderLoad,
       onSlideBefore: onSlideBefore,
       onSlideAfter: onSlideAfter,
@@ -868,11 +880,15 @@ export class SimpleSlider {
         if (isVisible) {
           // v.setAttribute('tabindex', '0');
           v.setAttribute('aria-hidden', 'false');
-          v.querySelector('a')?.setAttribute('tabindex', '0');
+          v.querySelectorAll(this.options.tabindexElems.join(','))?.forEach(
+            (vv: HTMLElement) => vv.setAttribute('tabindex', '0')
+          );
         } else {
           // v.setAttribute('tabindex', '-1');
           v.setAttribute('aria-hidden', 'true');
-          v.querySelector('a')?.setAttribute('tabindex', '-1');
+          v.querySelectorAll(this.options.tabindexElems.join(','))?.forEach(
+            (vv: HTMLElement) => vv.setAttribute('tabindex', '-1')
+          );
         }
       });
   }
