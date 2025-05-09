@@ -298,7 +298,7 @@ class ContentJS {
       isLoop: true,
       speed: 500,
       pause: 5000,
-      // isResizeAuto: true,
+      isResizeAuto: true,
       onSliderLoad: (slider) => {
         // const slideItem = document.querySelectorAll(
         //   '.slide-item:not(.slide-clone)'
