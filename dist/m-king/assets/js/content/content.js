@@ -29,9 +29,13 @@ class ContentJS {
   }
   init() {
     this.isSkip = document.body.classList.contains('is-skip') ? true : false;
-    this.isFlowAnime = document.body.classList.contains('is-flowAnime') ? true : false;
+    this.isFlowAnime = document.body.classList.contains('is-flowAnime')
+      ? true
+      : false;
     this.isPopup = document.body.classList.contains('is-popup') ? true : false;
-    this.isNoCueOffset = document.body.classList.contains('is-noCueOffset') ? true : false;
+    this.isNoCueOffset = document.body.classList.contains('is-noCueOffset')
+      ? true
+      : false;
 
     // ロケーションハッシュ
     window.addEventListener('load', () => {
@@ -41,14 +45,16 @@ class ContentJS {
         if (!target) return;
         this.hHeight = document.getElementById('siteHeader').clientHeight;
         const offset = -Number(this.hHeight);
-        const targetPos = target?.getBoundingClientRect().top + window.pageYOffset + offset;
+        const targetPos =
+          target?.getBoundingClientRect().top + window.pageYOffset + offset;
         new azlib.anime({
           targets: 'html, body',
           scrollTop: targetPos,
           duration: 10,
           easing: 'easeInQuad',
           complete: () => {
-            const newTargetPos = target.getBoundingClientRect().top + window.pageYOffset + offset;
+            const newTargetPos =
+              target.getBoundingClientRect().top + window.pageYOffset + offset;
             // console.log(targetPos, newTargetPos)
             if (targetPos !== newTargetPos) {
               new azlib.anime({
@@ -77,14 +83,16 @@ class ContentJS {
     });
 
     if (document.getElementById('js-pageTopVox')) {
-      document.querySelector('#js-pageTopVox button').addEventListener('click', (e) => {
-        new azlib.anime({
-          targets: 'html, body',
-          scrollTop: 0,
-          duration: 500,
-          easing: 'easeInOutQuart',
+      document
+        .querySelector('#js-pageTopVox button')
+        .addEventListener('click', (e) => {
+          new azlib.anime({
+            targets: 'html, body',
+            scrollTop: 0,
+            duration: 500,
+            easing: 'easeInOutQuart',
+          });
         });
-      });
     }
 
     /**
@@ -120,7 +128,6 @@ class ContentJS {
         if (util.isNavOpen && e.key === 'Escape') opener.click();
       });
     }
-
     /**
      * スクロール時、指定箇所に到達でヘッダーにクラス付与
      */
@@ -128,12 +135,18 @@ class ContentJS {
       if (document.body.classList.contains('home')) {
         const header = document.getElementById('siteHeader');
         if (!util.isRespMode) {
-          if (util.scrTop > document.getElementById('js-mainVisual').clientHeight) {
+          if (
+            util.scrTop > document.getElementById('js-mainVisual').clientHeight
+          ) {
             header.classList.add('is-fixed');
           } else {
             header.classList.remove('is-fixed');
           }
-          if (util.scrTop > document.getElementById('container').clientHeight - header.clientHeight) {
+          if (
+            util.scrTop >
+            document.getElementById('container').clientHeight -
+              header.clientHeight
+          ) {
             header.classList.remove('is-fixed');
           }
         }
@@ -141,11 +154,9 @@ class ContentJS {
     };
     window.removeEventListener('scroll', toggleHeader);
     window.addEventListener('scroll', toggleHeader);
-
     /**
      * ポップアップ
      */
-
     if (this.isPopup) {
       const popup = new azlib.PopupAdjust('.popupBtItem', {
         onComplete: () => {
@@ -156,25 +167,25 @@ class ContentJS {
         v.addEventListener('click', (e) => {
           document.querySelector('#popupWrapperMovie .content').innerHTML = '';
           const title = (() => {
-            if (v.getAttribute('title') != '') return `<div class="title">${v.getAttribute('title')}</div>`;
+            if (v.getAttribute('title') != '')
+              return `<div class="title">${v.getAttribute('title')}</div>`;
             return '';
           })();
           const movie = v.getAttribute('data-movie');
           const src = `${title}<iframe src="https://www.youtube.com/embed/${movie}?autoplay=1&rel=0" frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-          document.querySelector('#popupWrapperMovie .content').insertAdjacentHTML('beforeend', src);
+          document
+            .querySelector('#popupWrapperMovie .content')
+            .insertAdjacentHTML('beforeend', src);
         });
       });
     }
 
-    (async () => {
-      this.waitForElementReady('#js-machineSlider', () => {
-        console.log('machineSlider loaded');
-        this.initMachineSlider();
-      });
-    })();
+    this.initMachineSlider();
 
-    this.hHeightOrg = document.getElementById('siteHeader') ? document.getElementById('siteHeader').clientHeight : 0;
+    this.hHeightOrg = document.getElementById('siteHeader')
+      ? document.getElementById('siteHeader').clientHeight
+      : 0;
     const rplSPImg01 = new azlib.ReplaceImageSP('.rplSPImg', {
       spBreakPoint: util.spBreakPoint,
     });
@@ -198,7 +209,13 @@ class ContentJS {
       this.hHeight = document.getElementById('siteHeader').clientHeight;
       // this.adminMargin = parseInt(getComputedStyle(document.getElementsByTagName('html')[0]).marginTop);
       // util.sScroll(-(Number(this.adminMargin) + Number(this.hHeight)), 1000, 'easeOutQuad', 'a[href*="#"].scroll, area[href*="#"].scroll', true);
-      util.sScroll(-Number(this.hHeight), 1000, 'easeOutQuad', 'a[href*="#"].sScroll, area[href*="#"].sScroll', true);
+      util.sScroll(
+        -Number(this.hHeight),
+        1000,
+        'easeOutQuad',
+        'a[href*="#"].sScroll, area[href*="#"].sScroll',
+        true
+      );
 
       this.initTab();
       this.adjustHeader();
@@ -207,7 +224,9 @@ class ContentJS {
     });
   }
   initTab() {
-    const tabIndex = util.qsParm['tabIndex'] ? parseInt(util.qsParm['tabIndex']) : 0;
+    const tabIndex = util.qsParm['tabIndex']
+      ? parseInt(util.qsParm['tabIndex'])
+      : 0;
     const simpleTab = new azlib.SimpleTab('.tabVoxWrapper', {
       current: tabIndex,
       // heightPlus: 50,
@@ -279,44 +298,6 @@ class ContentJS {
       pagerEl: '#js-pager02',
     });
   }
-  /**
-   * 指定されたセレクターの要素が読み込まれるまで待機
-   * @param {string} selector
-   * @param {function} callback
-   * @returns
-   */
-  waitForElementReady(selector, callback) {
-    if (!selector) return;
-
-    const images = document.querySelector(selector).querySelectorAll('img');
-    if (images.length === 0) {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(callback);
-      });
-      return;
-    }
-
-    let loadedCount = 0;
-    const totalImages = images.length;
-
-    function checkAllLoaded() {
-      loadedCount++;
-      if (loadedCount === totalImages) {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(callback);
-        });
-      }
-    }
-
-    images.forEach((img) => {
-      if (img.complete) {
-        checkAllLoaded();
-      } else {
-        img.addEventListener('load', checkAllLoaded);
-        img.addEventListener('error', checkAllLoaded);
-      }
-    });
-  }
 }
 /**
  * Home用JSクラス
@@ -341,11 +322,7 @@ class HomeJS {
       }, 500);
     });
 
-    (async () => {
-      contentJS.waitForElementReady('#js-bnrSlider', () => {
-        this.initBnrSlider();
-      });
-    })();
+    this.initBnrSlider();
 
     this.adjust().then(() => this.runIntro());
   }

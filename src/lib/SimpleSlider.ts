@@ -1,4 +1,5 @@
 import anime from 'animejs/lib/anime.es';
+import { Utilities } from './Utilities';
 /**
  * シンプルなカルーセルスライダ
  * @category 	Application of AZLINK.
@@ -65,6 +66,7 @@ export class SimpleSlider {
   private isTouchDevice: boolean;
   private rsTimer: number | boolean;
   private tscTimer: number | boolean;
+  private util: Utilities;
   constructor(
     $selector: string,
     {
@@ -103,6 +105,7 @@ export class SimpleSlider {
       isDebug = false,
     }: Partial<Options> = {}
   ) {
+    this.util = new Utilities();
     this.time = Date.now();
     this.selector = $selector;
     this.elem = document.querySelector($selector);
@@ -156,7 +159,7 @@ export class SimpleSlider {
 
     this.init();
   }
-  init(): void {
+  async init(): Promise<void> {
     this.initDebug();
 
     // if (!this.options.isAuto) {
@@ -180,6 +183,11 @@ export class SimpleSlider {
     });
 
     if (this.itemLength > 1) {
+      const images = this.elem.querySelectorAll('img');
+
+      const imageArray = Array.from(images).map((img) => img.src);
+      await this.util.loadImages(imageArray);
+
       if (this.options.rootCount) {
         if (this.options.rootCount === 1) this.options.slideCount = 1;
         if (this.options.mode === 'vertical') {
@@ -372,31 +380,43 @@ export class SimpleSlider {
         }
         // スワイプ処理
         let isDragging = false;
+        const pointerEventsCache = [];
         this.elem.addEventListener('touchstart', (e) => {
           this.startX = (e as TouchEvent).touches[0].pageX;
           this.moveX = 0;
           this.startY = (e as TouchEvent).touches[0].pageY;
           this.moveY = 0;
         });
-        document.addEventListener('mousedown', (e) => {
+        this.elem.addEventListener('mousedown', (e) => {
           this.startX = (e as MouseEvent).pageX;
           this.moveX = 0;
           this.startY = (e as MouseEvent).pageY;
           this.moveY = 0;
           isDragging = true;
+          // this.elem
+          //   .querySelectorAll(this.options.tabindexElems.join(','))
+          //   .forEach((v: HTMLElement) => {
+          //     pointerEventsCache.push(v.style.pointerEvents);
+          //     v.style.pointerEvents = 'none';
+          //   });
         });
         const move = (e: Event) => {
-          if (
-            Math.abs(this.moveX - this.startX) >
-            Math.abs(this.moveY - this.startY)
-          ) {
-            // console.log('横移動');
-            if (this.options.mode === 'horizontal') {
+          const diffX = Math.abs(this.moveX - this.startX);
+          const diffY = Math.abs(this.moveY - this.startY);
+          if (diffX > diffY) {
+            // 横移動
+            if (
+              this.options.mode === 'horizontal' &&
+              diffX > this.options.threshold
+            ) {
               e.preventDefault();
             }
           } else {
-            // console.log('縦移動');
-            if (this.options.mode === 'vertical') {
+            // 縦移動
+            if (
+              this.options.mode === 'vertical' &&
+              diffY > this.options.threshold
+            ) {
               e.preventDefault();
             }
           }
@@ -482,6 +502,13 @@ export class SimpleSlider {
         this.elem.addEventListener('mouseup', (e) => {
           end(e);
           // console.log(isDragging);
+          // if (isDragging) {
+          //   this.elem
+          //     .querySelectorAll(this.options.tabindexElems.join(','))
+          //     .forEach((v: HTMLElement, i: number) => {
+          //       v.style.pointerEvents = pointerEventsCache[i];
+          //     });
+          // }
           isDragging = false;
         });
       }

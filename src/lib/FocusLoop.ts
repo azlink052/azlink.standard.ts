@@ -1,5 +1,3 @@
-import { Utilities } from './Utilities';
-
 /**
  * 指定要素内でfocusをloopさせる
  * @category 	Application of AZLINK.
