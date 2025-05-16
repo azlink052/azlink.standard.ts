@@ -1,4 +1,5 @@
 import anime from 'animejs/lib/anime.es';
+import { LoadImages } from './LoadImages';
 /**
  * ================================================
  *
@@ -286,13 +287,7 @@ export class Utilities {
    * @return array 画像のパスの配列
    */
   loadImages(list: string[]) {
-    async function load(src: string) {
-      const img = new Image();
-      img.src = src;
-      await img.decode();
-      return img;
-    }
-    return Promise.all(list.map((src) => load(src)));
+    return LoadImages.loadImages(list);
   }
   /**
    * GET値の取得
