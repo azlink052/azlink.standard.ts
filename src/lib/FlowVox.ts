@@ -136,42 +136,42 @@ export class FlowVox {
             duration: 10,
           });
           break;
-        case 'leftdown':
-          item.anime = anime({
-            targets: item.target,
-            translateX: this.options.translate,
-            translateY: -this.options.translate,
-            opacity: 0,
-            duration: 10,
-          });
-          break;
-        case 'rightdown':
-          item.anime = anime({
-            targets: item.target,
-            translateX: -this.options.translate,
-            translateY: -this.options.translate,
-            opacity: 0,
-            duration: 10,
-          });
-          break;
-        case 'leftup':
-          item.anime = anime({
-            targets: item.target,
-            translateX: this.options.translate,
-            translateY: this.options.translate,
-            opacity: 0,
-            duration: 10,
-          });
-          break;
-        case 'rightup':
-          item.anime = anime({
-            targets: item.target,
-            translateX: -this.options.translate,
-            translateY: this.options.translate,
-            opacity: 0,
-            duration: 10,
-          });
-          break;
+        // case 'leftdown':
+        //   item.anime = anime({
+        //     targets: item.target,
+        //     translateX: this.options.translate,
+        //     translateY: -this.options.translate,
+        //     opacity: 0,
+        //     duration: 10,
+        //   });
+        //   break;
+        // case 'rightdown':
+        //   item.anime = anime({
+        //     targets: item.target,
+        //     translateX: -this.options.translate,
+        //     translateY: -this.options.translate,
+        //     opacity: 0,
+        //     duration: 10,
+        //   });
+        //   break;
+        // case 'leftup':
+        //   item.anime = anime({
+        //     targets: item.target,
+        //     translateX: this.options.translate,
+        //     translateY: this.options.translate,
+        //     opacity: 0,
+        //     duration: 10,
+        //   });
+        //   break;
+        // case 'rightup':
+        //   item.anime = anime({
+        //     targets: item.target,
+        //     translateX: -this.options.translate,
+        //     translateY: this.options.translate,
+        //     opacity: 0,
+        //     duration: 10,
+        //   });
+        //   break;
         case 'zoom':
           item.anime = anime({
             targets: item.target,
@@ -303,126 +303,126 @@ export class FlowVox {
           });
         }
         break;
-      case 'leftdown':
-        if (isVisible) {
-          item.anime = anime({
-            targets: item.target,
-            translateX: 0,
-            translateY: 0,
-            opacity: [0, 1],
-            duration: this.options.duration,
-            delay: anime.stagger(this.options.delay),
-            easing: this.options.easing,
-            complete: () => {
-              item.elem.classList.add('is-finishedFlowAnime');
-            },
-          });
-          if (!this.options.isRepeat) item.isDone = true;
-        } else {
-          item.anime = anime({
-            targets: item.target,
-            translateX: this.options.translate,
-            translateY: -this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-            delay: anime.stagger(this.options.delay),
-            easing: this.options.easing,
-            complete: () => {
-              item.elem.classList.remove('is-finishedFlowAnime');
-            },
-          });
-        }
-        break;
-      case 'rightdown':
-        if (isVisible) {
-          item.anime = anime({
-            targets: item.target,
-            translateX: 0,
-            translateY: 0,
-            opacity: [0, 1],
-            duration: this.options.duration,
-            delay: anime.stagger(this.options.delay),
-            easing: this.options.easing,
-            complete: () => {
-              item.elem.classList.add('is-finishedFlowAnime');
-            },
-          });
-          if (!this.options.isRepeat) item.isDone = true;
-        } else {
-          item.anime = anime({
-            targets: item.target,
-            translateX: -this.options.translate,
-            translateY: -this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-            delay: anime.stagger(this.options.delay),
-            easing: this.options.easing,
-            complete: () => {
-              item.elem.classList.remove('is-finishedFlowAnime');
-            },
-          });
-        }
-        break;
-      case 'leftup':
-        if (isVisible) {
-          item.anime = anime({
-            targets: item.target,
-            translateX: 0,
-            translateY: 0,
-            opacity: [0, 1],
-            duration: this.options.duration,
-            delay: anime.stagger(this.options.delay),
-            easing: this.options.easing,
-            complete: () => {
-              item.elem.classList.add('is-finishedFlowAnime');
-            },
-          });
-          if (!this.options.isRepeat) item.isDone = true;
-        } else {
-          item.anime = anime({
-            targets: item.target,
-            translateX: this.options.translate,
-            translateY: this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-            delay: anime.stagger(this.options.delay),
-            easing: this.options.easing,
-            complete: () => {
-              item.elem.classList.remove('is-finishedFlowAnime');
-            },
-          });
-        }
-        break;
-      case 'rightup':
-        if (isVisible) {
-          item.anime = anime({
-            targets: item.target,
-            translateX: 0,
-            translateY: 0,
-            opacity: [0, 1],
-            duration: this.options.duration,
-            delay: anime.stagger(this.options.delay),
-            easing: this.options.easing,
-            complete: () => {
-              item.elem.classList.add('is-finishedFlowAnime');
-            },
-          });
-          if (!this.options.isRepeat) item.isDone = true;
-        } else {
-          item.anime = anime({
-            targets: item.target,
-            translateX: -this.options.translate,
-            translateY: this.options.translate,
-            opacity: [1, 0],
-            duration: this.options.duration,
-            delay: anime.stagger(this.options.delay),
-            easing: this.options.easing,
-            complete: () => {
-              item.elem.classList.remove('is-finishedFlowAnime');
-            },
-          });
-        }
-        break;
+      // case 'leftdown':
+      //   if (isVisible) {
+      //     item.anime = anime({
+      //       targets: item.target,
+      //       translateX: 0,
+      //       translateY: 0,
+      //       opacity: [0, 1],
+      //       duration: this.options.duration,
+      //       delay: anime.stagger(this.options.delay),
+      //       easing: this.options.easing,
+      //       complete: () => {
+      //         item.elem.classList.add('is-finishedFlowAnime');
+      //       },
+      //     });
+      //     if (!this.options.isRepeat) item.isDone = true;
+      //   } else {
+      //     item.anime = anime({
+      //       targets: item.target,
+      //       translateX: this.options.translate,
+      //       translateY: -this.options.translate,
+      //       opacity: [1, 0],
+      //       duration: this.options.duration,
+      //       delay: anime.stagger(this.options.delay),
+      //       easing: this.options.easing,
+      //       complete: () => {
+      //         item.elem.classList.remove('is-finishedFlowAnime');
+      //       },
+      //     });
+      //   }
+      //   break;
+      // case 'rightdown':
+      //   if (isVisible) {
+      //     item.anime = anime({
+      //       targets: item.target,
+      //       translateX: 0,
+      //       translateY: 0,
+      //       opacity: [0, 1],
+      //       duration: this.options.duration,
+      //       delay: anime.stagger(this.options.delay),
+      //       easing: this.options.easing,
+      //       complete: () => {
+      //         item.elem.classList.add('is-finishedFlowAnime');
+      //       },
+      //     });
+      //     if (!this.options.isRepeat) item.isDone = true;
+      //   } else {
+      //     item.anime = anime({
+      //       targets: item.target,
+      //       translateX: -this.options.translate,
+      //       translateY: -this.options.translate,
+      //       opacity: [1, 0],
+      //       duration: this.options.duration,
+      //       delay: anime.stagger(this.options.delay),
+      //       easing: this.options.easing,
+      //       complete: () => {
+      //         item.elem.classList.remove('is-finishedFlowAnime');
+      //       },
+      //     });
+      //   }
+      //   break;
+      // case 'leftup':
+      //   if (isVisible) {
+      //     item.anime = anime({
+      //       targets: item.target,
+      //       translateX: 0,
+      //       translateY: 0,
+      //       opacity: [0, 1],
+      //       duration: this.options.duration,
+      //       delay: anime.stagger(this.options.delay),
+      //       easing: this.options.easing,
+      //       complete: () => {
+      //         item.elem.classList.add('is-finishedFlowAnime');
+      //       },
+      //     });
+      //     if (!this.options.isRepeat) item.isDone = true;
+      //   } else {
+      //     item.anime = anime({
+      //       targets: item.target,
+      //       translateX: this.options.translate,
+      //       translateY: this.options.translate,
+      //       opacity: [1, 0],
+      //       duration: this.options.duration,
+      //       delay: anime.stagger(this.options.delay),
+      //       easing: this.options.easing,
+      //       complete: () => {
+      //         item.elem.classList.remove('is-finishedFlowAnime');
+      //       },
+      //     });
+      //   }
+      //   break;
+      // case 'rightup':
+      //   if (isVisible) {
+      //     item.anime = anime({
+      //       targets: item.target,
+      //       translateX: 0,
+      //       translateY: 0,
+      //       opacity: [0, 1],
+      //       duration: this.options.duration,
+      //       delay: anime.stagger(this.options.delay),
+      //       easing: this.options.easing,
+      //       complete: () => {
+      //         item.elem.classList.add('is-finishedFlowAnime');
+      //       },
+      //     });
+      //     if (!this.options.isRepeat) item.isDone = true;
+      //   } else {
+      //     item.anime = anime({
+      //       targets: item.target,
+      //       translateX: -this.options.translate,
+      //       translateY: this.options.translate,
+      //       opacity: [1, 0],
+      //       duration: this.options.duration,
+      //       delay: anime.stagger(this.options.delay),
+      //       easing: this.options.easing,
+      //       complete: () => {
+      //         item.elem.classList.remove('is-finishedFlowAnime');
+      //       },
+      //     });
+      //   }
+      //   break;
       case 'zoom':
         if (isVisible) {
           item.anime = anime({
