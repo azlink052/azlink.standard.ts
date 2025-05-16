@@ -1,5 +1,6 @@
 import anime from 'animejs/lib/anime.es';
 import { LoadImages } from './LoadImages';
+import { focusLoopElems } from './constants';
 /**
  * シンプルなカルーセルスライダ
  * @category 	Application of AZLINK.
@@ -88,16 +89,7 @@ export class SimpleSlider {
       threshold = 30,
       isResizeAuto = false,
       mode = 'horizontal', // ! vertical を指定する場合は wrapper の高さ指定が必須
-      tabindexElems = [
-        'a',
-        'area',
-        'button',
-        'iframe',
-        'input',
-        'object',
-        'select',
-        'textarea',
-      ], // tabindex="-1" させる要素
+      tabindexElems = focusLoopElems, // tabindex="-1" させる要素
       onSliderLoad = false, // this
       onSlideBefore = false, // this.current this.realCurrent
       onSlideAfter = false, // this.current this.realCurrent
