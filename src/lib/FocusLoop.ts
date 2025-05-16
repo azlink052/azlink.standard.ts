@@ -1,3 +1,4 @@
+import { focusLoopElems } from './constants';
 /**
  * 指定要素内でfocusをloopさせる
  * @category 	Application of AZLINK.
@@ -20,23 +21,14 @@ export class FocusLoop {
   constructor(
     $selector: string,
     {
-      focusLoopElems = [
-        'a',
-        'area',
-        'button',
-        // 'iframe',
-        'input',
-        'object',
-        'select',
-        'textarea',
-      ], // focusLoopさせる際の要素名
+      focusLoopElems: defaultFocusLoopElems = focusLoopElems, // focusLoopさせる際の要素名
     }: Partial<Options> = {}
   ) {
     this.isRun = false;
     this.wrapper = document.querySelector($selector);
 
     this.options = {
-      focusLoopElems: focusLoopElems,
+      focusLoopElems: defaultFocusLoopElems,
     };
 
     this.init();
