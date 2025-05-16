@@ -1,5 +1,5 @@
 import anime from 'animejs/lib/anime.es';
-import { Utilities } from './Utilities';
+import { LoadImages } from './LoadImages';
 /**
  * シンプルなカルーセルスライダ
  * @category 	Application of AZLINK.
@@ -66,7 +66,6 @@ export class SimpleSlider {
   private isTouchDevice: boolean;
   private rsTimer: number | boolean;
   private tscTimer: number | boolean;
-  private util: Utilities;
   constructor(
     $selector: string,
     {
@@ -105,7 +104,6 @@ export class SimpleSlider {
       isDebug = false,
     }: Partial<Options> = {}
   ) {
-    this.util = new Utilities();
     this.time = Date.now();
     this.selector = $selector;
     this.elem = document.querySelector($selector);
@@ -186,7 +184,7 @@ export class SimpleSlider {
       const images = this.elem.querySelectorAll('img');
 
       const imageArray = Array.from(images).map((img) => img.src);
-      await this.util.loadImages(imageArray);
+      await LoadImages.loadImages(imageArray);
 
       if (this.options.rootCount) {
         if (this.options.rootCount === 1) this.options.slideCount = 1;
