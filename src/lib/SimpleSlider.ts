@@ -172,15 +172,11 @@ export class SimpleSlider {
       flexDirection: this.options.mode === 'vertical' ? 'column' : 'row',
     });
 
-    console.log(`this.itemLength: ${this.itemLength}`);
-
     if (this.itemLength > 1) {
       const images = this.elem.querySelectorAll('img');
 
       const imageArray = Array.from(images).map((img) => img.src);
-      alert(`images: ${imageArray} load start`);
       await LoadImages.loadImages(imageArray);
-      alert(`load end`);
 
       if (this.options.rootCount) {
         if (this.options.rootCount === 1) this.options.slideCount = 1;
