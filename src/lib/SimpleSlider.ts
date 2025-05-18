@@ -175,10 +175,10 @@ export class SimpleSlider {
     if (this.itemLength > 1) {
       const images = this.elem.querySelectorAll('img');
 
-      alert(`images: ${images} load start`);
       const imageArray = Array.from(images).map((img) => img.src);
+      alert(`images: ${imageArray} load start`);
       await LoadImages.loadImages(imageArray);
-      alert(`images: ${images} load end`);
+      alert(`load end`);
 
       if (this.options.rootCount) {
         if (this.options.rootCount === 1) this.options.slideCount = 1;
