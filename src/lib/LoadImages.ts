@@ -19,11 +19,11 @@ export class LoadImages {
 
   public static async loadImages(
     list: string[],
-    callback?: () => void
+    callback?: (images: HTMLImageElement[]) => void
   ): Promise<HTMLImageElement[]> {
     const images = await Promise.all(list.map((src) => this.load(src)));
     if (typeof callback === 'function') {
-      callback();
+      callback(images);
     }
     return images;
   }
