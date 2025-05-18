@@ -172,6 +172,8 @@ export class SimpleSlider {
       flexDirection: this.options.mode === 'vertical' ? 'column' : 'row',
     });
 
+    console.log(`this.itemLength: ${this.itemLength}`);
+
     if (this.itemLength > 1) {
       const images = this.elem.querySelectorAll('img');
 
