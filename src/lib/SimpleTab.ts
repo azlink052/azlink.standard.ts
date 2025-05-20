@@ -3,7 +3,7 @@
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2024.08.12
+ * @final 		2025.05.20
  *
  * @param {*} $selector
  * @param {*} $options
@@ -101,14 +101,14 @@ export class SimpleTab {
         }
       );
 
-      window.addEventListener('load', () => {
-        tabParam.tabItems[tabParam.current].classList.add(
-          this.options.activeClassName
-        );
-        tabParam.tabContents[tabParam.current].classList.add(
-          this.options.activeClassName
-        );
-      });
+      // window.addEventListener('load', () => {
+      tabParam.tabItems[tabParam.current].classList.add(
+        this.options.activeClassName
+      );
+      tabParam.tabContents[tabParam.current].classList.add(
+        this.options.activeClassName
+      );
+      // });
 
       tabParam.wrap.classList.add('is-initTab');
       tabParam.isAllowChange = true;
@@ -118,9 +118,9 @@ export class SimpleTab {
         if (typeof this.options.onComplete === 'function') {
           if (this.options.isAdjustHeight) this.adjustHeight();
           this.options.onComplete();
-          this.run();
         }
       }
+      this.run();
     });
   }
   run() {
