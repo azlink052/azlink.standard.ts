@@ -119,8 +119,8 @@ export class SimpleTab {
           if (this.options.isAdjustHeight) this.adjustHeight();
           this.options.onComplete();
         }
+        this.run();
       }
-      this.run();
     });
   }
   run() {
