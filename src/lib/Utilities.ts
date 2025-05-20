@@ -70,6 +70,7 @@ export class Utilities {
   public currentMode: number;
   public isChangeMode: boolean;
   public viewOriMode: string;
+  public isTouchDevice: boolean;
   public isDebug: boolean;
   private rTimer: Timers;
   private tmp: {
@@ -134,6 +135,8 @@ export class Utilities {
     this.currentMode = null; // 現在のレスポンシブ状態 (レスポンシブで2 そうでなければ1)
     this.isChangeMode = false; // レスポンシブ状態が変更になったらtrue
     this.viewOriMode = 'landscape'; // 画面モード landscape / portrait
+    this.isTouchDevice =
+      'ontouchstart' in window || navigator.maxTouchPoints > 0; // タッチデバイス判定
     this.isDebug = isDebug; // デバッグモード判定
     this.rTimer = { setRespMode: 0, toggleSPTel: 0, debug: 0, pagetop: 0 }; // イベント制御用タイマー
     this.tmp = {

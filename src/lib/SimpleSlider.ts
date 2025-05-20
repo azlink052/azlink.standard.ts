@@ -64,7 +64,6 @@ export class SimpleSlider {
   private orgElement: Element | boolean;
   private debugTimer: number | boolean;
   private isHover: boolean;
-  private isTouchDevice: boolean;
   private rsTimer: number | boolean;
   private tscTimer: number | boolean;
   constructor(
@@ -110,8 +109,6 @@ export class SimpleSlider {
     this.rTimer = false;
     this.orgElement = document.querySelector($selector);
     this.isHover = false;
-    this.isTouchDevice =
-      'ontouchstart' in window || navigator.maxTouchPoints > 0;
     this.rsTimer = false;
     this.options = {
       isAuto: isAuto,
@@ -145,11 +142,25 @@ export class SimpleSlider {
     this.gotoPage = this.gotoPage.bind(this);
     this.stopAuto = this.stopAuto.bind(this);
 
-    // console.log(this.isTouchDevice);
+    // loading lazyを削除
+    this.elem.querySelectorAll('*').forEach((item: HTMLElement) => {
+      item.removeAttribute('loading');
+    });
 
-    this.init();
+    const images = this.elem.querySelectorAll('img');
+
+    if (images.length > 0) {
+      (async () => {
+        const imageArray = Array.from(images).map((img) => img.src);
+        await LoadImages.loadImages(imageArray);
+
+        this.init();
+      })();
+    } else {
+      this.init();
+    }
   }
-  async init(): Promise<void> {
+  init() {
     this.initDebug();
 
     // if (!this.options.isAuto) {
@@ -173,11 +184,6 @@ export class SimpleSlider {
     });
 
     if (this.itemLength > 1) {
-      const images = this.elem.querySelectorAll('img');
-
-      const imageArray = Array.from(images).map((img) => img.src);
-      await LoadImages.loadImages(imageArray);
-
       if (this.options.rootCount) {
         if (this.options.rootCount === 1) this.options.slideCount = 1;
         if (this.options.mode === 'vertical') {
@@ -532,6 +538,9 @@ export class SimpleSlider {
       this.tscTimer = window.setTimeout(() => {
         this.toggleSlideFocus();
       }, 500);
+    });
+    window.addEventListener('load', () => {
+      this.toggleSlideFocus();
     });
     // css
     // console.log(this.selector);
