@@ -66,6 +66,7 @@ export class SimpleSlider {
   private isHover: boolean;
   private rsTimer: number | boolean;
   private tscTimer: number | boolean;
+  private pointerEventsCache: string[] = [];
   constructor(
     $selector: string,
     {
@@ -376,7 +377,6 @@ export class SimpleSlider {
         }
         // スワイプ処理
         let isDragging = false;
-        const pointerEventsCache = [];
         this.elem.addEventListener('touchstart', (e) => {
           this.startX = (e as TouchEvent).touches[0].pageX;
           this.moveX = 0;
@@ -389,12 +389,10 @@ export class SimpleSlider {
           this.startY = (e as MouseEvent).pageY;
           this.moveY = 0;
           isDragging = true;
-          // this.elem
-          //   .querySelectorAll(this.options.tabindexElems.join(','))
-          //   .forEach((v: HTMLElement) => {
-          //     pointerEventsCache.push(v.style.pointerEvents);
-          //     v.style.pointerEvents = 'none';
-          //   });
+
+          move(e);
+
+          this.pointerEventsCache.length = 0; // キャッシュをクリア
         });
         const move = (e: Event) => {
           const diffX = Math.abs(this.moveX - this.startX);
@@ -437,7 +435,13 @@ export class SimpleSlider {
             this.moveX = (e as MouseEvent).pageX;
             this.moveY = (e as MouseEvent).pageY;
 
-            move(e);
+            this.elem
+              .querySelectorAll(this.options.tabindexElems.join(','))
+              .forEach((v: HTMLElement) => {
+                if (v.style.pointerEvents !== 'none')
+                  this.pointerEventsCache.push(v.style.pointerEvents);
+                v.style.pointerEvents = 'none';
+              });
           },
           {
             passive: false,
@@ -497,14 +501,20 @@ export class SimpleSlider {
         });
         this.elem.addEventListener('mouseup', (e) => {
           end(e);
-          // console.log(isDragging);
-          // if (isDragging) {
-          //   this.elem
-          //     .querySelectorAll(this.options.tabindexElems.join(','))
-          //     .forEach((v: HTMLElement, i: number) => {
-          //       v.style.pointerEvents = pointerEventsCache[i];
-          //     });
-          // }
+
+          if (isDragging) {
+            const elements = this.elem.querySelectorAll(
+              this.options.tabindexElems.join(',')
+            );
+            elements.forEach((v: HTMLElement, i: number) => {
+              // console.log(v, this.pointerEventsCache[i]);
+              if (this.pointerEventsCache[i] !== undefined) {
+                v.style.pointerEvents = this.pointerEventsCache[i];
+              } else {
+                v.style.removeProperty('pointer-events');
+              }
+            });
+          }
           isDragging = false;
         });
       }
