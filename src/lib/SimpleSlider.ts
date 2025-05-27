@@ -161,7 +161,7 @@ export class SimpleSlider {
       this.init();
     }
   }
-  init() {
+  init(): void {
     this.initDebug();
 
     // if (!this.options.isAuto) {
@@ -378,6 +378,8 @@ export class SimpleSlider {
         // スワイプ処理
         let isDragging = false;
         this.elem.addEventListener('touchstart', (e) => {
+          e.stopPropagation();
+
           this.startX = (e as TouchEvent).touches[0].pageX;
           this.moveX = 0;
           this.startY = (e as TouchEvent).touches[0].pageY;
@@ -418,6 +420,8 @@ export class SimpleSlider {
         this.elem.addEventListener(
           'touchmove',
           (e) => {
+            e.preventDefault();
+
             this.moveX = (e as TouchEvent).touches[0].pageX;
             this.moveY = (e as TouchEvent).touches[0].pageY;
 
@@ -450,7 +454,7 @@ export class SimpleSlider {
         const end = (e: Event) => {
           if (this.options.mode === 'vertical') {
             if (this.moveY === 0) {
-              (<HTMLAnchorElement>e.target)?.click();
+              // (<HTMLAnchorElement>e.target)?.click();
             } else {
               if (this.startY + this.options.threshold < this.moveY) {
                 // 右向き
@@ -473,7 +477,7 @@ export class SimpleSlider {
             }
           } else {
             if (this.moveX === 0) {
-              (<HTMLAnchorElement>e.target)?.click();
+              // (<HTMLAnchorElement>e.target)?.click();
             } else {
               if (this.startX + this.options.threshold < this.moveX) {
                 // 右向き
