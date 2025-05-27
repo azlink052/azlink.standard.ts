@@ -5,7 +5,7 @@ import { FocusLoop } from './FocusLoop';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2025.04.26
+ * @final 		2025.05.25
  *
  * @param {*} $selector
  * @param {*} $options
@@ -19,7 +19,6 @@ interface Options {
   popupContent: string;
   label: string;
   iframeMovieSrc: string;
-  focusLoopElems: string[];
   durationBgChange: number;
   durationBgClose: number;
   durationChange: number;
@@ -61,16 +60,6 @@ export class PopupAdjust {
       popupContent = '#popupContents', // ポップアップの内容を指定する要素
       label = '', // ポップアップの名前(label属性に設定)
       iframeMovieSrc = '', // ポップアップ内にiframeで埋め込む動画のsrc
-      focusLoopElems = [
-        'a',
-        'area',
-        'button',
-        'iframe',
-        'input',
-        'object',
-        'select',
-        'textarea',
-      ], // focusLoopさせる際の要素名
       durationBgChange = 50, // レイヤが開く際の表示速度
       durationBgClose = 50, // レイヤが閉じる際の表示速度
       durationChange = 200, // ポップアップが開く際の表示速度
@@ -108,7 +97,6 @@ export class PopupAdjust {
       popupContent: popupContent,
       label: label,
       iframeMovieSrc: iframeMovieSrc,
-      focusLoopElems: focusLoopElems,
       durationBgChange: durationBgChange,
       durationBgClose: durationBgClose,
       durationChange: durationChange,

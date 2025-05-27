@@ -10,6 +10,7 @@
  * @return {Promise<HTMLImageElement[]>} 画像配列のPromise
  */
 export class LoadImages {
+  constructor() {}
   private static async load(src: string): Promise<HTMLImageElement> {
     const img = new Image();
     img.src = src;

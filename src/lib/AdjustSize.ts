@@ -3,7 +3,7 @@
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2022.04.28
+ * @final 		2025.05.25
  *
  * @param {*} $selector
  * @param {*} $options
@@ -158,6 +158,7 @@ export class AdjustSize {
     this.init();
   }
   die(): boolean {
+    window.removeEventListener('resize', this.adjust);
     return false;
   }
 }

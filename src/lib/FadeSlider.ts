@@ -45,7 +45,7 @@ export class FadeSlider {
       isChangeOpacity = true,
       pause = 5000,
       speed = 500,
-      easing = 'cubicBezier(0.33, 1, 0.68, 1)',
+      easing = 'cubicBezier(0.25, 1, 0.75, 1)',
       ctrl = false,
       pager = false,
       wrapper = document.querySelector($selector).parentNode,
