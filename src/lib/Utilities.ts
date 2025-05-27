@@ -8,7 +8,7 @@ import { LoadImages } from './LoadImages';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 	2010- AZLINK. <https://azlink.jp>
- * @final 		2023.06.23
+ * @final 		2025.05.25
  *
  * ================================================
  */
@@ -287,10 +287,11 @@ export class Utilities {
   /**
    * 画像の先読みv2.0
    * @param array 画像のパスの配列
+   * @param callback 画像の読み込み完了後のコールバック関数
    * @return array 画像のパスの配列
    */
-  loadImages(list: string[]) {
-    return LoadImages.loadImages(list);
+  loadImages(list: string[], callback?: (images: HTMLImageElement[]) => void) {
+    return LoadImages.loadImages(list, callback);
   }
   /**
    * GET値の取得

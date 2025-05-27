@@ -1,11 +1,10 @@
-import axios from 'axios';
 /**
  * Instagramのフィードをタイル表示
  * 参考： http: //wordpress.azlink.biz/2020/0409120000.html
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2021.06.27
+ * @final 		2025.05.25
  *
  * @param {*} $options
  * @returns
