@@ -5,7 +5,7 @@ module.exports = {
   target: ['web', 'es5'],
   entry: {
     azlib: './src/azlib.ts',
-    // azlib_light: './src/azlib.light.ts',
+    azlib_full: './src/azlib.full.ts',
   },
   // plugins: [
   //   new HtmlWebpackPlugin({

@@ -33,7 +33,7 @@ export class FocusLoop {
 
     this.init();
   }
-  init() {
+  init(): void {
     if (!this.options.focusLoopElems.length) return;
 
     document.addEventListener('keydown', (e) => {
