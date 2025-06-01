@@ -1,0 +1,182 @@
+@charset "utf-8";
+@use '../../extension/' as ext;
+/*
+ * =====================================================
+ *
+ * [btn]
+ *
+ * =====================================================
+ */
+.btnStyle01 {
+  &:not(:last-child) {
+    margin-bottom: 1.2em;
+  }
+  > button,
+  > a {
+    display: inline-block;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    text-align: left;
+    min-width: 290px;
+    padding: 20px 50px 20px 20px;
+    background-color: ext.$baseColor;
+    border: 1px solid ext.$baseColor;
+    border-radius: ext.$radius;
+    position: relative;
+    .small {
+      font-size: 1.6rem;
+      font-weight: normal;
+    }
+    &::after {
+      display: block;
+      content: '';
+      width: 22px;
+      height: 22px;
+      background: no-repeat center / cover;
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+    }
+    &:not(.blank) {
+      &::after {
+        background-image: url('../../images/content/content/ico_arrow_w.svg');
+      }
+    }
+    &.blank {
+      &::after {
+        background-color: #fff;
+        background-image: url('../../images/content/content/ico_blank.svg');
+        background-size: 10px auto;
+        border-radius: 22px;
+      }
+    }
+    @media (hover: hover) {
+      transition: color ext.$transition, background-color ext.$transition;
+      &::after {
+        transition: background-image ext.$transition;
+      }
+      &:hover {
+        color: ext.$linkColor;
+        background-color: #fff;
+        &:not(.blank) {
+          &::after {
+            background-image: url('../../images/content/content/ico_arrow.svg');
+          }
+        }
+        &.blank {
+          &::after {
+            background-color: ext.$baseColor;
+            background-image: url('../../images/content/content/ico_blank_w.svg');
+          }
+        }
+      }
+    }
+  }
+  &.length-l {
+    > button,
+    > a {
+      padding-right: 70px;
+    }
+  }
+}
+.recruitBtn {
+  a {
+    display: block;
+    color: #fff;
+    font-weight: bold;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px 35px;
+    background-color: ext.$baseColor;
+    border: 1px solid ext.$baseColor;
+    border-radius: 10em;
+    @media (hover: hover) {
+      transition: color ext.$transition, background-color ext.$transition;
+      &:hover {
+        color: ext.$baseColor;
+        background-color: #fff;
+      }
+    }
+  }
+}
+.imgBtn {
+  a {
+    @include ext.hoverZoom();
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+    &::after {
+      display: block;
+      content: '';
+      width: 32px;
+      height: 32px;
+      background: url('../../images/content/content/ico_arrow.svg') no-repeat center / cover;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+    > .txt {
+      position: absolute;
+      top: 50%;
+      left: 6.87%;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+  }
+}
+/**
+ ****************************************************
+ *
+ * PCのみ
+ *
+ ****************************************************
+ */
+@media only screen and (min-width: ext.$bp) {
+} /*  @media END */
+/**
+ ****************************************************
+ *
+ * SP
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+  .btnStyle01 {
+    > button,
+    > a {
+      font-size: 1.8rem;
+      min-width: 234px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    &.length-l {
+      > button,
+      > a {
+        padding-right: 50px;
+      }
+    }
+  }
+  .recruitBtn {
+    a {
+      padding: 7px 15px;
+    }
+  }
+  .imgBtn {
+    a {
+      font-size: 1.8rem;
+      &::after {
+        width: 22px;
+        height: 22px;
+        bottom: 10px;
+        right: 10px;
+      }
+    }
+  }
+} /*  @media END */

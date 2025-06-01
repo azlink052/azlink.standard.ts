@@ -128,6 +128,7 @@ class ContentJS {
         if (util.isNavOpen && e.key === 'Escape') opener.click();
       });
     }
+
     /**
      * スクロール時、指定箇所に到達でヘッダーにクラス付与
      */
@@ -154,9 +155,11 @@ class ContentJS {
     };
     window.removeEventListener('scroll', toggleHeader);
     window.addEventListener('scroll', toggleHeader);
+
     /**
      * ポップアップ
      */
+
     if (this.isPopup) {
       const popup = new azlib.PopupAdjust('.popupBtItem', {
         onComplete: () => {
@@ -181,14 +184,22 @@ class ContentJS {
       });
     }
 
+    // (async () => {
+    //   if (document.getElementById('js-machineSlider')) {
+    //     this.waitForElementReady('#js-machineSlider', () => {
+    //       console.log('machineSlider loaded');
+    //       this.initMachineSlider();
+    //     });
+    //   }
+    // })();
     this.initMachineSlider();
 
     this.hHeightOrg = document.getElementById('siteHeader')
       ? document.getElementById('siteHeader').clientHeight
       : 0;
-    const rplSPImg01 = new azlib.ReplaceImageSP('.rplSPImg', {
-      spBreakPoint: util.spBreakPoint,
-    });
+    // const rplSPImg01 = new azlib.ReplaceImageSP('.rplSPImg', {
+    //   spBreakPoint: util.spBreakPoint,
+    // });
 
     if (this.isFlowAnime) {
       // flowVox
@@ -298,6 +309,44 @@ class ContentJS {
       pagerEl: '#js-pager02',
     });
   }
+  /**
+   * 指定されたセレクターの要素が読み込まれるまで待機
+   * @param {string} selector
+   * @param {function} callback
+   * @returns
+   */
+  // waitForElementReady(selector, callback) {
+  //   if (!selector) return;
+
+  //   const images = document.querySelector(selector).querySelectorAll('img');
+  //   if (images.length === 0) {
+  //     requestAnimationFrame(() => {
+  //       requestAnimationFrame(callback);
+  //     });
+  //     return;
+  //   }
+
+  //   let loadedCount = 0;
+  //   const totalImages = images.length;
+
+  //   function checkAllLoaded() {
+  //     loadedCount++;
+  //     if (loadedCount === totalImages) {
+  //       requestAnimationFrame(() => {
+  //         requestAnimationFrame(callback);
+  //       });
+  //     }
+  //   }
+
+  //   images.forEach((img) => {
+  //     if (img.complete) {
+  //       checkAllLoaded();
+  //     } else {
+  //       img.addEventListener('load', checkAllLoaded);
+  //       img.addEventListener('error', checkAllLoaded);
+  //     }
+  //   });
+  // }
 }
 /**
  * Home用JSクラス
@@ -322,7 +371,12 @@ class HomeJS {
       }, 500);
     });
 
-    this.initBnrSlider();
+    // (async () => {
+    //   contentJS.waitForElementReady('#js-bnrSlider', () => {
+    //     this.initBnrSlider();
+    //   });
+    // })();
+    window.addEventListener('load', () => this.initBnrSlider());
 
     this.adjust().then(() => this.runIntro());
   }
@@ -332,7 +386,10 @@ class HomeJS {
 
     let count = 0;
     count = target.querySelectorAll('.item').length;
-    if (count <= 1) {
+    if (!util.isRespMode && count <= 2) {
+      target.closest('.sliderWrapper').classList.add('is-noslider');
+      return;
+    } else if (util.isRespMode && count <= 1) {
       target.closest('.sliderWrapper').classList.add('is-noslider');
       return;
     }

@@ -1,0 +1,786 @@
+@charset "utf-8";
+@use '../../extension/' as ext;
+/*
+ * =====================================================
+ *
+ * [layout]
+ *
+ * =====================================================
+ */
+/**
+ * ---------------------------------------------------
+ * 基本レイアウト
+ * ---------------------------------------------------
+ */
+.sectionVox {
+  padding: 0 50px;
+  &:not(:last-child) {
+    margin-bottom: 80px;
+  }
+  > header,
+  > .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+}
+.contVox {
+  &:not(:last-child) {
+    margin-bottom: 50px;
+  }
+}
+// カラム
+.columnVox {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px 20px;
+  &:not(.column2):not(.column3):not(.column4):not(.column5) {
+    > .column {
+      flex: 1;
+    }
+  }
+  &.column2,
+  &.column3,
+  &.column4,
+  &.column5 {
+    justify-content: start;
+    flex-wrap: wrap;
+    > .column {
+      flex: none;
+    }
+  }
+  &.column2 {
+    > .column {
+      width: calc(50% - 10px);
+    }
+  }
+  &.column3 {
+    > .column {
+      width: calc(33.3% - 13px);
+      &.colspan2 {
+        width: calc(66.6% - 6px);
+      }
+    }
+  }
+  &.column4 {
+    > .column {
+      width: calc(25% - 15px);
+      &.colspan2 {
+        width: calc(50% - 10px);
+      }
+      &.colspan3 {
+        width: calc(75% - 5px);
+      }
+    }
+  }
+  &.column5 {
+    > .column {
+      width: calc(20% - 16px);
+      &.colspan2 {
+        width: calc(40% - 12px);
+      }
+      &.colspan3 {
+        width: calc(60% - 8px);
+      }
+      &.colspan4 {
+        width: calc(80% - 4px);
+      }
+    }
+  }
+  // 全幅
+  > .column {
+    &.full {
+      width: 100%;
+    }
+  }
+}
+.mvImg {
+  text-align: center;
+  max-width: calc(ext.$contentWidth + 100px);
+  padding: 0 50px;
+  margin: 0 auto 40px auto;
+  img {
+    width: 100%;
+  }
+}
+/**
+ * ---------------------------------------------------
+ * サムネイル付きリンクボックス
+ * ---------------------------------------------------
+ */
+.thumbLinkVox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  &:not(:last-child) {
+    margin-bottom: 80px;
+  }
+  > .item {
+    width: calc(25% - 10px);
+    max-width: 255px;
+    a {
+      display: block;
+      text-decoration: none;
+      height: 100%;
+      padding: 20px;
+      border: 1px solid #e5e5e5;
+      border-radius: ext.$radius;
+      transition: border-color ext.$transition;
+      .img {
+        text-align: center;
+        margin-bottom: 10px;
+        img {
+          width: 100%;
+        }
+      }
+      .date,
+      date {
+        display: block;
+        color: #4c4c4c;
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+      }
+      .title {
+        font-weight: normal;
+        text-decoration: underline;
+      }
+      @media (hover: hover) {
+        &:hover {
+          border-color: ext.$baseColor;
+          .title {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * 検索結果
+ * ---------------------------------------------------
+ */
+.searchAgain {
+  text-align: center;
+}
+.searchResult {
+  max-width: calc(ext.$contentWidth + 100px);
+  padding: 0 50px;
+  margin: 0 auto;
+  &:not(:last-child) {
+    margin-bottom: 80px;
+  }
+}
+/**
+ * ---------------------------------------------------
+ * 店舗検索
+ * ---------------------------------------------------
+ */
+.parlorSearchArea {
+  padding: 160px 50px 150px 50px;
+  background: url('../../images/content/content/parlor_search_bg.svg') no-repeat center / 100% 100%;
+  position: relative;
+  z-index: 5;
+  &::after {
+    display: block;
+    content: '';
+    width: 378px;
+    height: 312px;
+    background: url('../../images/content/content/decoration01.png') no-repeat center / cover;
+    background-image: image-set(url('../../images/content/content/decoration01.png') 1x, url('../../images/content/content/decoration01@2x.png') 2x);
+    background-image: -webkit-image-set(url('../../images/content/content/decoration01.png') 1x, url('../../images/content/content/decoration01@2x.png') 2x);
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-580px, 24%);
+  }
+  > header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 5;
+    transform: translateX(-50%);
+  }
+  .parlorSearchWrap {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+    &::before {
+      display: block;
+      content: '';
+      width: 436px;
+      height: 462px;
+      background: url('../../images/content/content/king_img01.png') no-repeat center / cover;
+      background-image: image-set(url('../../images/content/content/king_img01.png') 1x, url('../../images/content/content/king_img01@2x.png') 2x);
+      background-image: -webkit-image-set(url('../../images/content/content/king_img01.png') 1x, url('../../images/content/home/king_img01@2x.png') 2x);
+      position: absolute;
+      top: -240px;
+      right: 50%;
+      z-index: 1;
+      transform: translateX(600px);
+    }
+    .newshopBtn {
+      position: relative;
+      z-index: 2;
+    }
+    .searchVox {
+      margin-top: 20px;
+      position: relative;
+      z-index: 2;
+      > .searchVoxInner {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px 20px;
+        flex-wrap: wrap;
+        .inputSelect {
+          width: calc(50% - 10px);
+          &:not(.pref):not(#entryPrefAichi) {
+            display: none;
+          }
+        }
+        .btnArea {
+          justify-content: center;
+          width: 100%;
+        }
+      }
+    }
+  }
+  &.noHead {
+    padding-top: 115px;
+    padding-bottom: 90px;
+    &::after {
+      transform: translate(-580px, 38%);
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * 機種情報
+ * ---------------------------------------------------
+ */
+.machineInfoArea {
+  padding: 160px 50px 100px 50px;
+  background: url('../../images/content/content/machine_info_bg.svg') no-repeat center / 100% 100%;
+  position: relative;
+  z-index: 4;
+  &::before,
+  &::after {
+    display: block;
+    content: '';
+    background: no-repeat center / cover;
+    position: absolute;
+    right: 50%;
+    z-index: 1;
+  }
+  &::before {
+    width: 280px;
+    height: 572px;
+    background-image: url('../../images/content/content/king_img02.png');
+    background-image: image-set(url('../../images/content/content/king_img02.png') 1x, url('../../images/content/content/king_img02@2x.png') 2x);
+    background-image: -webkit-image-set(url('../../images/content/content/king_img02.png') 1x, url('../../images/content/content/king_img02@2x.png') 2x);
+    top: -90px;
+    transform: translateX(495px);
+  }
+  &::after {
+    width: 348px;
+    height: 230px;
+    background-image: url('../../images/content/content/decoration02.png');
+    background-image: image-set(url('../../images/content/content/decoration02.png') 1x, url('../../images/content/content/decoration02@2x.png') 2x);
+    background-image: -webkit-image-set(url('../../images/content/content/decoration02.png') 1x, url('../../images/content/content/decoration02@2x.png') 2x);
+    bottom: 0;
+    transform: translate(560px, 25%);
+  }
+  > header {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    z-index: 2;
+    transform: translateX(-50%);
+  }
+  .sliderWrapper {
+    max-width: 826px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .sliderCtrl {
+    padding-bottom: 35px;
+  }
+  // 機種検索
+  > .title {
+    color: #fff;
+    font-size: 2.6rem;
+    font-family: ext.$fontGothic;
+    letter-spacing: 0.075em;
+    line-height: 1.15;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+    stroke: #2c6a77;
+    fill: #ffffff;
+    text-anchor: middle;
+    position: relative;
+    z-index: 3;
+    > svg {
+      height: 1.5em;
+      > use {
+        &:nth-of-type(1) {
+          stroke-width: 12px;
+          // paint-order: stroke;
+          stroke-linejoin: round;
+        }
+        &:nth-of-type(2) {
+          stroke-width: 0;
+        }
+      }
+    }
+  }
+  .machineSearchWrap {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+    .searchVox {
+      margin-top: 20px;
+      .selectSearch {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px 20px;
+        flex-wrap: wrap;
+
+        .inputSelect {
+          width: calc(50% - 10px);
+        }
+        .btnArea {
+          justify-content: center;
+          width: 100%;
+        }
+      }
+      .KeywordSearch {
+        display: flex;
+        justify-content: space-between;
+        max-width: 390px;
+        margin: 50px auto 0 auto;
+        padding: 10px;
+        background-color: #fff;
+        > .keyword {
+          width: calc(100% - 80px);
+          padding: 10px;
+          background-color: transparent;
+          border: none;
+        }
+        > .submitBtn {
+          color: #fff;
+          font-size: 1.8rem;
+          font-weight: 500;
+          text-align: center;
+          width: 70px;
+          background-color: ext.$baseColor;
+          border: none;
+          border-radius: ext.$radius;
+        }
+      }
+    }
+  }
+  &.noHead {
+    padding-top: 90px;
+    padding-bottom: 130px;
+  }
+}
+/**
+ * ---------------------------------------------------
+ * お知らせ
+ * ---------------------------------------------------
+ */
+.newsArea {
+  padding: 0 50px;
+  position: relative;
+  &:not(:last-child) {
+    margin-bottom: 60px;
+  }
+  > .inner {
+    max-width: ext.$contentWidth;
+    // min-height: 470px;
+    margin: 0 auto;
+    position: relative;
+    &::after {
+      display: block;
+      content: '';
+      width: 210px;
+      height: 464px;
+      background: url('../../images/content/content/king_img03.png') no-repeat center / cover;
+      background-image: image-set(url('../../images/content/content/king_img03.png') 1x, url('../../images/content/content/king_img03@2x.png') 2x);
+      background-image: -webkit-image-set(url('../../images/content/content/king_img03.png') 1x, url('../../images/content/content/king_img03@2x.png') 2x);
+      position: absolute;
+      bottom: -10px;
+      right: -15px;
+      z-index: 3;
+    }
+    .postList {
+      width: calc(100% - 240px);
+      position: relative;
+      z-index: 5;
+    }
+    .navigation {
+      width: calc(100% - 240px);
+    }
+  }
+  > footer {
+    margin-top: 40px;
+  }
+  &.king2 {
+    > .inner {
+      &::after {
+        width: 198px;
+        height: 460px;
+        background-image: url('../../images/content/content/king_img04.png');
+        background-image: image-set(url('../../images/content/content/king_img04.png') 1x, url('../../images/content/content/king_img04@2x.png') 2x);
+        background-image: -webkit-image-set(url('../../images/content/content/king_img04.png') 1x, url('../../images/content/content/king_img04@2x.png') 2x);
+      }
+    }
+  }
+  &.reverse {
+    > .inner {
+      &::after {
+        right: auto;
+        left: -15px;
+      }
+      .postList {
+        margin-left: auto;
+      }
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * バナー
+ * ---------------------------------------------------
+ */
+.adBnrList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  max-width: calc(ext.$contentWidth + 100px);
+  padding: 0 50px;
+  margin: 0 auto;
+  > .item {
+    width: calc(33.3% - 9px);
+    max-width: 350px;
+    @media (hover: hover) {
+      a {
+        @include ext.opacityFade();
+      }
+    }
+    img {
+      width: 100%;
+    }
+  }
+}
+/**
+ ****************************************************
+ *
+ * PCのみ
+ *
+ ****************************************************
+ */
+@media only screen and (min-width: ext.$bp) {
+} /*  @media END */
+/**
+ ****************************************************
+ *
+ * SP
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+  /**
+   * ---------------------------------------------------
+   * 基本レイアウト
+   * ---------------------------------------------------
+   */
+  .sectionVox {
+    padding: 0 20px;
+    &:not(:last-child) {
+      margin-bottom: 40px;
+    }
+  }
+  .contVox {
+    &:not(:last-child) {
+      margin-bottom: 30px;
+    }
+  }
+  // カラム
+  .columnVox {
+    gap: 20px 10px;
+    &.spBlock {
+      display: block;
+      > .column {
+        width: 100% !important;
+        &:not(:last-child) {
+          margin-bottom: 20px;
+        }
+      }
+    }
+    &.column2 {
+      > .column {
+        width: calc(50% - 5px);
+      }
+    }
+    &.column3 {
+      > .column {
+        width: calc(50% - 5px);
+        &.colspan2 {
+          width: calc(50% - 5px);
+        }
+      }
+    }
+    &.column4 {
+      > .column {
+        width: calc(50% - 5px);
+        &.colspan2,
+        &.colspan3 {
+          width: calc(50% - 5px);
+        }
+      }
+    }
+    &.column5 {
+      > .column {
+        width: calc(50% - 5px);
+        &.colspan2,
+        &.colspan3,
+        &.colspan4 {
+          width: calc(50% - 5px);
+        }
+      }
+    }
+    // 全幅
+    > .column {
+      &.fullSP {
+        width: 100% !important;
+      }
+    }
+  }
+  .mvImg {
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+  /**
+   * ---------------------------------------------------
+   * サムネイル付きリンクボックス
+   * ---------------------------------------------------
+   */
+  .thumbLinkVox {
+    gap: 10px;
+    &:not(:last-child) {
+      margin-bottom: 30px;
+    }
+    > .item {
+      width: calc(50% - 5px);
+      max-width: 100%;
+      a {
+        padding: 15px;
+        .title {
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+  /**
+   * ---------------------------------------------------
+   * 検索結果
+   * ---------------------------------------------------
+   */
+  .searchAgain {
+    margin: 40px 0 60px 0;
+  }
+  .searchResult {
+    padding: 0 20px;
+    &:not(:last-child) {
+      margin-bottom: 60px;
+    }
+  }
+
+  /**
+   * ---------------------------------------------------
+   * 店舗検索
+   * ---------------------------------------------------
+   */
+  .parlorSearchArea {
+    padding: 110px 20px 100px 20px;
+    background-image: url('../../images/content/content/parlor_search_bg-sp.svg');
+    &::after {
+      width: 174px;
+      height: 144px;
+      background-image: url('../../images/content/content/decoration01.png');
+      transform: translate(calc(-100% - 40px), 30%);
+    }
+    > header {
+      top: -35px;
+    }
+    .parlorSearchWrap {
+      &::before {
+        width: 260px;
+        height: 276px;
+        background-image: url('../../images/content/content/king_img01.png');
+        top: -245px;
+        transform: translateX(calc(100% + 18px));
+      }
+      .searchVox {
+        > .searchVoxInner {
+          display: block;
+          .inputSelect {
+            width: auto;
+            &:not(:last-child) {
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
+    }
+    &.noHead {
+      padding-top: 55px;
+      padding-bottom: 50px;
+      &::after {
+        transform: translate(calc(-100% - 40px), 50%);
+      }
+      .parlorSearchWrap {
+        &::before {
+          top: -130px;
+        }
+      }
+    }
+  }
+  /**
+   * ---------------------------------------------------
+   * 機種情報
+   * ---------------------------------------------------
+   */
+  .machineInfoArea {
+    padding: 70px 20px 60px 20px;
+    background-image: url('../../images/content/content/machine_info_bg-sp.svg');
+    &::before {
+      width: 224px;
+      height: 458px;
+      background-image: url('../../images/content/content/king_img02.png');
+      top: -85px;
+      transform: translateX(calc(100% + 32px));
+    }
+    &::after {
+      width: 174px;
+      height: 115px;
+      background-image: url('../../images/content/content/decoration02.png');
+      transform: translate(calc(100% - -15px), 40%);
+    }
+    > header {
+      padding-bottom: 25px;
+      margin-top: -30px;
+      .headStyle01 {
+        margin-bottom: 0;
+      }
+    }
+    .sliderWrapper {
+      .ss-prev,
+      .ss-next {
+        display: none;
+      }
+    }
+    .sliderCtrl {
+      padding-bottom: 30px;
+    }
+    // 機種検索
+    .machineSearchWrap {
+      .searchVox {
+        margin-top: 20px;
+        .selectSearch {
+          display: block;
+          .inputSelect {
+            width: 100%;
+            &:not(:last-child) {
+              margin-bottom: 10px;
+            }
+          }
+        }
+        .KeywordSearch {
+          max-width: 100%;
+          margin-top: 40px;
+        }
+      }
+    }
+    &.noHead {
+      padding-top: 60px;
+      padding-bottom: 70px;
+      &::after {
+        width: 210px;
+        height: 139px;
+        transform: translate(calc(100% + -15px), 40%);
+      }
+    }
+    &.noFoot {
+      padding-top: 100px;
+      padding-bottom: 40px;
+      &::after {
+        transform: translate(calc(100% + 15px), 50%);
+      }
+    }
+    > .title {
+      font-size: 2.4rem;
+    }
+    .sliderCtrl {
+      margin-top: 20px;
+    }
+  }
+  /**
+   * ---------------------------------------------------
+   * お知らせ
+   * ---------------------------------------------------
+   */
+  .newsArea {
+    padding: 0 25px;
+    > header {
+      margin-bottom: 30px;
+    }
+    > .inner {
+      min-height: initial;
+      &::after {
+        width: 124px;
+        height: 274px;
+        background-image: url('../../images/content/content/king_img03.png');
+        top: 0;
+        bottom: auto;
+        right: 50%;
+        z-index: 4;
+        transform: translate(calc(100% + 55px), calc(-100% - 10px));
+      }
+      .postList {
+        width: auto;
+      }
+      .navigation {
+        width: auto;
+      }
+    }
+    &.king2 {
+      > .inner {
+        &::after {
+          content: none;
+        }
+      }
+    }
+  }
+  /**
+   * ---------------------------------------------------
+   * バナー
+   * ---------------------------------------------------
+   */
+  .adBnrList {
+    display: block;
+    padding: 0 20px;
+    > .item {
+      width: 100%;
+      margin: 0 auto;
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+} /*  @media END */

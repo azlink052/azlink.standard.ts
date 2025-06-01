@@ -1,0 +1,164 @@
+@charset "utf-8";
+@use '../extension/variable' as ext;
+@use 'sass:math';
+
+@mixin baseTransition($property: all, $duration: 0.3s, $function: ease-out, $delay: 0s) {
+  transition: $property $duration $function $delay;
+}
+@mixin opacityFade() {
+  @include baseTransition(opacity);
+  &:hover {
+    opacity: 0.6;
+  }
+  @media only screen and (max-width: (ext.$bp - 1)) {
+    transition: none;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * 幅設定
+ * ---------------------------------------------------
+ */
+// 最大幅
+@mixin contentWidth($margin: false) {
+  margin-left: auto;
+  margin-right: auto;
+  @if ($margin == true) {
+    max-width: calc(ext.$contentWidth + 100px);
+    padding-left: 50px;
+    padding-right: 50px;
+  } @else {
+    max-width: ext.$contentWidth;
+  }
+  @media only screen and (max-width: (ext.$bp - 1)) {
+    @if ($margin == true) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * 矢印アイコン追加
+ * ---------------------------------------------------
+ */
+@mixin icoArrow($color: ext.$borderColor, $absolute: true, $direction: right) {
+  &::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-top: 1px solid $color;
+    border-right: 1px solid $color;
+    transform-origin: center right;
+    transition: border-color ext.$transition;
+  }
+  @if ($absolute == true) {
+    position: relative;
+    &::after {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateX(-100%) rotate(45deg) translateY(-50%);
+    }
+    @if $direction == left {
+      &::after {
+        transform-origin: center left;
+        transform: translateX(100%) rotate(-135deg) translateY(2px);
+      }
+    } @else if $direction == up {
+      &::after {
+        transform-origin: top left;
+        transform: translateX(calc(-100% + 2px)) rotate(-45deg) translateY(2px);
+      }
+    } @else if $direction == down {
+      &::after {
+        transform-origin: top left;
+        transform: translateX(100%) rotate(135deg) translateY(2px);
+      }
+    } @else {
+      &::after {
+        transform: translateX(-100%) rotate(45deg) translateY(calc(-50% + 2px));
+      }
+    }
+  } @else {
+    &::after {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 0.2em;
+      transform: rotate(45deg);
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * ホバーで画像を拡大
+ * ---------------------------------------------------
+ */
+@mixin hoverZoom() {
+  display: block;
+  &:not(a) {
+    overflow: hidden;
+  }
+  .img {
+    overflow: hidden;
+  }
+  img {
+    width: 100%;
+    transform-origin: center;
+    transition: transform 0.4s;
+  }
+  @media (hover: hover) {
+    &:hover {
+      img {
+        transform: scale(1.03);
+      }
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * デコレーション
+ * ---------------------------------------------------
+ */
+@mixin decorationBg($target: after) {
+  position: relative;
+  &::#{$target} {
+    display: block;
+    content: '';
+    width: 554px;
+    height: 554px;
+    background: url('../../images/content/content/bg1.svg') no-repeat center / cover;
+    position: absolute;
+    z-index: 1;
+  }
+  @media only screen and (max-width: (ext.$bp - 1)) {
+    &::#{$target} {
+      width: 430px;
+      height: 430px;
+    }
+  }
+}
+@mixin bgBorder($target: after) {
+  &::#{$target} {
+    display: block;
+    content: '';
+    width: 100%;
+    height: 0;
+    padding-top: 7.18%;
+    background: no-repeat center / cover;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    @if ($target == after) {
+      background-image: url('../../images/content/content/border-bottom.svg');
+      bottom: 0;
+    } @else {
+      background-image: url('../../images/content/content/border-top.svg');
+      top: 0;
+    }
+  }
+}

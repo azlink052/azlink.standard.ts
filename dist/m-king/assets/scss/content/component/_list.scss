@@ -1,0 +1,120 @@
+@charset "utf-8";
+@use '../../extension/' as ext;
+/*
+ * =====================================================
+ *
+ * [list]
+ *
+ * =====================================================
+ */
+/**
+ * ---------------------------------------------------
+ * 基本
+ * ---------------------------------------------------
+ */
+.listStyle01 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.listStyle02 {
+  list-style-type: disc;
+  padding: 0 0 0 20px;
+  margin: 0;
+}
+.listStyle03 {
+  list-style-type: decimal;
+  padding: 0 0 0 2em;
+  margin: 0;
+}
+.listStyle04 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  > li {
+    @include ext.icoArrow();
+    padding-left: 15px;
+    &::after {
+      top: 1em;
+      right: auto;
+      left: 0;
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * SNSリスト
+ * ---------------------------------------------------
+ */
+.snsList {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  > li {
+    a {
+      display: block;
+      color: ext.$textColor;
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-align: center;
+      .icon {
+        display: block;
+        width: 50px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+}
+/**
+ * ---------------------------------------------------
+ * 注釈
+ * ---------------------------------------------------
+ */
+.noteList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  > li {
+    font-size: 1.3rem;
+    padding-left: 1em;
+    position: relative;
+    &::before {
+      content: '※';
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+  &.num {
+    counter-reset: cnt;
+    > li {
+      counter-increment: cnt;
+      padding-left: 2.5em;
+      &::before {
+        content: '※' counter(cnt) ' ';
+      }
+    }
+  }
+}
+
+/**
+ ****************************************************
+ *
+ * PCのみ
+ *
+ ****************************************************
+ */
+@media only screen and (min-width: ext.$bp) {
+} /*  @media END */
+/**
+ ****************************************************
+ *
+ * SP
+ *
+ ****************************************************
+ */
+@media only screen and (max-width: (ext.$bp - 1)) {
+} /*  @media END */
