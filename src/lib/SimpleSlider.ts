@@ -6,7 +6,7 @@ import { focusLoopElems } from './constants';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2025.04.16
+ * @final 		2025.06.02
  *
  * @param {*} $selector
  * @param {*} $options
@@ -143,22 +143,23 @@ export class SimpleSlider {
     this.gotoPage = this.gotoPage.bind(this);
     this.stopAuto = this.stopAuto.bind(this);
 
-    // loading lazyを削除
-    this.elem.querySelectorAll('*').forEach((item: HTMLElement) => {
-      item.removeAttribute('loading');
-    });
-
     const images = this.elem.querySelectorAll('img');
-
+    const callback = () => {
+      this.init();
+    };
     if (images.length > 0) {
       (async () => {
         const imageArray = Array.from(images).map((img) => img.src);
         await LoadImages.loadImages(imageArray);
 
-        this.init();
+        requestAnimationFrame(() => {
+          requestAnimationFrame(callback);
+        });
       })();
     } else {
-      this.init();
+      requestAnimationFrame(() => {
+        requestAnimationFrame(callback);
+      });
     }
   }
   init(): void {
@@ -420,7 +421,7 @@ export class SimpleSlider {
         this.elem.addEventListener(
           'touchmove',
           (e) => {
-            e.preventDefault();
+            // e.preventDefault();
 
             this.moveX = (e as TouchEvent).touches[0].pageX;
             this.moveY = (e as TouchEvent).touches[0].pageY;
