@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es';
  * @category 	Application of AZLINK.
  * @author 		Norio Murata <nori@azlink.jp>
  * @copyright 2010- AZLINK. <https://azlink.jp>
- * @final 		2023.06.25
+ * @final 		2025.06.02
  *
  * @param {*} $selector string
  * @param {*} $options object
@@ -95,7 +95,7 @@ export class SimpleAccordion {
           accParam.isAllowChange = true;
           Object.assign(accParam.body.style, {
             display: 'none',
-            overflow: 'hidden',
+            // overflow: 'hidden',
           });
           document.body.classList.add('is-allowChangeAcc');
         },
@@ -149,6 +149,7 @@ export class SimpleAccordion {
       visibility: 'visible',
       position: 'static',
       height: '0px',
+      overflow: 'hidden',
     });
     // console.log(accParam.height);
     // isAutoCloseが有効な場合、兄弟要素のアコーディオンを閉じる
@@ -162,6 +163,7 @@ export class SimpleAccordion {
         accParam.body.setAttribute('aria-hidden', 'false');
         accParam.opener.setAttribute('aria-expanded', 'true');
         accParam.height = accParam.body.clientHeight;
+        accParam.body.style.removeProperty('overflow');
         accParam.isAllowChange = true;
         // console.log(accParam);
         if (typeof this.options.onOpenAfter === 'function') {
@@ -174,6 +176,7 @@ export class SimpleAccordion {
     const accParam = this.accParams[key];
     accParam.wrap.classList.remove(this.options.openClassName);
     accParam.body.style.removeProperty('height');
+    accParam.body.style.overflow = 'hidden';
     anime({
       targets: accParam.body,
       height: 0,
@@ -184,6 +187,7 @@ export class SimpleAccordion {
         accParam.body.style.display = 'none';
         accParam.body.setAttribute('aria-hidden', 'true');
         accParam.opener.setAttribute('aria-expanded', 'false');
+        accParam.body.style.removeProperty('overflow');
         if (typeof this.options.onCloseAfter === 'function') {
           this.options.onCloseAfter(accParam.id);
         }
