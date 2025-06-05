@@ -291,7 +291,11 @@ export class Utilities {
    * @return array 画像のパスの配列
    */
   loadImages(list: string[], callback?: (images: HTMLImageElement[]) => void) {
-    return LoadImages.loadImages(list, callback);
+    try {
+      return LoadImages.loadImages(list, callback);
+    } catch (error) {
+      console.error(error);
+    }
   }
   /**
    * GET値の取得

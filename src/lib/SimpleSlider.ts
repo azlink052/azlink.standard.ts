@@ -150,11 +150,14 @@ export class SimpleSlider {
     if (images.length > 0) {
       (async () => {
         const imageArray = Array.from(images).map((img) => img.src);
-        await LoadImages.loadImages(imageArray);
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(callback);
-        });
+        try {
+          await LoadImages.loadImages(imageArray);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(callback);
+          });
+        } catch (error) {
+          console.error(error);
+        }
       })();
     } else {
       requestAnimationFrame(() => {

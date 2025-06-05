@@ -14,7 +14,15 @@ export class LoadImages {
   private static async load(src: string): Promise<HTMLImageElement> {
     const img = new Image();
     img.src = src;
-    await img.decode();
+    try {
+      await img.decode();
+    } catch (error) {
+      throw new Error(
+        `画像のデコードに失敗しました: ${src} - ${
+          error instanceof Error ? error.message : '不明なエラー'
+        }`
+      );
+    }
     return img;
   }
 
