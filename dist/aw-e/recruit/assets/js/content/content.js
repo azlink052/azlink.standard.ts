@@ -174,9 +174,9 @@ class ContentJS {
      * ReplaceImageSP
      ********************************************
      */
-    const RPL_SP_IMG01 = new azlib.ReplaceImageSP('.rplSPImg', {
-      spBreakPoint: util.spBreakPoint,
-    });
+    // const RPL_SP_IMG01 = new azlib.ReplaceImageSP('.rplSPImg', {
+    //   spBreakPoint: util.spBreakPoint,
+    // });
     /**
      ********************************************
      * PopupAdjust
