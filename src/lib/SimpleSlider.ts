@@ -198,6 +198,7 @@ export class SimpleSlider {
         flexDirection: this.options.mode === 'vertical' ? 'column' : 'row',
       });
     } else {
+      this.options.rootCount = 1;
       if (this.options.pause < this.options.speed) {
         this.options.speed = this.options.pause - 1;
       }
@@ -346,10 +347,12 @@ export class SimpleSlider {
               this.realCurrent = this.current + this.itemLengthOrg;
             }
           }
-          this.remainder = this.getRemainder();
+          // this.remainder = this.getRemainder();
         } else {
           this.pageLength = this.itemLength;
+          // this.remainder = this.getRemainder();
         }
+        this.remainder = this.getRemainder();
         if (this.options.ctrl) {
           (<HTMLElement>this.options.wrapper).insertAdjacentHTML(
             'beforeend',
@@ -817,7 +820,9 @@ export class SimpleSlider {
       if (typeof this.options.onSlideBefore === 'function') {
         this.options.onSlideBefore(oldIndex, newIndex);
       }
+      this.remainder = this.getRemainder();
       if (this.options.pager) this.togglePager();
+      if (this.options.ctrl) this.toggleCtrls();
       Array.from(this.elem.children).forEach((v, i) => {
         v.classList.remove('slide-old', 'slide-active');
       });
@@ -842,9 +847,6 @@ export class SimpleSlider {
               duration: this.options.speed,
               easing: this.options.easing,
               complete: () => {
-                if (typeof this.options.onSlideAfter === 'function') {
-                  this.options.onSlideAfter(oldIndex, this.current);
-                }
                 Array.from(this.elem.children).forEach(
                   (v: HTMLElement, i: number) => {
                     if (i !== this.current) {
@@ -860,6 +862,9 @@ export class SimpleSlider {
                     this.slideAuto();
                   }
                 }
+                if (typeof this.options.onSlideAfter === 'function') {
+                  this.options.onSlideAfter(oldIndex, this.current);
+                }
               },
             });
           } else {
@@ -868,9 +873,6 @@ export class SimpleSlider {
               duration: this.options.speed,
               easing: this.options.easing,
               complete: () => {
-                if (typeof this.options.onSlideAfter === 'function') {
-                  this.options.onSlideAfter(oldIndex, this.current);
-                }
                 this.isAllowSlide = true;
                 if (this.options.isLoop) {
                   this.slideAuto();
@@ -878,6 +880,9 @@ export class SimpleSlider {
                   if (this.current !== this.itemLength - 1) {
                     this.slideAuto();
                   }
+                }
+                if (typeof this.options.onSlideAfter === 'function') {
+                  this.options.onSlideAfter(oldIndex, this.current);
                 }
               },
             });
@@ -934,14 +939,18 @@ export class SimpleSlider {
   }
   getNextSlide(): number | boolean {
     if (this.options.isLoop) {
-      if (this.itemLengthOrg % Number(this.options.rootCount)) {
-        if (this.current !== 0 && this.remainder <= this.options.rootCount) {
-          return 0;
+      if (this.options.mode !== 'fade') {
+        if (this.itemLengthOrg % Number(this.options.rootCount)) {
+          if (this.current !== 0 && this.remainder <= this.options.rootCount) {
+            return 0;
+          } else {
+            return this.current + this.options.slideCount;
+          }
         } else {
           return this.current + this.options.slideCount;
         }
       } else {
-        return this.current + this.options.slideCount;
+        return this.current + 1 < this.itemLengthOrg ? this.current + 1 : 0;
       }
     } else {
       if (this.current !== this.itemLength - 1) {
@@ -957,27 +966,23 @@ export class SimpleSlider {
   }
   getPrevSlide(): number | boolean {
     if (this.options.isLoop) {
-      if (this.itemLengthOrg % Number(this.options.rootCount)) {
-        if (this.remainder === this.itemLengthOrg) {
-          const r = Math.floor(
-            this.itemLengthOrg % Number(this.options.rootCount)
-          );
-          // const p = Math.floor(
-          //   this.itemLengthOrg / Number(this.options.rootCount)
-          // );
-          // console.log(p * Number(this.options.rootCount));
-
-          // console.log(
-          //   (this.pageLength - 1) * Number(this.options.rootCount) + r
-          // );
-          // console.log(this.itemLengthOrg - r);
-          // return r;
-          return this.itemLengthOrg - r;
+      if (this.options.mode !== 'fade') {
+        if (this.itemLengthOrg % Number(this.options.rootCount)) {
+          if (this.remainder === this.itemLengthOrg) {
+            const r = Math.floor(
+              this.itemLengthOrg % Number(this.options.rootCount)
+            );
+            return this.itemLengthOrg - r;
+          } else {
+            return this.current - this.options.slideCount;
+          }
         } else {
           return this.current - this.options.slideCount;
         }
       } else {
-        return this.current - this.options.slideCount;
+        return this.current - 1 >= 0
+          ? this.current - 1
+          : this.itemLengthOrg - 1;
       }
     } else {
       if (this.current !== 0) {
