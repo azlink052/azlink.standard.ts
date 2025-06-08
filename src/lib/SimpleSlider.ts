@@ -557,7 +557,7 @@ export class SimpleSlider {
         this.toggleSlideFocus();
       }, 500);
     });
-    window.addEventListener('load', () => {
+    this.elem.addEventListener('load', () => {
       this.toggleSlideFocus();
     });
     // css
